@@ -25,168 +25,129 @@
         }
     </style>
     <!-- 引入 echarts.js -->
-    <script src='/js/echarts.js'></script>
-    <script src='/js/xlsx.full.min.js'></script>
-    <script src='/js/ecStat.js'></script>
+    <script src="/js/echarts.js"></script>
+    <script src="/js/xlsx.full.min.js"></script>
+    <script src="/js/ecStat.js"></script>
 </head>
 
 <body>
-    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div id="main" style="width: 600px;height:400px;"></div>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 600px;height:400px;"></div>
 
-    <div id="drop">Drop a spreadsheet file here to see sheet data</div>
-    <input type="file" name="xlfile" id="xlf"> ... or click here to select a file
+<div id="drop">Drop a spreadsheet file here to see sheet data</div>
+<input type="file" name="xlfile" id="xlf"> ... or click here to select a file
 
 
-    <div id="htmlout"></div>
+<div id="htmlout"></div>
 
-    <script>
+<script>
 
-        function draw_hist(data) {
-            console.log(data);
-            var bins = ecStat.histogram(data);
-            console.log(bins);
-            bins = bins.data.slice(1);
-            var myChart = echarts.init(document.getElementById('main'));
-            var option = {
-                title: {
-                    text: '期末考试',
-                    left: 'center',
-                    top: 20
-                },
-                color: ['rgb(25, 183, 207)'],
-                grid: {
-                    left: '3%',
-                    right: '3%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: [{
-                    type: 'value',
-                    scale: true, //这个一定要设，不然barWidth和bins对应不上
-                }],
-                yAxis: [{
-                    type: 'value',
-                }],
-                series: [{
-                    name: 'height',
-                    type: 'bar',
-                    barWidth: '99.3%',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideTop',
-                            formatter: function (params) {
-                                return params.value[1];
-                            }
-                        }
-                    },
-                    data: bins
-                }]
-            };
-            myChart.setOption(option);
+    // function draw_hist(data) {
+    //     console.log(data);
+    //     var bins = ecStat.histogram(data);
+    //     console.log(bins);
+    //     bins = bins.data.slice(1);
+    //     var myChart = echarts.init(document.getElementById("main"));
+    //     var option = {
+    //         title: {
+    //             text: "期末考试",
+    //             left: "center",
+    //             top: 20
+    //         },
+    //         color: ["rgb(25, 183, 207)"],
+    //         grid: {
+    //             left: "3%",
+    //             right: "3%",
+    //             bottom: "3%",
+    //             containLabel: true
+    //         },
+    //         xAxis: [{
+    //             type: "value",
+    //             scale: true, //这个一定要设，不然barWidth和bins对应不上
+    //         }],
+    //         yAxis: [{
+    //             type: "value",
+    //         }],
+    //         series: [{
+    //             name: "height",
+    //             type: "bar",
+    //             barWidth: "99.3%",
+    //             label: {
+    //                 normal: {
+    //                     show: true,
+    //                     position: "insideTop",
+    //                     formatter: function (params) {
+    //                         return params.value[1];
+    //                     }
+    //                 }
+    //             },
+    //             data: bins
+    //         }]
+    //     };
+    //     myChart.setOption(option);
+    // }
+
+    function doFile(files) {
+        var f = files[0]
+        console.log(f);
+        var fname = f.name;
+        var type = -1;
+        var obj = {};
+        if (fname.startsWith("PTA")) {
+            obj['type'] = 'pta';
+        } else if (fname.startsWith("超星")) {
+            obj['type'] = 'chaoxing';
+        } else if (fname.startsWith("期末考试")) {
+            obj['type'] = 'final';
+        } else if (fname.startsWith("雨课堂")) {
+            obj['type'] = 'yuketang';
         }
+        var reader = new FileReader()
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var workbook = XLSX.read(data, {type: "binary"});
 
-        function chaoxing(e) {
-
-        }
-
-        function final(workbook) {
             var sheetNames = workbook.SheetNames;
-            var worksheet = workbook.Sheets[sheetNames[0]];
+            var numSheets = sheetNames.length;
 
-            var data = XLSX.utils.sheet_to_json(worksheet);
-            var len = data.length;
-            var scores = new Array();
-
-            for (i in data) {
-                score = data[i]['期末成绩'];
-                if (typeof score === 'number') {
-                    scores.push(data[i]['期末成绩']);
-                }
+            for (var i = 0; i < numSheets; i++) {
+                var sheetName = sheetNames[i];
+                var sheet = workbook.Sheets[sheetName];
+                var sheetData = XLSX.utils.sheet_to_json(sheet, {header: 1});
+                obj[sheetName] = sheetData;
             }
-            
-            draw_hist(scores);
-            
+            console.log(obj);
+        }
+        reader.readAsBinaryString(f)
+    }
+
+    (function () {
+        var drop = document.getElementById("drop");
+        if (!drop.addEventListener) return;
+
+        function handleDrop(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            doFile(e.dataTransfer.files);
         }
 
-        function yuketang(e) {
-            console.log('yuketang');
+        drop.addEventListener("drop", handleDrop, false);
+    })();
+
+
+    (function () {
+        var xlf = document.getElementById("xlf");
+        if (!xlf.addEventListener) return;
+
+        function handleFile(e) {
+            doFile(e.target.files);
         }
 
-        function pta(workbook) {
-            var sheetNames = workbook.SheetNames;
-            var worksheet = workbook.Sheets[sheetNames[0]];
-            var data = XLSX.utils.sheet_to_json(worksheet, { header: 1 }).slice(3);
-            var total = new Array();
-            var blank = new Array();
-            var fun = new Array();
-            var coding = new Array();
-            for (i in data) {
-                total.push((typeof data[i][4] === 'number') ? data[i][4] : 0);
-                blank.push((typeof data[i][6] === 'number') ? data[i][6] : 0);
-                fun.push((typeof data[i][14] === 'number') ? data[i][14] : 0);
-                coding.push((typeof data[i][47] === 'number') ? data[i][47] : 0);
-            }
-            draw_hist(total);
-        }
-
-        function do_file(files) {
-            f = files[0]
-            console.log(f);
-            var fname = f.name;
-            var type = -1;
-            if (fname.startsWith('PTA')) {
-                type = 0;
-            } else if (fname.startsWith('超星')) {
-                type = 1;
-            } else if (fname.startsWith('期末考试')) {
-                type = 2;
-            } else if (fname.startsWith('雨课堂')) {
-                type = 3;
-            }
-            var reader = new FileReader()
-            reader.onload = function (e) {
-                var data = e.target.result;
-                var workbook = XLSX.read(data, { type: 'binary' });
-                console.log(workbook);
-                if (type == 0) {
-                    pta(workbook);
-                } else if (type == 1) {
-                    chaoxing(workbook);
-                } else if (type == 2) {
-                    final(workbook);
-                } else if (type == 3) {
-                    yuketang(workbook);
-                }
-            }
-            reader.readAsBinaryString(f)
-        }
-
-        (function () {
-            var drop = document.getElementById('drop');
-            if (!drop.addEventListener) return;
-
-            function handleDrop(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                do_file(e.dataTransfer.files);
-            }
-
-            drop.addEventListener('drop', handleDrop, false);
-        })();
+        xlf.addEventListener("change", handleFile, false);
+    })();
 
 
-        (function () {
-            var xlf = document.getElementById('xlf');
-            if (!xlf.addEventListener) return;
-            function handleFile(e) { do_file(e.target.files); }
-            xlf.addEventListener('change', handleFile, false);
-        })();
-
-
-
-    </script>
+</script>
 
 </body>
 
