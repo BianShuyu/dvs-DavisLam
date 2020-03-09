@@ -1,42 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
-    <title>Spring Boot开发平台</title>
-    <link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
-    <script src="../static/plugins/layui/layui.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <style rel="stylesheet" type="text/css">
-        .layui-tab-title li:first-child > i {
-            display: none;
-        }
-    </style>
+    <title>登录--lzhpo后台管理</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+
+    <link rel="stylesheet" type="text/css" href="/login/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/login/fonts/iconic/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="/login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="/login/css/main.css">
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="/admin/css/login.css" media="all" />
 </head>
-<body class="layui-layout-body">
-<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-    <legend>用户登录</legend>
-</fieldset>
 
-<form class="layui-form" action="/login.do" method="post">
-    <div class="layui-form-item">
-        <label class="layui-form-label">用户名</label>
-        <div class="layui-input-block">
-            <input type="text" name="code" lay-verify="title" autocomplete="off"
-                   placeholder="请输入用户名" class="layui-input" value="admin">
+<body>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/admin/js/login.js"></script>
+<script src="/login/vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="/login/js/main.js"></script>
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('/login/images/bg-01.jpg');">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+            <form class="layui-form" action="/login.do}">
+                <span class="login100-form-title p-b-49">登录</span>
+                <div class="layui-form-item">
+                    <input class="layui-input" name="username" placeholder="用户名" lay-verify="required" type="text" autocomplete="off">
+                </div>
+                <div class="layui-form-item">
+                    <input class="layui-input" name="password" placeholder="密码" lay-verify="required" type="password" autocomplete="off">
+                </div>
+                <div class="layui-form-item">
+                    <input type="checkbox" name="rememberMe" lay-skin="primary" title="记住帐号?">
+                </div>
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn" lay-submit lay-filter="login">登 录</button>
+                    </div>
+                </div>
+
+                <!--other-->
+                <div class="txt1 text-center p-t-54 p-b-20">
+                    <span>第三方登录</span>
+                </div>
+
+                <div class="flex-c-m">
+                    <a href="#" class="login100-social-item bg1">
+                        <i class="fa fa-wechat"></i>
+                    </a>
+
+                    <a href="#" class="login100-social-item bg2">
+                        <i class="fa fa-qq"></i>
+                    </a>
+
+                    <a href="#" class="login100-social-item bg3">
+                        <i class="fa fa-weibo"></i>
+                    </a>
+                </div>
+
+                <div class="flex-col-c p-t-25">
+                    <a href="javascript:" class="txt2">立即注册</a>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">密码</label>
-        <div class="layui-input-block">
-            <input type="password" name="password" lay-verify="required" name="" placeholder="请输入密码" autocomplete="off"
-                   class="layui-input" value="123456">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即登录</button>
-        </div>
-    </div>
-</form>
+</div>
+
+
 </body>
+
 </html>
