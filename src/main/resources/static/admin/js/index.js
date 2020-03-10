@@ -1,6 +1,6 @@
 var $,tab,skyconsWeather;
 layui.config({
-    base : "static/admin/js/"
+    base : "admin/js/"
 }).use(['bodyTab','form','element','layer','jquery'],function(){
     var form = layui.form,
         layer = layui.layer,
@@ -139,6 +139,7 @@ layui.config({
 
     //隐藏左侧导航
     $(".hideMenu").click(function(){
+        console.log("sfsdfsdfsdf");
         $(".layui-layout-admin").toggleClass("showMenu");
         //渲染顶部窗口
         tab.tabMove();

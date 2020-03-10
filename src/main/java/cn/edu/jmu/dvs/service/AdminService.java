@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class AdminService {
     @Autowired
     AdminMapper adminMapper;
-    public Admin Sel(int id) {
-        return adminMapper.Sel(id);
+    public boolean login(String username, String password) {
+        return adminMapper.selectUser(username, password) != null;
     }
 }

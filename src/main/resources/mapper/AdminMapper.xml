@@ -4,12 +4,12 @@
  
     <resultMap id="BaseResultMap" type="cn.edu.jmu.dvs.entity.Admin">
         <result column="id" jdbcType="INTEGER" property="id" />
-        <result column="username" jdbcType="VARCHAR" property="userName" />
-        <result column="password" jdbcType="VARCHAR" property="passWord" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
     </resultMap>
  
-    <select id="Sel" resultType="cn.edu.jmu.dvs.entity.Admin">
-        select * from tb_admin where id = #{id}
+    <select id="selectUser" resultType="cn.edu.jmu.dvs.entity.Admin">
+        select * from tb_admin where username = #{username} and password = #{password}
     </select>
  
 </mapper>

@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>登录--lzhpo后台管理</title>
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
 
     <link rel="stylesheet" type="text/css" href="/login/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/login/fonts/iconic/css/material-design-iconic-font.min.css">
     <link rel="stylesheet" type="text/css" href="/login/css/util.css">
     <link rel="stylesheet" type="text/css" href="/login/css/main.css">
-    <link rel="stylesheet" href="/layui/css/layui.css" media="all" />
-    <link rel="stylesheet" href="/admin/css/login.css" media="all" />
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" href="/admin/css/login.css" media="all"/>
 </head>
 
 <body>
@@ -26,13 +26,15 @@
 <div class="limiter">
     <div class="container-login100" style="background-image: url('/login/images/bg-01.jpg');">
         <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
-            <form class="layui-form" action="/login.do">
+            <form class="layui-form" action="/verify">
                 <span class="login100-form-title p-b-49">登录</span>
                 <div class="layui-form-item">
-                    <input class="layui-input" name="username" placeholder="用户名" lay-verify="required" type="text" autocomplete="off">
+                    <input class="layui-input" name="username" placeholder="用户名" lay-verify="required" type="text"
+                           autocomplete="off">
                 </div>
                 <div class="layui-form-item">
-                    <input class="layui-input" name="password" placeholder="密码" lay-verify="required" type="password" autocomplete="off">
+                    <input class="layui-input" name="password" placeholder="密码" lay-verify="required" type="password"
+                           autocomplete="off">
                 </div>
                 <div class="layui-form-item">
                     <input type="checkbox" name="rememberMe" lay-skin="primary" title="记住帐号?">
@@ -67,9 +69,29 @@
                     <a href="javascript:" class="txt2">立即注册</a>
                 </div>
             </form>
+
+            <script>
+                layui.use('form', function () {
+                    var form = layui.form;
+                    //监听提交
+                    form.on('submit(login)', function (data) {
+                        console.log(JSON.stringify(data.field));
+                        // $.post(data.form.action, data.field, function (res) {
+                        //     if (res.success) {
+                        //         layer.msg(res)
+                        //     } else {
+                        //         layer.msg(res);
+                        //     }
+                        // });
+                        return false;
+                    });
+                });
+            </script>
+
         </div>
     </div>
 </div>
+
 
 
 </body>
