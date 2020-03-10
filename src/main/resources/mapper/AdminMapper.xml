@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jmu.dvs.mapper.AdminMapper">
+ 
+    <resultMap id="BaseResultMap" type="cn.edu.jmu.dvs.entity.Admin">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="username" jdbcType="VARCHAR" property="userName" />
+        <result column="password" jdbcType="VARCHAR" property="passWord" />
+    </resultMap>
+ 
+    <select id="Sel" resultType="cn.edu.jmu.dvs.entity.Admin">
+        select * from tb_admin where id = #{id}
+    </select>
+ 
+</mapper>
