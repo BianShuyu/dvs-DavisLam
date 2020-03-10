@@ -1,6 +1,6 @@
 package cn.edu.jmu.dvs.controller;
 
-import cn.edu.jmu.dvs.service.AdminService;
+import cn.edu.jmu.dvs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class LoginController {
 
     @Autowired
-    private AdminService adminService;
+    private UserService userService;
 
     @PostMapping("/verify")
     @ResponseBody
@@ -23,7 +23,7 @@ public class LoginController {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         HashMap<String, Object> map = new HashMap<>();
-        if (adminService.login(username, password)) {
+        if (userService.login(username, password)) {
             map.put("success", true);
             map.put("url", "index");
         } else {

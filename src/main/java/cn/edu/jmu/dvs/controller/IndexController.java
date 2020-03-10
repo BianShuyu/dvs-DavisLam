@@ -1,6 +1,5 @@
 package cn.edu.jmu.dvs.controller;
 
-import cn.edu.jmu.dvs.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;

@@ -1,6 +1,6 @@
 package cn.edu.jmu.dvs.entity;
 
-public class Admin {
+public class User {
     private Integer id;
     private String username;
     private String password;
