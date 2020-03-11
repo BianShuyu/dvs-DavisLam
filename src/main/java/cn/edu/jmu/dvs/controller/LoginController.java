@@ -1,10 +1,12 @@
 package cn.edu.jmu.dvs.controller;
 
 import cn.edu.jmu.dvs.service.UserService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,5 +33,10 @@ public class LoginController {
             map.put("message", "failure");
         }
         return map;
+    }
+
+    @PostMapping("/test")
+    public String test(@RequestParam("username") String username,@RequestParam("password") String password){
+        return "index";
     }
 }

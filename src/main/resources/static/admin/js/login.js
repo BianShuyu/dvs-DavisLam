@@ -4,7 +4,9 @@ layui.use(['form', 'layer'], function () {
     $ = layui.jquery;
 
     //登录按钮事件
+
     form.on("submit(login)", function (data) {
+        console.log("调用了自带的");
         var loadIndex = layer.load(2, {shade: [0.3, '#333']});
         if ($('form').find('input[type="checkbox"]')[0].checked) {
             data.field.rememberMe = true;
@@ -21,4 +23,5 @@ layui.use(['form', 'layer'], function () {
         });
         return false;
     });
+
 });
