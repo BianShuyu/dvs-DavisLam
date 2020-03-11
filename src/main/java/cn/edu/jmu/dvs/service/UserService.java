@@ -2,6 +2,7 @@ package cn.edu.jmu.dvs.service;
 
 import cn.edu.jmu.dvs.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 @Service

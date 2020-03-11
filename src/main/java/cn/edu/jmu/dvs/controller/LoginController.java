@@ -1,17 +1,24 @@
 package cn.edu.jmu.dvs.controller;
 
+import cn.edu.jmu.dvs.entity.FinalExamData;
 import cn.edu.jmu.dvs.service.UserService;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class LoginController {
@@ -36,7 +43,13 @@ public class LoginController {
     }
 
     @PostMapping("/test")
-    public String test(@RequestParam("username") String username,@RequestParam("password") String password){
+    @ResponseBody
+    public String test(@RequestBody String m){
+        JSONObject jsonObject=JSONObject.parseObject(m);
+        System.out.println(jsonObject);
+        JSONArray jsonArray=JSONArray.parseArray(jsonObject.getString("网络18"));
+        String a=jsonArray.get(0).toString();
+        System.out.println(a);
         return "index";
     }
 }
