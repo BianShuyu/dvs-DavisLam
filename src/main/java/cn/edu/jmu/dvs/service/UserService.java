@@ -30,4 +30,14 @@ public class UserService {
             return null;
         }
     }
+
+    //todo 验证登录状态，true验证成功，false可能是过期可能是token错误，本方法在任何对数据进行增删改查的service前都应该调用
+    public boolean verify(String token){
+        String s=userMapper.getUserLoginStatus(token);
+        if(s!=null){
+            return Long.parseLong(s) >= System.currentTimeMillis();
+        }else {
+            return false;
+        }
+    }
 }

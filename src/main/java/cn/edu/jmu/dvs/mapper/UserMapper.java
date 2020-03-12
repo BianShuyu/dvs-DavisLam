@@ -18,4 +18,7 @@ public interface UserMapper {
     //update返回where匹配的数目，不是成功update的数目
     //delete返回删除的数目
     //insert返回null
+
+    @Select("select unix_timestamp(expire_time) from tb_admin where token=#{token}")
+    String getUserLoginStatus(@Param("token") String token);
 }
