@@ -1,29 +1,18 @@
 package cn.edu.jmu.dvs.service;
 
-import cn.edu.jmu.dvs.PageData;
-import cn.edu.jmu.dvs.entity.User;
 import cn.edu.jmu.dvs.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.List;
-=======
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
->>>>>>> 40fd4eeb1af641eb04e379f0336aaed175a6bdaf
 
 @Service
 public class UserService {
     @Autowired
     UserMapper userMapper;
 
-<<<<<<< HEAD
-    public boolean login(String username, String password) {
-        return userMapper.selectUser(username, password) != null;
-=======
     public String login(String username, String password) {
         if (userMapper.selectUser(username, password) != null) {
             Random r = new Random();
@@ -50,10 +39,5 @@ public class UserService {
         }else {
             return false;
         }
->>>>>>> 40fd4eeb1af641eb04e379f0336aaed175a6bdaf
-    }
-
-    public List<User> getUserList() {
-        return userMapper.getAllUsers();
     }
 }

@@ -36,6 +36,7 @@ public class LoginController {
         if (token!=null) {
             map.put("success", true);
             map.put("token", token);
+            map.put("url", "index");
         } else {
             map.put("success", false);
             map.put("message", "failure");

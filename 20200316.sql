@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: davislam
 -- ------------------------------------------------------
--- Server version	8.0.18
+-- Server version	8.0.18tb_coursetb_coursetb_admin
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,9 +25,11 @@ DROP TABLE IF EXISTS `tb_admin`;
 CREATE TABLE `tb_admin` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `expire_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,6 +38,7 @@ CREATE TABLE `tb_admin` (
 
 LOCK TABLES `tb_admin` WRITE;
 /*!40000 ALTER TABLE `tb_admin` DISABLE KEYS */;
+INSERT INTO `tb_admin` VALUES (1,'admin','123456',NULL,NULL);
 /*!40000 ALTER TABLE `tb_admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,9 +54,10 @@ CREATE TABLE `tb_class` (
   `name` varchar(255) NOT NULL,
   `grade_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `class_name` (`name`),
   KEY `class_grade` (`grade_id`),
   CONSTRAINT `class_grade` FOREIGN KEY (`grade_id`) REFERENCES `tb_grade` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -387,8 +391,9 @@ DROP TABLE IF EXISTS `tb_grade`;
 CREATE TABLE `tb_grade` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `grade_name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -454,62 +459,6 @@ CREATE TABLE `tb_student` (
 LOCK TABLES `tb_student` WRITE;
 /*!40000 ALTER TABLE `tb_student` DISABLE KEYS */;
 /*!40000 ALTER TABLE `tb_student` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tb_teach_course`
---
-
-DROP TABLE IF EXISTS `tb_teach_course`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_teach_course` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `course_id` int(10) unsigned DEFAULT NULL,
-  `grade_id` int(10) unsigned DEFAULT NULL,
-  `teacher_id` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `tc_course` (`course_id`),
-  KEY `tc_grade` (`grade_id`),
-  KEY `tc_teacher` (`teacher_id`),
-  CONSTRAINT `tc_course` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `tc_grade` FOREIGN KEY (`grade_id`) REFERENCES `tb_grade` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `tc_teacher` FOREIGN KEY (`teacher_id`) REFERENCES `tb_teacher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_teach_course`
---
-
-LOCK TABLES `tb_teach_course` WRITE;
-/*!40000 ALTER TABLE `tb_teach_course` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_teach_course` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tb_teacher`
---
-
-DROP TABLE IF EXISTS `tb_teacher`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_teacher` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `job_num` varchar(255) DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `department` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_teacher`
---
-
-LOCK TABLES `tb_teacher` WRITE;
-/*!40000 ALTER TABLE `tb_teacher` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_teacher` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -765,4 +714,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-10  1:43:42
+-- Dump completed on 2020-03-16 16:12:44

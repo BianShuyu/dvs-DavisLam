@@ -26,7 +26,7 @@ public class StudentController {
     @ResponseBody
     public PageData<User> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
-        List<User> all = userService.getUserList();
+        List<User> all = new ArrayList<>();
         ArrayList<User> cur = new ArrayList<>();
         int start = (page - 1) * limit;
         int end  = Math.min(page * limit, all.size());
