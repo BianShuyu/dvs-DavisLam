@@ -1,18 +1,26 @@
 package cn.edu.jmu.dvs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PageData<T> {
 
-    private Integer code = 0;
-    private Long count;
+    private int code = 0;
+    private int count;
     private List<T> data;
     private String msg = "";
 
-    public PageData(List<T> _data, Long _count) {
-        this.data = _data;
-        this.count = _count;
+    public PageData(List<T> source, int page, int limit) {
+        ArrayList<T> data = new ArrayList<>();
+        int start = (page - 1) * limit;
+        int end  = Math.min(page * limit, source.size());
+        for (int i = start; i < end; i++) {
+            data.add(source.get(i));
+        }
+        this.data = data;
+        this.count = source.size();
     }
+
 
     public Integer getCode() {
         return code;
@@ -22,11 +30,11 @@ public class PageData<T> {
         this.code = code;
     }
 
-    public Long getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(Long count) {
+    public void setCount(int count) {
         this.count = count;
     }
 

@@ -6,7 +6,6 @@ import cn.edu.jmu.dvs.entity.Course;
 import cn.edu.jmu.dvs.service.CourseService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -27,19 +26,12 @@ public class CourseController {
         return "/course/list";
     }
 
+
     @PostMapping("list")
     @ResponseBody
     public PageData<Course> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                  @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
-        List<Course> all = courseService.getCourseList();
-        ArrayList<Course> cur = new ArrayList<>();
-        int start = (page - 1) * limit;
-        int end = Math.min(page * limit, all.size());
-        for (int i = start; i < end; i++) {
-            cur.add(all.get(i));
-        }
-        return new PageData<>(cur, new Long(all.size()));
-
+        return new PageData<>(courseService.getCourseList(), page, limit);
     }
 
     @GetMapping("add")

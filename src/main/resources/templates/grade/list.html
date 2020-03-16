@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<meta charset="utf-8">
+<title>用户列表--后台管理</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<link rel="shortcut icon" href="${site.logo}">
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
+<link rel="stylesheet" th:href="@{/admin/css/list.css}" media="all"/>
+</head>
+<body class="childrenBody">
+<fieldset class="layui-elem-field">
+    <legend>用户检索</legend>
+    <div class="layui-field-box">
+        <form class="layui-form">
+            <div class="layui-inline" style="width: 15%">
+                <input type="text" value="" name="s_key" placeholder="可以输入登录名/邮箱/手机号" class="layui-input search_input">
+            </div>
+            <div class="layui-inline">
+                <a class="layui-btn" lay-submit="" lay-filter="searchForm">查询</a>
+            </div>
+            <div class="layui-inline">
+                <input type="file" name="xlfile" id="xlf" class="layui-btn layui-btn-normal">
+            </div>
+            <div class="layui-inline">
+                <a class="layui-btn layui-btn-danger" data-type="deleteSome">批量删除</a>
+            </div>
+        </form>
+    </div>
+</fieldset>
+<div class="layui-form">
+    <table class="layui-table" id="gradeTable" lay-filter="gradeList"></table>
+
+    <script type="text/html" id="gradeBar">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+</div>
+<div id="page"></div>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/admin/js/tools.js}"></script>
+<script type="text/javascript" th:src="@{/admin/js/grade/gradeList.js}"></script>
+<script type="text/javascript" th:src="@{/js/xlsx.full.min.js}"></script>
+
+<script>
+
+    function importFile(files) {
+        var f = files[0];
+        var $ = layui.jquery;
+        console.log(f);
+        var reader = new FileReader()
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var workbook = XLSX.read(data, { type: 'binary' });
+            var sheetNames = workbook.SheetNames;
+            var worksheet = workbook.Sheets[sheetNames[0]];
+
+            var data = XLSX.utils.sheet_to_json(worksheet);
+            console.log(data);
+
+            $.post("/student/upload", data, function(res) {
+                layer.msg("成功插入" + res.count + "条数据", {time: 1000}, function () {
+                    table.reload('gradeTable', t);
+                });
+            });
+
+        }
+        reader.readAsBinaryString(f)
+    }
+
+
+    (function () {
+        var xlf = document.getElementById('xlf');
+        if (!xlf.addEventListener) return;
+        function handleFile(e) { importFile(e.target.files); }
+        xlf.addEventListener('change', handleFile, false);
+    })();
+</script>
+</body>
+</html>

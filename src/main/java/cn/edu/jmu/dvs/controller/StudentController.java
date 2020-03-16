@@ -22,18 +22,18 @@ public class StudentController {
     }
 
 
-    @PostMapping("list")
-    @ResponseBody
-    public PageData<User> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                               @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
-        List<User> all = new ArrayList<>();
-        ArrayList<User> cur = new ArrayList<>();
-        int start = (page - 1) * limit;
-        int end  = Math.min(page * limit, all.size());
-        for (int i = start; i < end; i++) {
-            cur.add(all.get(i));
-        }
-        return new PageData<>(cur, new Long(all.size()));
-
-    }
+//    @PostMapping("list")
+//    @ResponseBody
+//    public PageData<User> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+//                               @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
+//        List<User> all = new ArrayList<>();
+//        ArrayList<User> cur = new ArrayList<>();
+//        int start = (page - 1) * limit;
+//        int end  = Math.min(page * limit, all.size());
+//        for (int i = start; i < end; i++) {
+//            cur.add(all.get(i));
+//        }
+//        return new PageData<>(cur, new Long(all.size()));
+//
+//    }
 }
