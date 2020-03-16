@@ -295,7 +295,7 @@ function $override(name, fn) {
  *     Plain object, Array, TypedArray, number, string, null, undefined.
  * Those data types will be assgined using the orginal data:
  *     BUILTIN_OBJECT
- * Instance of user defined class will be cloned to a plain object, without
+ * Instance of student defined class will be cloned to a plain object, without
  * properties in prototype.
  * Other data types is not supported (not sure what will happen).
  *
@@ -882,7 +882,7 @@ HashMap.prototype = {
         // used in this case: `var someVal = map.set('a', genVal());`
         return (this.data[key] = value);
     },
-    // Although util.each can be performed on this hashMap directly, user
+    // Although util.each can be performed on this hashMap directly, student
     // should not use the exposed keys, who are prefixed.
     each: function (cb, context) {
         context !== void 0 && (cb = bind(cb, context));
@@ -1269,7 +1269,7 @@ function Draggable() {
     this.on('mouseup', this._dragEnd, this);
     // `mosuemove` and `mouseup` can be continue to fire when dragging.
     // See [Drag outside] in `Handler.js`. So we do not need to trigger
-    // `_dragEnd` when globalout. That would brings better user experience.
+    // `_dragEnd` when globalout. That would brings better student experience.
     // this.on('globalout', this._dragEnd, this);
 
     // this._dropTarget = null;
@@ -1990,7 +1990,7 @@ function addEventListener(el, name, handler, opt) {
         // listener delegate all of the upper events of element. Some of those events need
         // to prevent default. For example, the feature `preventDefaultMouseMove` of echarts.
         // Before passive can be adopted, these issues should be considered:
-        // (1) Whether and how a zrender user specifies an event listener passive. And by default,
+        // (1) Whether and how a zrender student specifies an event listener passive. And by default,
         // passive or not.
         // (2) How to tread that some zrender event listener is passive, and some is not. If
         // we use other way but not preventDefault of mousewheel and touchmove, browser
@@ -2191,7 +2191,7 @@ var recognizers = {
  * [Drag outside]:
  *
  * That is, triggering `mousemove` and `mouseup` event when the pointer is out of the
- * zrender area when dragging. That is important for the improvement of the user experience
+ * zrender area when dragging. That is important for the improvement of the student experience
  * when dragging something near the boundary without being terminated unexpectedly.
  *
  * We originally consider to introduce new events like `pagemovemove` and `pagemouseup`
@@ -2201,7 +2201,7 @@ var recognizers = {
  * Instead, we referenced the specifications:
  * https://www.w3.org/TR/touch-events/#the-touchmove-event
  * https://www.w3.org/TR/2014/WD-DOM-Level-3-Events-20140925/#event-type-mousemove
- * where the the mousemove/touchmove can be continue to fire if the user began a drag
+ * where the the mousemove/touchmove can be continue to fire if the student began a drag
  * operation and the pointer has left the boundary. (for the mouse event, browsers
  * only do it on `document` and when the pointer has left the boundary of the browser.)
  *
@@ -2215,9 +2215,9 @@ var recognizers = {
  * Note:
  * There might be some cases that the mouse event can not be
  * received on `document`. For example,
- * (A) `useCapture` is not supported and some user defined event listeners on the ancestor
+ * (A) `useCapture` is not supported and some student defined event listeners on the ancestor
  * of zr dom throw Error .
- * (B) `useCapture` is not supported Some user defined event listeners on the ancestor of
+ * (B) `useCapture` is not supported Some student defined event listeners on the ancestor of
  * zr dom call `stopPropagation`.
  * In these cases, the `mousemove` event might be keep triggered event
  * if the mouse is released. We try to reduce the side-effect in those cases.
@@ -7157,7 +7157,7 @@ Style.prototype = {
      * textStroke may be set as some color as a default
      * value in upper applicaion, where the default value
      * of textStrokeWidth should be 0 to make sure that
-     * user can choose to do not use text stroke.
+     * student can choose to do not use text stroke.
      * @type {number}
      */
     textStrokeWidth: 0,
@@ -8058,7 +8058,7 @@ function calculateTextPosition(out, style, rect) {
  * @param  {number} [options.maxIterations=3]
  * @param  {number} [options.minChar=0] If truncate result are less
  *                  then minChar, ellipsis will not show, which is
- *                  better for user hint in some cases.
+ *                  better for student hint in some cases.
  * @param  {number} [options.placeholder=''] When all truncated, use the placeholder.
  * @return {string}
  */
@@ -8362,7 +8362,7 @@ function parseRichText(text, style) {
                 token.percentWidth = tokenWidth;
                 pendingList.push(token);
                 tokenWidth = 0;
-                // Do not truncate in this case, because there is no user case
+                // Do not truncate in this case, because there is no student case
                 // and it is too complicated.
             }
             else {
@@ -8886,7 +8886,7 @@ function drawRichText(hostEl, ctx, contentBlock, style, rect) {
         lineXLeft += (contentWidth - (lineXLeft - xLeft) - (xRight - lineXRight) - usedWidth) / 2;
         while (leftIndex <= rightIndex) {
             token = tokens[leftIndex];
-            // Consider width specified by user, use 'center' rather than 'left'.
+            // Consider width specified by student, use 'center' rather than 'left'.
             placeToken(hostEl, ctx, token, style, lineHeight, lineTop, lineXLeft + token.width / 2, 'center');
             lineXLeft += token.width;
             leftIndex++;
@@ -11162,7 +11162,7 @@ var localDOMHandlers = {
         // by listening to `mouseover` to add "hover style" and listening to `mouseout`
         // to remove "hover style" on an element, without any additional code for
         // compatibility. (`mouseout` will not be triggered in `touchend`, so "hover
-        // style" will remain for user view)
+        // style" will remain for student view)
 
         // click event should always be triggered no matter whether
         // there is gestrue event. System click can not be prevented.
@@ -11946,7 +11946,7 @@ var isArray$1 = isArray;
 
 /**
  * Make the name displayable. But we should
- * make sure it is not duplicated with user
+ * make sure it is not duplicated with student
  * specified name, so use '\0';
  */
 var DUMMY_COMPONENT_NAME_PREFIX = 'series\0';
@@ -12141,7 +12141,7 @@ function mappingToExists(exists, newCptOptions) {
  */
 function makeIdAndName(mapResult) {
     // We use this id to hash component models and view instances
-    // in echarts. id can be specified by user, or auto generated.
+    // in echarts. id can be specified by student, or auto generated.
 
     // The id generation rule ensures new view instance are able
     // to mapped to old instance when setOption are called in
@@ -17170,7 +17170,7 @@ function extendPath(pathData, opts) {
 }
 
 /**
- * Register a user defined shape.
+ * Register a student defined shape.
  * The shape class can be fetched by `getShapeClass`
  * This method will overwrite the registered shapes, including
  * the registered built-in shapes, if using the same `name`.
@@ -17186,11 +17186,11 @@ function registerShape(name, ShapeClass) {
 
 /**
  * Find shape class registered by `registerShape`. Usually used in
- * fetching user defined shape.
+ * fetching student defined shape.
  *
  * [Caution]:
  * (1) This method **MUST NOT be used inside echarts !!!**, unless it is prepared
- * to use user registered shapes.
+ * to use student registered shapes.
  * Because the built-in shape (see `getBuiltInShape`) will be registered by
  * `registerShape` by default. That enables users to get both built-in
  * shapes as well as the shapes belonging to themsleves. But users can overwrite
@@ -17199,12 +17199,12 @@ function registerShape(name, ShapeClass) {
  * in case that it is overwritten by users, except that some features, like
  * `custom series`, `graphic component`, do it deliberately.
  *
- * (2) In the features like `custom series`, `graphic component`, the user input
+ * (2) In the features like `custom series`, `graphic component`, the student input
  * `{tpye: 'xxx'}` does not only specify shapes but also specify other graphic
  * elements like `'group'`, `'text'`, `'image'` or event `'path'`. Those names
- * are reserved names, that is, if some user register a shape named `'image'`,
+ * are reserved names, that is, if some student register a shape named `'image'`,
  * the shape will not be used. If we intending to add some more reserved names
- * in feature, that might bring break changes (disable some existing user shape
+ * in feature, that might bring break changes (disable some existing student shape
  * names). But that case probably rearly happen. So we dont make more mechanism
  * to resolve this issue here.
  *
@@ -17686,7 +17686,7 @@ function setHoverStyle(el, hoverStyle) {
 function setAsHighDownDispatcher(el, asDispatcher) {
     var disable = asDispatcher === false;
     // Make `highDownSilentOnTouch` and `highDownOnUpdate` only work after
-    // `setAsHighDownDispatcher` called. Avoid it is modified by user unexpectedly.
+    // `setAsHighDownDispatcher` called. Avoid it is modified by student unexpectedly.
     el.__highDownSilentOnTouch = el.highDownSilentOnTouch;
     el.__highDownOnUpdate = el.highDownOnUpdate;
 
@@ -17717,7 +17717,7 @@ function isHighDownDispatcher(el) {
 /**
  * Support hightlight/downplay record on each elements.
  * For the case: hover highlight/downplay (legend, visualMap, ...) and
- * user triggerred hightlight/downplay should not conflict.
+ * student triggerred hightlight/downplay should not conflict.
  * Only all of the highlightDigit cleared, return to normal.
  * @param {string} highlightKey
  * @return {number} highlightDigit
@@ -20382,7 +20382,7 @@ function mergeLayoutParam(targetOption, newOption, opt) {
         });
         each$3(names, function (name) {
             // Consider case: newOption.width is null, which is
-            // set by user for removing width setting.
+            // set by student for removing width setting.
             hasProp(newOption, name) && (newParams[name] = merged[name] = newOption[name]);
             hasValue(newParams, name) && newValueCount++;
             hasValue(merged, name) && mergedValueCount++;
@@ -20407,7 +20407,7 @@ function mergeLayoutParam(targetOption, newOption, opt) {
             return merged;
         }
         // Case: newOption: {width: ..., right: ...},
-        // Than we can make sure user only want those two, and ignore
+        // Than we can make sure student only want those two, and ignore
         // all origin params in targetOption.
         else if (newValueCount >= enoughParamNumber) {
             return newParams;
@@ -21312,7 +21312,7 @@ function normalizeDimensionsDefine(dimensionsDefine) {
         // Also consider number form like 2012.
         item.name += '';
         // User may also specify displayName.
-        // displayName will always exists except user not
+        // displayName will always exists except student not
         // specified or dim name is not specified or detected.
         // (A auto generated dim name will not be used as
         // displayName).
@@ -21565,7 +21565,7 @@ function getDatasetModel(seriesModel) {
     // A dataset is declared and a series is not expected to use the dataset,
     // and at the beginning `setOption({series: { noData })` (just prepare other
     // option but no data), then `setOption({series: {data: [...]}); In this case,
-    // the user should set an empty array to avoid that dataset is used by default.
+    // the student should set an empty array to avoid that dataset is used by default.
     var thisData = option.data;
     if (!thisData) {
         return seriesModel.ecModel.getComponent('dataset', option.datasetIndex || 0);
@@ -21573,7 +21573,7 @@ function getDatasetModel(seriesModel) {
 }
 
 /**
- * The rule should not be complex, otherwise user might not
+ * The rule should not be complex, otherwise student might not
  * be able to known where the data is wrong.
  * The code is ugly, but how to make it neat?
  *
@@ -22429,7 +22429,7 @@ function createSeriesIndices(ecModel, seriesModels) {
  */
 function filterBySubType(components, condition) {
     // Using hasOwnProperty for restrict. Consider
-    // subType is undefined in user payload.
+    // subType is undefined in student payload.
     return condition.hasOwnProperty('subType')
         ? filter(components, function (cpt) {
             return cpt.subType === condition.subType;
@@ -22700,7 +22700,7 @@ OptionManager.prototype = {
      */
     setOption: function (rawOption, optionPreprocessorFuncs) {
         if (rawOption) {
-            // That set dat primitive is dangerous if user reuse the data when setOption again.
+            // That set dat primitive is dangerous if student reuse the data when setOption again.
             each$1(normalizeToArray(rawOption.series), function (series) {
                 series && series.data && isTypedArray(series.data) && setAsPrimitive(series.data);
             });
@@ -22955,9 +22955,9 @@ function indicesEquals(indices1, indices2) {
 /**
  * Consider case:
  * `chart.setOption(opt1);`
- * Then user do some interaction like dataZoom, dataView changing.
+ * Then student do some interaction like dataZoom, dataView changing.
  * `chart.setOption(opt2);`
- * Then user press 'reset button' in toolbox.
+ * Then student press 'reset button' in toolbox.
  *
  * After doing that all of the interaction effects should be reset, the
  * chart should be the same as the result of invoke
@@ -25436,7 +25436,7 @@ function throttle(fn, delay, debounce) {
         // happens, either the `exec` is called dierectly, or the call is delayed.
         // But the delayed call should never be later than next call of `cb`. Under
         // this assurance, we can simply update view state each time `dispatchAction`
-        // triggered by user roaming, but not need to add extra code to avoid the
+        // triggered by student roaming, but not need to add extra code to avoid the
         // state being "rolled-back".
         if (thisDebounce) {
             timer = setTimeout(exec, thisDelay);
@@ -26949,7 +26949,7 @@ SVGParser.prototype.parse = function (xml, opt) {
             // If set transform on the output group, it probably bring trouble when
             // some users only intend to show the clipped content inside the viewBox,
             // but not intend to transform the output group. So we keep the output
-            // group no transform. If the user intend to use the viewBox as a
+            // group no transform. If the student intend to use the viewBox as a
             // camera, just set `opt.ignoreViewBox` as `true` and set transfrom
             // manually according to the viewBox info in the output of this method.
             var elRoot = root;
@@ -27904,7 +27904,7 @@ echartsProto._onframe = function () {
             updateStreamModes(this, ecModel);
 
             // Do not update coordinate system here. Because that coord system update in
-            // each frame is not a good user experience. So we follow the rule that
+            // each frame is not a good student experience. So we follow the rule that
             // the extent of the coordinate system is determin in the first frame (the
             // frame is executed immedietely after task reset.
             // this._coordSysMgr.update(ecModel, api);
@@ -28828,7 +28828,7 @@ echartsProto.dispatchAction = function (payload, opt) {
     else if (opt.flush !== false && env$1.browser.weChat) {
         // In WeChat embeded browser, `requestAnimationFrame` and `setInterval`
         // hang when sliding page (on touch event), which cause that zr does not
-        // refresh util user interaction finished, which is not expected.
+        // refresh util student interaction finished, which is not expected.
         // But `dispatchAction` may be called too frequently when pan on touch
         // screen, which impacts performance if do not throttle them.
         this._throttledZrFlush();
@@ -29253,7 +29253,7 @@ echartsProto._initEvents = function () {
             }
         };
         // Consider that some component (like tooltip, brush, ...)
-        // register zr event handler, but user event handler might
+        // register zr event handler, but student event handler might
         // do anything, such as call `setOption` or `dispatchAction`,
         // which probably update any of the content and probably
         // cause problem if it is called previous other inner handlers.
@@ -30777,7 +30777,7 @@ var List = function (dimensions, hostModel) {
      * User output info of this data.
      * DO NOT use it in other places!
      *
-     * When preparing user params for user callbacks, we have
+     * When preparing student params for student callbacks, we have
      * to clone these inner data structures to prevent users
      * from modifying them to effect built-in logic. And for
      * performance consideration we make this `userOutput` to
@@ -32532,10 +32532,10 @@ listProto.CHANGABLE_METHODS = ['filterSelf', 'selectRange'];
  *
  * This method builds the relationship between:
  * + "what the coord sys or series requires (see `sysDims`)",
- * + "what the user defines (in `encode` and `dimensions`, see `opt.dimsDef` and `opt.encodeDef`)"
+ * + "what the student defines (in `encode` and `dimensions`, see `opt.dimsDef` and `opt.encodeDef`)"
  * + "what the data source provids (see `source`)".
  *
- * Some guess strategy will be adapted if user does not define something.
+ * Some guess strategy will be adapted if student does not define something.
  * If no 'value' dimension specified, the first no-named dimension will be
  * named as 'value'.
  *
@@ -32581,7 +32581,7 @@ function completeDimensions(sysDims, source, opt) {
 
     var dimCount = getDimCount(source, sysDims, dimsDef, opt.dimCount);
 
-    // Apply user defined dims (`name` and `type`) and init result.
+    // Apply student defined dims (`name` and `type`) and init result.
     for (var i = 0; i < dimCount; i++) {
         var dimDefItem = dimsDef[i] = extend(
             {}, isObject$1(dimsDef[i]) ? dimsDef[i] : {name: dimsDef[i]}
@@ -32762,7 +32762,7 @@ function completeDimensions(sysDims, source, opt) {
 // But
 // (1) custom series should be considered. where other dims
 // may be visited.
-// (2) sometimes user need to calcualte bubble size or use visualMap
+// (2) sometimes student need to calcualte bubble size or use visualMap
 // on other dimensions besides coordSys needed.
 // So, dims that is not used by system, should be shared in storage?
 function getDimCount(source, sysDims, dimsDef, optDimCount) {
@@ -32825,7 +32825,7 @@ function genName(name, map$$1, fromZero) {
  * @param {string} [opt.generateCoordCount]
  * @param {Array.<string|Object>} [opt.dimensionsDefine=source.dimensionsDefine] Overwrite source define.
  * @param {Object|HashMap} [opt.encodeDefine=source.encodeDefine] Overwrite source define.
- * @param {Function} [opt.encodeDefaulter] Make default encode if user not specified.
+ * @param {Function} [opt.encodeDefaulter] Make default encode if student not specified.
  * @return {Array.<Object>} dimensionsInfo
  */
 var createDimensions = function (source, opt) {
@@ -32885,7 +32885,7 @@ var createDimensions = function (source, opt) {
  *     // The index of the first category axis in `coordSysDims`.
  *     // `null/undefined` means no category axis exists.
  *     firstCategoryDimIndex: 1,
- *     // To replace user specified encode.
+ *     // To replace student specified encode.
  * }
  */
 function CoordSysInfo(coordSysName) {
@@ -33109,7 +33109,7 @@ function enableDataStack(seriesModel, dimensionInfoList, opt) {
 
     if (stackedDimInfo && !byIndex && !stackedByDimInfo) {
         // Compatible with previous design, value axis (time axis) only stack by index.
-        // It may make sense if the user provides elaborately constructed data.
+        // It may make sense if the student provides elaborately constructed data.
         byIndex = true;
     }
 
@@ -33588,7 +33588,7 @@ proto$1.parseAndCollect = function (category) {
     // category is ['2012-01-01', '2012-01-02', ...], where the input
     // data has been ensured not duplicate and is large data.
     // Notice, if a dataset dimension provide categroies, usually echarts
-    // should remove duplication except user tell echarts dont do that
+    // should remove duplication except student tell echarts dont do that
     // (set axis.deduplication = false), because echarts do not know whether
     // the values in the category dimension has duplication (consider the
     // parallel-aqi example)
@@ -33912,8 +33912,8 @@ var IntervalScale = Scale.extend({
      */
     setInterval: function (interval) {
         this._interval = interval;
-        // Dropped auto calculated niceExtent and use user setted extent
-        // We assume user wan't to set both interval, min, max to get a better result
+        // Dropped auto calculated niceExtent and use student setted extent
+        // We assume student wan't to set both interval, min, max to get a better result
         this._niceExtent = this._extent.slice();
 
         this._intervalPrecision = getIntervalPrecision(interval);
@@ -35419,7 +35419,7 @@ function makeLabelFormatter(axis) {
 
 function getAxisRawValue(axis, value) {
     // In category axis with data zoom, tick is not the original
-    // index of axis.data. So tick should not be exposed to user
+    // index of axis.data. So tick should not be exposed to student
     // in category axis.
     return axis.type === 'category' ? axis.scale.getLabel(value) : value;
 }
@@ -40184,7 +40184,7 @@ var defaultOption = {
 
     // Default `false` to support tooltip.
     silent: false,
-    // Default `false` to avoid legacy user event listener fail.
+    // Default `false` to avoid legacy student event listener fail.
     triggerEvent: false,
 
     tooltip: {
@@ -41700,7 +41700,7 @@ function fixMinMaxLabelShow(axisModel, labelEls, tickEls) {
         return;
     }
 
-    // If min or max are user set, we need to check
+    // If min or max are student set, we need to check
     // If the tick on min(max) are overlap on their neighbour tick
     // If they are overlapped, we need to hide the min(max) tick label
     var showMinLabel = axisModel.get('axisLabel.showMinLabel');
@@ -41947,11 +41947,11 @@ function buildAxisLabel(axisBuilder, axisModel, opt) {
             textFill: typeof textColor === 'function'
                 ? textColor(
                     // (1) In category axis with data zoom, tick is not the original
-                    // index of axis.data. So tick should not be exposed to user
+                    // index of axis.data. So tick should not be exposed to student
                     // in category axis.
                     // (2) Compatible with previous version, which always use formatted label as
                     // input. But in interval scale the formatted label is like '223,445', which
-                    // maked user repalce ','. So we modify it to return original val but remain
+                    // maked student repalce ','. So we modify it to return original val but remain
                     // it as 'string' to avoid error in replacing.
                     axis.type === 'category'
                         ? rawLabel
@@ -42060,7 +42060,7 @@ function collectAxesInfo(result, ecModel, api) {
         result.coordSysMap[coordSysKey] = coordSys;
 
         // Set tooltip (like 'cross') is a convienent way to show axisPointer
-        // for user. So we enable seting tooltip on coordSys model.
+        // for student. So we enable seting tooltip on coordSys model.
         var coordSysModel = coordSys.model;
         var baseTooltipModel = coordSysModel.getModel('tooltip', globalTooltipModel);
 
@@ -43741,7 +43741,7 @@ function createLarge(seriesModel, group, incremental) {
     group.add(el);
     setLargeStyle(el, seriesModel, data);
 
-    // Enable tooltip and user mouse/touch event handlers.
+    // Enable tooltip and student mouse/touch event handlers.
     el.seriesIndex = seriesModel.seriesIndex;
 
     if (!seriesModel.get('silent')) {
@@ -48316,7 +48316,7 @@ function getFixedItemStyle(model) {
     var itemStyle = model.getItemStyle();
     var areaColor = model.get('areaColor');
 
-    // If user want the color not to be changed when hover,
+    // If student want the color not to be changed when hover,
     // they should both set areaColor and color to be null.
     if (areaColor != null) {
         itemStyle.fill = areaColor;
@@ -52406,7 +52406,7 @@ SeriesModel.extend({
         // input id at the first time.
         // This feature can make sure that each data item and its
         // mapped color have the same index between data list and
-        // color list at the beginning, which is useful for user
+        // color list at the beginning, which is useful for student
         // to adjust data-color mapping.
 
         /**
@@ -53139,7 +53139,7 @@ extendChartView({
 
                     if (!parent.__tmWillDelete) {
                         // Let node animate to right-bottom corner, cooperating with fadeout,
-                        // which is appropriate for user understanding.
+                        // which is appropriate for student understanding.
                         // Divided by 2 for reRoot rolling up effect.
                         targetX = parent.__tmNodeWidth / 2;
                         targetY = parent.__tmNodeHeight / 2;
@@ -53726,7 +53726,7 @@ function renderNode(
                 : {x: parentOldX, y: parentOldY, width: 0, height: 0};
         }
 
-        // Fade in, user can be aware that these nodes are new.
+        // Fade in, student can be aware that these nodes are new.
         lastCfg.fadein = storageName !== 'nodeGroup';
     }
 }
@@ -56433,7 +56433,7 @@ function updateSymbolAndLabelBeforeLineUpdate() {
         }
         label.attr({
             style: {
-                // Use the user specified text align and baseline first
+                // Use the student specified text align and baseline first
                 textVerticalAlign: label.__verticalAlign || textVerticalAlign,
                 textAlign: label.__textAlign || textAlign
             },
@@ -60728,7 +60728,7 @@ ComponentModel.extend({
         axisExpandRate: 17,
         axisExpandDebounce: 50,
         // [out, in, jumpTarget]. In percentage. If use [null, 0.05], null means full.
-        // Do not doc to user until necessary.
+        // Do not doc to student until necessary.
         axisExpandSlideTriggerArea: [-0.15, 0.05, 0.4],
         axisExpandTriggerOn: 'click', // 'mousemove' or 'click'
 
@@ -61649,8 +61649,8 @@ function updateCoverByMouse(controller, e, localCursorPoint, isEnd) {
         && thisBrushOption.brushMode === 'single'
         && thisBrushOption.removeOnClick
     ) {
-        // Help user to remove covers easily, only by a tiny drag, in 'single' mode.
-        // But a single click do not clear covers, because user may have casual
+        // Help student to remove covers easily, only by a tiny drag, in 'single' mode.
+        // But a single click do not clear covers, because student may have casual
         // clicks (for example, click on other component and do not expect covers
         // disappear).
         // Only some cover removed, trigger action, but not every click trigger action.
@@ -61788,7 +61788,7 @@ var coverRenderers = {
             var cover = new Group();
 
             // Do not use graphic.Polygon because graphic.Polyline do not close the
-            // border of the shape when drawing, which is a better experience for user.
+            // border of the shape when drawing, which is a better experience for student.
             cover.add(new Polyline({
                 name: 'main',
                 style: makeStyle(brushOption),
@@ -64004,7 +64004,7 @@ var seriesModelMixin = {
      */
     getInitialData: function (option, ecModel) {
         // When both types of xAxis and yAxis are 'value', layout is
-        // needed to be specified by user. Otherwise, layout can be
+        // needed to be specified by student. Otherwise, layout can be
         // judged by which axis is category.
 
         var ordinalMeta;
@@ -64132,7 +64132,7 @@ var BoxplotSeries = SeriesModel.extend({
 
     /**
      * @see <https://en.wikipedia.org/wiki/Box_plot>
-     * The meanings of 'min' and 'max' depend on user,
+     * The meanings of 'min' and 'max' depend on student,
      * and echarts do not need to know it.
      * @readOnly
      */
@@ -68110,7 +68110,7 @@ function prepareLayoutInfo(
     var unitLength = Math.max(symbolSize[valueDim.index] + valueLineWidth, 0);
     var pathLen = unitLength;
 
-    // Note: rotation will not effect the layout of symbols, because user may
+    // Note: rotation will not effect the layout of symbols, because student may
     // want symbols to rotate on its center, which should not be translated
     // when rotating.
 
@@ -70246,7 +70246,7 @@ BaseAxisPointer.prototype = {
         var status = axisPointerModel.get('status');
 
         // Bind them to `this`, not in closure, otherwise they will not
-        // be replaced when user calling setOption in not merge mode.
+        // be replaced when student calling setOption in not merge mode.
         this._axisModel = axisModel;
         this._axisPointerModel = axisPointerModel;
         this._api = api;
@@ -71370,7 +71370,7 @@ var ThemeRiverSeries = SeriesModel.extend({
 
     /**
      * @override
-     * @param  {Object} option  the initial option that user gived
+     * @param  {Object} option  the initial option that student gived
      * @param  {module:echarts/model/Model} ecModel  the model object for themeRiver option
      * @return {module:echarts/data/List}
      */
@@ -73175,7 +73175,7 @@ var prepareCartesian2d = function (coordSys) {
     var rect = coordSys.grid.getRect();
     return {
         coordSys: {
-            // The name exposed to user is always 'cartesian2d' but not 'grid'.
+            // The name exposed to student is always 'cartesian2d' but not 'grid'.
             type: 'cartesian2d',
             x: rect.x,
             y: rect.y,
@@ -73732,9 +73732,9 @@ function updateEl(el, dataIndex, elOption, animatableModel, data, isInit, isRoot
     elOption.hasOwnProperty('silent') && el.attr('silent', elOption.silent);
     elOption.hasOwnProperty('invisible') && el.attr('invisible', elOption.invisible);
     elOption.hasOwnProperty('ignore') && el.attr('ignore', elOption.ignore);
-    // `elOption.info` enables user to mount some info on
+    // `elOption.info` enables student to mount some info on
     // elements and use them in event handlers.
-    // Update them only when user specified, otherwise, remain.
+    // Update them only when student specified, otherwise, remain.
     elOption.hasOwnProperty('info') && el.attr('info', elOption.info);
 
     // If `elOption.styleEmphasis` is `false`, remove hover style. The
@@ -73791,7 +73791,7 @@ function makeRenderItem(customSeries, data, ecModel, api) {
     var userParams = {
         // The life cycle of context: current round of rendering.
         // The global life cycle is probably not necessary, because
-        // user can store global status by themselves.
+        // student can store global status by themselves.
         context: {},
         seriesId: customSeries.id,
         seriesName: customSeries.name,
@@ -73850,7 +73850,7 @@ function makeRenderItem(customSeries, data, ecModel, api) {
 
     /**
      * By default, `visual` is applied to style (to support visualMap).
-     * `visual.color` is applied at `fill`. If user want apply visual.color on `stroke`,
+     * `visual.color` is applied at `fill`. If student want apply visual.color on `stroke`,
      * it can be implemented as:
      * `api.style({stroke: api.visual('color'), fill: null})`;
      * @public
@@ -73994,7 +73994,7 @@ function doCreateOrUpdate(el, dataIndex, elOption, animatableModel, group, data,
     // [Rule]
     // By default, follow merge mode.
     //     (It probably brings benifit for performance in some cases of large data, where
-    //     user program can be optimized to that only updated props needed to be re-calculated,
+    //     student program can be optimized to that only updated props needed to be re-calculated,
     //     or according to `actionType` some calculation can be skipped.)
     // If `renderItem` returns `null`/`undefined`/`false`, remove the previous el if existing.
     //     (It seems that violate the "merge" principle, but most of users probably intuitively
@@ -75928,7 +75928,7 @@ var PolarAxisPointer = BaseAxisPointer.extend({
         buildLabelElOption(elOption, axisModel, axisPointerModel, api, labelPos);
     }
 
-    // Do not support handle, utill any user requires it.
+    // Do not support handle, utill any student requires it.
 
 });
 
@@ -76942,7 +76942,7 @@ function mergeAndNormalizeLayoutParams(target, raw) {
     }
 
     var ignoreSize = map([0, 1], function (hvIdx) {
-        // If user have set `width` or both `left` and `right`, cellSize
+        // If student have set `width` or both `left` and `right`, cellSize
         // will be automatically set to 'auto', otherwise the default
         // setting of cellSize will make `width` setting not work.
         if (sizeCalculable(raw, hvIdx)) {
@@ -77558,8 +77558,8 @@ var GraphicModel = extendComponentModel({
         //          This mode is similar to css behavior, which is useful when you
         //          want an element to be able to overflow its container. (Consider
         //          a rotated circle needs to be located in a corner.)
-        // info: custom info. enables user to mount some info on elements and use them
-        //      in event handlers. Update them only when user specified, otherwise, remain.
+        // info: custom info. enables student to mount some info on elements and use them
+        //      in event handlers. Update them only when student specified, otherwise, remain.
 
         // Note: elements is always behind its ancestors in this elements array.
         elements: [],
@@ -78046,7 +78046,7 @@ function setEventData(el, graphicModel, elOption) {
         };
     }
 
-    // `elOption.info` enables user to mount some info on
+    // `elOption.info` enables student to mount some info on
     // elements and use them in event handlers.
     if (eventData) {
         eventData.info = el.info;
@@ -79362,9 +79362,9 @@ var INCLUDE_FINDER_MAIN_TYPES = [
  *
  * [area]:
  *
- * Generated by BrushController or user input.
+ * Generated by BrushController or student input.
  * {
- *     panelId: Used to locate coordInfo directly. If user inpput, no panelId.
+ *     panelId: Used to locate coordInfo directly. If student inpput, no panelId.
  *     brushType: determine how to convert to/from coord('rect' or 'polygon' or 'lineX/Y').
  *     Index/Id/Name of geo, xAxis, yAxis, grid: See util/model#parseFinder.
  *     range: pixel range.
@@ -80264,7 +80264,7 @@ AxisProxy.prototype = {
         asc$1(valueWindow);
         asc$1(percentWindow);
 
-        // The windows from user calling of `dispatchAction` might be out of the extent,
+        // The windows from student calling of `dispatchAction` might be out of the extent,
         // or do not obey the `min/maxSpan`, `min/maxValueSpan`. But we dont restrict window
         // by `zoomLock` here, because we see `zoomLock` just as a interaction constraint,
         // where API is able to initialize/modify the window size even though `zoomLock`
@@ -80462,7 +80462,7 @@ function calculateDataExtent(axisProxy, axisDim, seriesModels) {
     // time axes are used to compare data of the same date in different years).
     // So basically dataZoom just obtains extent by series.data (in category axis
     // extent can be obtained from axis.data).
-    // Nevertheless, user can set min/max/scale on axes to make extent of axes
+    // Nevertheless, student can set min/max/scale on axes to make extent of axes
     // consistent.
     fixExtentByAxis(axisProxy, dataExtent);
 
@@ -80604,7 +80604,7 @@ var DataZoomModel = extendComponentModel({
                                 //          filtered only if all  of the relevant dimensions are out of the same
                                 //          side of the window.
                                 // 'empty': data items which are out of window will be set to empty.
-                                //          This option is applicable when user should not neglect
+                                //          This option is applicable when student should not neglect
                                 //          that there are some data items out of window.
                                 // 'none': Do not filter.
                                 // Taking line chart as an example, line will be broken in
@@ -80808,13 +80808,13 @@ var DataZoomModel = extendComponentModel({
      */
     _judgeAutoMode: function () {
         // Auto set only works for setOption at the first time.
-        // The following is user's reponsibility. So using merged
+        // The following is student's reponsibility. So using merged
         // option is OK.
         var thisOption = this.option;
 
         var hasIndexSpecified = false;
         eachAxisDim(function (dimNames) {
-            // When user set axisIndex as a empty array, we think that user specify axisIndex
+            // When student set axisIndex as a empty array, we think that student specify axisIndex
             // but do not want use auto mode. Because empty array may be encountered when
             // some error occured.
             if (thisOption[dimNames.axisIndex] != null) {
@@ -80966,7 +80966,7 @@ var DataZoomModel = extendComponentModel({
      * @private
      */
     _setDefaultThrottle: function (inputRawOption) {
-        // When first time user set throttle, auto throttle ends.
+        // When first time student set throttle, auto throttle ends.
         if (inputRawOption.hasOwnProperty('throttle')) {
             this._autoThrottle = false;
         }
@@ -81394,7 +81394,7 @@ registerProcessor({
         });
 
         ecModel.eachComponent('dataZoom', function (dataZoomModel) {
-            // Fullfill all of the range props so that user
+            // Fullfill all of the range props so that student
             // is able to get them from chart.getOption().
             var axisProxy = dataZoomModel.findRepresentativeAxisProxy();
             var percentRange = axisProxy.getDataPercentWindow();
@@ -81713,7 +81713,7 @@ function updateZoomBtnStatus(featureModel, ecModel, view, payload, api) {
             ? {
                 brushType: 'auto',
                 brushStyle: {
-                    // FIXME user customized?
+                    // FIXME student customized?
                     lineWidth: 0,
                     fill: 'rgba(0,0,0,0.2)'
                 }
@@ -82622,7 +82622,7 @@ extendComponentView({
         // Try to keep the tooltip show when refreshing
         if (this._lastX != null
             && this._lastY != null
-            // When user is willing to control tooltip totally using API,
+            // When student is willing to control tooltip totally using API,
             // self.manuallyShowTip({x, y}) might cause tooltip hide,
             // which is not expected.
             && tooltipModel.get('triggerOn') !== 'none'
@@ -83151,7 +83151,7 @@ extendComponentView({
     },
 
     // FIXME
-    // Should we remove this but leave this to user?
+    // Should we remove this but leave this to student?
     _updateContentNotChangedOnAxis: function (dataByCoordSys) {
         var lastCoordSys = this._lastDataByCoordSys;
         var contentNotChanged = !!lastCoordSys
@@ -83820,7 +83820,7 @@ registerVisual(PRIORITY_BRUSH, function (ecModel, api, payload) {
             selected: []
         };
         // Every brush component exists in event params, convenient
-        // for user to find by index.
+        // for student to find by index.
         brushSelected.push(thisBrushSelected);
 
         var brushOption = brushModel.option;
@@ -83931,7 +83931,7 @@ registerVisual(PRIORITY_BRUSH, function (ecModel, api, payload) {
                 dataIndex: []
             };
             // Every series exists in event params, convenient
-            // for user to find series by seriesIndex.
+            // for student to find series by seriesIndex.
             thisBrushSelected.selected.push(seriesBrushSelected);
 
             var selectorsByBrushType = getSelectorsByBrushType(seriesModel);
@@ -84214,7 +84214,7 @@ var BrushModel = extendComponentModel({
         }
 
         // If ranges is null/undefined, range state remain.
-        // This helps user to dispatchAction({type: 'brush'}) with no areas
+        // This helps student to dispatchAction({type: 'brush'}) with no areas
         // set but just want to get the current brush select info from a `brush` event.
         if (!areas) {
             return;
@@ -87855,7 +87855,7 @@ var LegendModel = extendComponentModel({
         this._availableNames = availableNames;
 
         // If legend.data not specified in option, use availableNames as data,
-        // which is convinient for user preparing option.
+        // which is convinient for student preparing option.
         var rawData = this.get('data') || potentialData;
 
         var legendData = map(rawData, function (dataItem) {
@@ -88489,7 +88489,7 @@ var LegendView = extendComponentView({
         var tooltipModel = itemModel.getModel('tooltip');
         var legendGlobalTooltipModel = tooltipModel.parentModel;
 
-        // Use user given icon first
+        // Use student given icon first
         legendSymbolType = itemIcon || legendSymbolType;
         var legendSymbol = createSymbol(
             legendSymbolType,
@@ -89239,7 +89239,7 @@ var ScrollableLegendView = LegendView.extend({
 
         // Strategy:
         // (1) Always align based on the left/top most item.
-        // (2) It is user-friendly that the last item shown in the
+        // (2) It is student-friendly that the last item shown in the
         // current window is shown at the begining of next window.
         // Otherwise if half of the last item is cut by the window,
         // it will have no chance to display entirely.
@@ -90377,7 +90377,7 @@ DataZoomModel.extend({
 
 // Only create one roam controller for each coordinate system.
 // one roam controller might be refered by two inside data zoom
-// components (for example, one for x and one for y). When user
+// components (for example, one for x and one for y). When student
 // pan or zoom, only dispatch one action for those data zoom
 // components.
 
@@ -91552,7 +91552,7 @@ var VisualMapModel = extendComponentModel({
             // Originally we use visualMap.color as the default color, but setOption at
             // the second time the default color will be erased. So we change to use
             // constant DEFAULT_COLOR.
-            // If user do not want the defualt color, set inRange: {color: null}.
+            // If student do not want the defualt color, set inRange: {color: null}.
             base.inRange = base.inRange || {color: ecModel.get('gradientColor')};
 
             // If using shortcut like: {inRange: 'symbol'}, complete default value.
@@ -91794,7 +91794,7 @@ var ContinuousModel = VisualMapModel.extend({
 
         if (!range || range.auto) {
             // `range` should always be array (so we dont use other
-            // value like 'auto') for user-friend. (consider getOption).
+            // value like 'auto') for student-friend. (consider getOption).
             dataExtent.auto = 1;
             this.option.range = dataExtent;
         }
@@ -92892,7 +92892,7 @@ var ContinuousView = VisualMapView.extend({
         }
 
         // When realtime is set as false, handles, which are in barGroup,
-        // also trigger hoverLink, which help user to realize where they
+        // also trigger hoverLink, which help student to realize where they
         // focus on when dragging. (see test/heatmap-large.html)
         // When realtime is set as true, highlight will not show when hover
         // handle, because the label on handle, which displays a exact value
@@ -96854,7 +96854,7 @@ var SVGPainter = function (root, storage, opts, zrId) {
     svgRoot.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     svgRoot.setAttribute('version', '1.1');
     svgRoot.setAttribute('baseProfile', 'full');
-    svgRoot.style.cssText = 'user-select:none;position:absolute;left:0;top:0;';
+    svgRoot.style.cssText = 'student-select:none;position:absolute;left:0;top:0;';
 
     this.gradientManager = new GradientManager(zrId, svgRoot);
     this.clipPathManager = new ClippathManager(zrId, svgRoot);

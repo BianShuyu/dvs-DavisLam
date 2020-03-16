@@ -8,7 +8,7 @@ layui.config({
     $ = layui.jquery;
     tab = layui.bodyTab({
         openTabNum : "50",  //最大可打开窗口数量
-        url : "/admin/user/getUserMenu" //获取菜单json地址
+        url : "/admin/student/getUserMenu" //获取菜单json地址
     });
 
     //更换皮肤

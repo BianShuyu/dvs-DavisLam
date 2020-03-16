@@ -64,12 +64,6 @@
             </div>
             <!-- 顶部右侧菜单 -->
             <ul class="layui-nav top_menu">
-                <shiro:user>
-                    <li class="layui-nav-item" mobile>
-                        <a href="javascript:" class="mobileAddTab" data-url="/admin/system/user/changePwd"><i
-                                class="iconfont icon-shezhi1" data-icon="icon-shezhi1"></i><cite>设置</cite></a>
-                    </li>
-                </shiro:user>
                 <li class="layui-nav-item" mobile>
                     <a th:href="@{/systemLogout}" class="signOut"><i class="iconfont icon-loginout"></i> 退出</a>
                 </li>
@@ -86,19 +80,10 @@
                     </a>
 
                     <dl class="layui-nav-child">
-                        <shiro:user>
-                            <dd><a href="javascript:" data-url="/admin/system/user/userinfo"><i
-                                    class="iconfont icon-zhanghu" data-icon="icon-zhanghu"></i><cite>个人资料</cite></a>
-                            </dd>
-                            <dd><a href="javascript:" data-url="/admin/system/user/changePassword"><i
-                                    class="iconfont icon-shezhi1" data-icon="icon-shezhi1"></i><cite>修改密码</cite></a>
-                            </dd>
-                        </shiro:user>
                         <dd><a href="javascript:" class="changeSkin"><i
                                 class="iconfont icon-huanfu"></i><cite>更换皮肤</cite></a></dd>
                         <dd><a th:href="@{/systemLogout}" class="signOut"><i
                                 class="iconfont icon-loginout"></i><cite>退出</cite></a></dd>
-
                     </dl>
                 </li>
 
@@ -108,10 +93,16 @@
     <!-- 左侧导航 -->
     <div class="layui-side layui-bg-black">
         <div class="user-photo">
-            <a class="img" title="我的头像"><img th:src="${session.icon}"></a>
-            <p>您好！<span class="userName"><shiro:principal property="nickName"/></span></p>
+            <a class="img" title="我的头像"></a>
+            <p>您好！</p>
         </div>
-        <div class="navBar layui-side-scroll"></div>
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item"><a href="">年级管理</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" data-url="/student/list">学生查询</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" data-url="/course/list">课程管理</a></li>
+            </ul>
+        </div>
     </div>
     <!-- 右侧内容 -->
     <div class="layui-body layui-form">

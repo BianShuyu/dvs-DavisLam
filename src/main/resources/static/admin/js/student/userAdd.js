@@ -31,7 +31,7 @@ layui.use(['form','jquery','layer'],function(){
 
         $.ajax({
             type:"POST",
-            url:"/admin/system/user/add",
+            url:"/admin/system/student/add",
             dataType:"json",
             contentType:"application/json",
             data:JSON.stringify(data.field),
