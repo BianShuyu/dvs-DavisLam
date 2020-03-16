@@ -1,20 +1,15 @@
 package cn.edu.jmu.dvs.controller;
 
-import cn.edu.jmu.dvs.PageData;
-import cn.edu.jmu.dvs.entity.User;
-import cn.edu.jmu.dvs.service.UserService;
+import cn.edu.jmu.dvs.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/student")
 public class StudentController {
     @Autowired
-    private UserService userService;
+    private LoginService loginService;
 
     @GetMapping("/list")
     public String getStudentList() {

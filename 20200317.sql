@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: davislam
 -- ------------------------------------------------------
--- Server version	8.0.18tb_coursetb_coursetb_admin
+-- Server version	8.0.18
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -38,7 +38,7 @@ CREATE TABLE `tb_admin` (
 
 LOCK TABLES `tb_admin` WRITE;
 /*!40000 ALTER TABLE `tb_admin` DISABLE KEYS */;
-INSERT INTO `tb_admin` VALUES (1,'admin','123456',NULL,NULL);
+INSERT INTO `tb_admin` VALUES (1,'admin','123456','67431344301273925654636028269379790787581832093994438721741754012002240145254756136241866235780387485446220691975089604526645602','2020-03-16 23:29:14');
 /*!40000 ALTER TABLE `tb_admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -100,7 +100,7 @@ DROP TABLE IF EXISTS `tb_cx_access`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_cx_access` (
-  `course_id` int(10) unsigned DEFAULT NULL,
+  `tcourse_id` int(10) unsigned DEFAULT NULL,
   `access_date` date DEFAULT NULL,
   `t00t04` int(10) unsigned DEFAULT NULL,
   `t04t08` int(11) DEFAULT NULL,
@@ -108,8 +108,8 @@ CREATE TABLE `tb_cx_access` (
   `t12t16` int(11) DEFAULT NULL,
   `t16t20` int(11) DEFAULT NULL,
   `t20t24` int(11) DEFAULT NULL,
-  KEY `cx_access_course` (`course_id`),
-  CONSTRAINT `cx_access_course` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `cx_access_course` (`tcourse_id`),
+  CONSTRAINT `cx_access_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -132,7 +132,10 @@ DROP TABLE IF EXISTS `tb_cx_chapter_quiz`;
 CREATE TABLE `tb_cx_chapter_quiz` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `tcourse_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cx_cq_course` (`tcourse_id`),
+  CONSTRAINT `cx_cq_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -154,10 +157,13 @@ DROP TABLE IF EXISTS `tb_cx_discuss`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_cx_discuss` (
   `student_id` int(10) unsigned DEFAULT NULL,
+  `course_id` int(10) unsigned DEFAULT NULL,
   `comments` int(10) unsigned DEFAULT NULL,
   `replies` int(10) unsigned DEFAULT NULL,
   `suggest_score` int(10) DEFAULT NULL,
   KEY `cx_discuss_student` (`student_id`),
+  KEY `cx_discuss_course` (`course_id`),
+  CONSTRAINT `cx_discuss_course` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `cx_discuss_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -180,8 +186,11 @@ DROP TABLE IF EXISTS `tb_cx_exam`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_cx_exam` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tcourse_id` int(10) unsigned DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `cx_exam_course` (`tcourse_id`),
+  CONSTRAINT `cx_exam_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -203,6 +212,7 @@ DROP TABLE IF EXISTS `tb_cx_score_info`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_cx_score_info` (
   `student_id` int(10) unsigned NOT NULL,
+  `tcourse_id` int(10) unsigned DEFAULT NULL,
   `video_score` int(255) unsigned DEFAULT NULL,
   `video_progress` varchar(255) DEFAULT NULL,
   `quiz_score` int(10) unsigned DEFAULT NULL,
@@ -214,6 +224,8 @@ CREATE TABLE `tb_cx_score_info` (
   `score` int(10) unsigned DEFAULT NULL,
   `level` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`student_id`),
+  KEY `cx_si_course` (`tcourse_id`),
+  CONSTRAINT `cx_si_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `cx_si_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -289,8 +301,11 @@ DROP TABLE IF EXISTS `tb_cx_video`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_cx_video` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tcourse_id` int(10) unsigned DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `cx_video_course` (`tcourse_id`),
+  CONSTRAINT `cx_video_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -340,8 +355,11 @@ DROP TABLE IF EXISTS `tb_cx_work`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_cx_work` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tcourse` int(10) unsigned DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `cx_work_course` (`tcourse`),
+  CONSTRAINT `cx_work_course` FOREIGN KEY (`tcourse`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -462,6 +480,34 @@ LOCK TABLES `tb_student` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tb_teach_course`
+--
+
+DROP TABLE IF EXISTS `tb_teach_course`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_teach_course` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `course_id` int(10) unsigned DEFAULT NULL,
+  `grade_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tc_course` (`course_id`),
+  KEY `tc_grade` (`grade_id`),
+  CONSTRAINT `tc_course` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tc_grade` FOREIGN KEY (`grade_id`) REFERENCES `tb_grade` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_teach_course`
+--
+
+LOCK TABLES `tb_teach_course` WRITE;
+/*!40000 ALTER TABLE `tb_teach_course` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_teach_course` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tb_work_finishing`
 --
 
@@ -498,11 +544,11 @@ DROP TABLE IF EXISTS `tb_ykt_announcement`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_ykt_announcement` (
   `id` int(10) unsigned NOT NULL,
-  `course_id` int(10) unsigned DEFAULT NULL,
+  `tcourse_id` int(10) unsigned DEFAULT NULL,
   `announcement_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `yktannounce_course` (`course_id`),
-  CONSTRAINT `yktannounce_course` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `yktannounce_course` (`tcourse_id`),
+  CONSTRAINT `yktannounce_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -516,32 +562,6 @@ LOCK TABLES `tb_ykt_announcement` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `tb_ykt_class_condition`
---
-
-DROP TABLE IF EXISTS `tb_ykt_class_condition`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_ykt_class_condition` (
-  `id` int(10) unsigned NOT NULL,
-  `course_id` int(10) unsigned DEFAULT NULL,
-  `class_condition` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `ykt_class_condition_course` (`course_id`),
-  CONSTRAINT `ykt_class_condition_course` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_ykt_class_condition`
---
-
-LOCK TABLES `tb_ykt_class_condition` WRITE;
-/*!40000 ALTER TABLE `tb_ykt_class_condition` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_ykt_class_condition` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_ykt_push`
 --
 
@@ -550,11 +570,11 @@ DROP TABLE IF EXISTS `tb_ykt_push`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_ykt_push` (
   `id` int(10) unsigned NOT NULL,
-  `course_id` int(10) unsigned DEFAULT NULL,
+  `tcourse_id` int(10) unsigned DEFAULT NULL,
   `push_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `ykt_push_course` (`course_id`),
-  CONSTRAINT `ykt_push_course` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `ykt_push_course` (`tcourse_id`),
+  CONSTRAINT `ykt_push_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -692,7 +712,7 @@ CREATE TABLE `tb_ykt_student_ykt_class` (
   KEY `ykt_syc_student` (`student_id`),
   KEY `ykt_syc_ykt_class` (`ykt_class_id`),
   CONSTRAINT `ykt_syc_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `ykt_syc_ykt_class` FOREIGN KEY (`ykt_class_id`) REFERENCES `tb_ykt_class_condition` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `ykt_syc_ykt_class` FOREIGN KEY (`ykt_class_id`) REFERENCES `tb_ykt_ykt_class_condition` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -704,6 +724,32 @@ LOCK TABLES `tb_ykt_student_ykt_class` WRITE;
 /*!40000 ALTER TABLE `tb_ykt_student_ykt_class` DISABLE KEYS */;
 /*!40000 ALTER TABLE `tb_ykt_student_ykt_class` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `tb_ykt_ykt_class_condition`
+--
+
+DROP TABLE IF EXISTS `tb_ykt_ykt_class_condition`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_ykt_ykt_class_condition` (
+  `id` int(10) unsigned NOT NULL,
+  `tcourse_id` int(10) unsigned DEFAULT NULL,
+  `class_condition` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ykt_class_condition_course` (`tcourse_id`),
+  CONSTRAINT `ykt_class_condition_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_ykt_ykt_class_condition`
+--
+
+LOCK TABLES `tb_ykt_ykt_class_condition` WRITE;
+/*!40000 ALTER TABLE `tb_ykt_ykt_class_condition` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_ykt_ykt_class_condition` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -714,4 +760,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-16 16:12:44
+-- Dump completed on 2020-03-17  1:47:47

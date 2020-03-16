@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper @Repository
 public interface UserMapper {
     @Select("select * from tb_admin where username = #{username} and password = #{password}")
-    User selectUser(@Param("username") String username, @Param("password") String password);
+    User getUserLoginStatus(@Param("username") String username, @Param("password") String password);
 
 
     @Select("select * from tb_admin")
@@ -27,4 +27,7 @@ public interface UserMapper {
 
     @Select("select unix_timestamp(expire_time) from tb_admin where token=#{token}")
     String getUserLoginStatus(@Param("token") String token);
+
+    @Select("select timestamp()")
+    String getNow();
 }

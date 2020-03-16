@@ -33,4 +33,8 @@ public class CourseService {
         courseMapper.delete(id);
         return count(id) == 0;
     }
+
+    public List<String> getCourseList(int gradeId){
+        return courseMapper.getCourseList(gradeId);
+    }
 }

@@ -23,4 +23,10 @@ public interface CourseMapper {
 
     @Delete("delete from tb_course where id=#{id}")
     void delete(int id);
+
+    @Select("select tb_course.name from tb_course " +
+            "where tb_course.course_id in (select course_id from tb_teach_course where grade_id=#{grade_id})")
+    List<String> getCourseList(@Param("grade_id") int gradeId);
+
+
 }

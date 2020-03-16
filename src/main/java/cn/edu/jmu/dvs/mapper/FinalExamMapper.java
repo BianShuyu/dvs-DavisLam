@@ -14,6 +14,4 @@ public interface FinalExamMapper {
             "#{score}" +
             ")")
     void saveFinalExamScore(@Param("id") String id, @Param("course") String course, @Param("score") int score);
-
-
 }

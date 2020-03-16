@@ -3,7 +3,7 @@ package cn.edu.jmu.dvs.entity;
 public class FinalExamData {
     private String id;
     private String name;
-    private String score;
+    private int score;
 
     public String getId() {
         return id;
@@ -21,11 +21,11 @@ public class FinalExamData {
         this.name = name;
     }
 
-    public String getScore() {
+    public int getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(int score) {
         this.score = score;
     }
 }

@@ -15,4 +15,8 @@ public class GradeService {
     public List<Grade> getAll() {
         return gradeMapper.getAll();
     }
+
+    public List<String> get班级(int gradeId){
+        return gradeMapper.get班级(gradeId);
+    }
 }
