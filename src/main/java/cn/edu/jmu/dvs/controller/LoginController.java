@@ -32,9 +32,10 @@ public class LoginController {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         HashMap<String, Object> map = new HashMap<>();
-        if (userService.login(username, password)) {
+        String token=userService.login(username,password);
+        if (token!=null) {
             map.put("success", true);
-            map.put("url", "index");
+            map.put("token", token);
         } else {
             map.put("success", false);
             map.put("message", "failure");
