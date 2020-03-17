@@ -102,11 +102,11 @@
     }
 
     function doFile(files) {
-        var f = files[0]
+        var f = files[0];
         console.log(f);
         var fname = f.name;
-        var type = -1;
         var obj = {};
+        obj["token"] = "tokentest";
         if (fname.startsWith("PTA")) {
             obj["type"] = "pta";
         } else if (fname.startsWith("超星")) {
@@ -141,23 +141,24 @@
 
             var numSheets = sheetNames.length;
 
+            sheets = {};
             for (var i = 0; i < numSheets; i++) {
                 var sheetName = sheetNames[i];
                 var sheet = workbook.Sheets[sheetName];
                 var sheetData = XLSX.utils.sheet_to_json(sheet, {header: 1});
-                obj[sheetName] = sheetData;
+                sheets[sheetName] = sheetData;
             }
+            obj["data"] = sheets;
+            obj["courseId"] = 1;
             console.log(obj);
             $.ajax({
-                type:'post',
-                dataType:'json',
-                contentType:'application/json',
-                url:'/test',
-                data:JSON.stringify(obj)
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                //url:'/test',
+                url: '/ptaTest',
+                data: JSON.stringify(obj)
             });
-            //TODO
-            //$.post("/test",obj);
-
         };
         reader.readAsBinaryString(f);
     }

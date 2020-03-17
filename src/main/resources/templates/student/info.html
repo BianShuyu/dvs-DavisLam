@@ -78,25 +78,43 @@
                 <div class="layui-input-inline">
                     <select name="course" lay-verify="required" id="course">
                         <option value="">请选择课程</option>
-                        "
                     </select>
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">班级</label>
-                <div class="layui-input-inline">
-                    <select name="class" id="class">
-                        <option value="">请选择班级</option>
-                    </select>
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
                 </div>
             </div>
         </div>
     </form>
-</fieldset>
 
+    <div class="layui-collapse" lay-filter="test">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">PTA</h2>
+            <div class="layui-colla-content">
+                PTA
+            </div>
+        </div>
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">超星</h2>
+            <div class="layui-colla-content">
+                超星
+            </div>
+        </div>
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">雨课堂</h2>
+            <div class="layui-colla-content">
+                雨课堂
+            </div>
+        </div>
+    </div>
+
+</fieldset>
 
 
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/grade/gradeInfo.js}"></script>
+
 </body>
 </html>

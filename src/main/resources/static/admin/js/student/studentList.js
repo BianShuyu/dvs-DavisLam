@@ -68,7 +68,7 @@ layui.use(['layer', 'form', 'table'], function () {
                 content: "/student/info?id=" + data.id,
                 success: function (layero, index) {
                     setTimeout(function () {
-                        layer.tips('点击此处返回会员列表', '.layui-layer-setwin .layui-layer-close', {
+                        layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
                             tips: 3
                         });
                     }, 500);

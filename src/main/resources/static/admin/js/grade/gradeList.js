@@ -47,7 +47,7 @@ layui.use(['layer', 'form', 'table'], function () {
     //监听工具条
     table.on('tool(gradeList)', function (obj) {
         var data = obj.data;
-        console.log(data.id);
+        console.log(obj.event);
         if (obj.event === 'edit') {
             var editIndex = layer.open({
                 title: "编辑用户",
@@ -55,7 +55,7 @@ layui.use(['layer', 'form', 'table'], function () {
                 content: "/grade/edit?id=" + data.id,
                 success: function (layero, index) {
                     setTimeout(function () {
-                        layer.tips('点击此处返回会员列表', '.layui-layer-setwin .layui-layer-close', {
+                        layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
                             tips: 3
                         });
                     }, 500);
@@ -68,6 +68,7 @@ layui.use(['layer', 'form', 'table'], function () {
         }
 
         if (obj.event === "del") {
+
             layer.confirm("你确定要删除该课程么？", {btn: ['是的,我确定', '我再想想']},
                 function () {
                     $.post("/grade/delete", {"id": data.id}, function (res) {

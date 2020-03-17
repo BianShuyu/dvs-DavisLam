@@ -12,10 +12,22 @@
 <link rel="shortcut icon" href="${site.logo}">
 <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
 <link rel="stylesheet" th:href="@{/admin/css/list.css}" media="all"/>
+<style type="text/css">
+    .upload {
+        position: relative;
+    }
+    .change {
+        position: absolute;
+        overflow: hidden;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+</style>
 </head>
 <body class="childrenBody">
 <fieldset class="layui-elem-field">
-    <legend>用户检索</legend>
+    <legend>年级检索</legend>
     <div class="layui-field-box">
         <form class="layui-form">
             <div class="layui-inline" style="width: 15%">
@@ -25,11 +37,15 @@
                 <a class="layui-btn" lay-submit="" lay-filter="searchForm">查询</a>
             </div>
             <div class="layui-inline">
-                <input type="file" name="xlfile" id="xlf" class="layui-btn layui-btn-normal">
-            </div>
-            <div class="layui-inline">
                 <a class="layui-btn layui-btn-danger" data-type="deleteSome">批量删除</a>
             </div>
+            <div class="layui-inline">
+                <a type="button" class="layui-btn layui-btn-normal upload">
+                    <input type="file" name="xlfile" id="xlf" class="change">
+                    <i class="layui-icon layui-icon-file"></i>导入学生信息
+                </a>
+            </div>
+
         </form>
     </div>
 </fieldset>
@@ -48,7 +64,7 @@
 <script type="text/javascript" th:src="@{/js/xlsx.full.min.js}"></script>
 
 <script>
-
+    console.log(XLSX);
     function importFile(files) {
         var f = files[0];
         var $ = layui.jquery;
@@ -56,14 +72,14 @@
         var reader = new FileReader()
         reader.onload = function (e) {
             var data = e.target.result;
-            var workbook = XLSX.read(data, { type: 'binary' });
+            var workbook = XLSX.read(data, {type: 'binary'});
             var sheetNames = workbook.SheetNames;
             var worksheet = workbook.Sheets[sheetNames[0]];
 
             var data = XLSX.utils.sheet_to_json(worksheet);
             console.log(data);
 
-            $.post("/student/upload", data, function(res) {
+            $.post("/student/upload", data, function (res) {
                 layer.msg("成功插入" + res.count + "条数据", {time: 1000}, function () {
                     table.reload('gradeTable', t);
                 });
@@ -77,7 +93,11 @@
     (function () {
         var xlf = document.getElementById('xlf');
         if (!xlf.addEventListener) return;
-        function handleFile(e) { importFile(e.target.files); }
+
+        function handleFile(e) {
+            importFile(e.target.files);
+        }
+
         xlf.addEventListener('change', handleFile, false);
     })();
 </script>

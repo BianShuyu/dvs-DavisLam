@@ -12,6 +12,18 @@
 <link rel="shortcut icon" href="${site.logo}">
 <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
 <link rel="stylesheet" th:href="@{/admin/css/list.css}" media="all"/>
+<style type="text/css">
+    .uploadStyle {
+        position: relative;
+    }
+    .change {
+        position: absolute;
+        overflow: hidden;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+</style>
 </head>
 <body class="childrenBody">
 <fieldset class="layui-elem-field">
@@ -37,13 +49,18 @@
     <table class="layui-table" id="courseTable" lay-filter="courseList"></table>
 
     <script type="text/html" id="courseBar">
+        <a class="layui-btn layui-btn-warm layui-btn-xs uploadStyle">
+            <input type="file" name="xlfile" id="xlf" class="change" lay-event="upFile">
+            上传
+        </a>
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="upFile">删除</a>
     </script>
 </div>
 <div id="page"></div>
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/tools.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/course/courseList.js}"></script>
+<script type="text/javascript" th:src="@{/js/xlsx.full.min.js}"></script>"
 </body>
 </html>
