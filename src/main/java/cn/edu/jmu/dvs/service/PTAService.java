@@ -1,6 +1,7 @@
 package cn.edu.jmu.dvs.service;
 
 import cn.edu.jmu.dvs.mapper.PTAMapper;
+import cn.edu.jmu.dvs.mapper.StudentInfoMapper;
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class PTAService {
 
     @Autowired
     PTAMapper ptaMapper;
+
+    @Autowired
+    StudentInfoMapper studentInfoMapper;
 
     /***
      * 必须提供二维数组形式的，不带元数据的json字符串！！！
@@ -33,7 +37,9 @@ public class PTAService {
         for (int i=0;i<data.size();i++){
             String row=data.get(i);
             List<String> rowData=JSONArray.parseArray(row,String.class);
-
+            for(String s:rowData){
+                System.out.printf("%s,",s);
+            }
             if(i==0){  //获取题目类型列表
                 String currentType=null;
                 for(int j=0;j<rowData.size();j++){
@@ -43,7 +49,7 @@ public class PTAService {
                     }else {
                         if(col!=null && !col.equals("")){
                             //如果出现了题目类型名，还要把上一列题目类型设为空（每类题目最后一列是总分）
-                            if(currentType != null && currentType.equals(col)){
+                            if(currentType != null){
                                 questionType.set(j-1,null);
                             }
                             currentType=col;
@@ -51,6 +57,10 @@ public class PTAService {
                         questionType.add(currentType);
                     }
                 }
+                for (String s:questionType){
+                    System.out.printf("%s,",s);
+                }
+                System.out.println("\n");
             }else if(i==1){  //获取题目标号
                 boolean isQuestionNum=false;
                 for(int j=0;j<rowData.size();j++){
@@ -64,7 +74,7 @@ public class PTAService {
                     }
                 }
             }else if(i!=2){
-                String schoolNum=rowData.get(1);
+                String studentNum=rowData.get(1);
                 String currentQuestionType=null;
                 String currentQuestionNum=null;
                 int score=0;
@@ -76,16 +86,21 @@ public class PTAService {
                         currentQuestionNum=questionNum.get(j);
                     }
 
-                    if(!rowData.get(j).equals("-")){
+                    if(currentQuestionNum!=null && !rowData.get(j).equals("-")){
                         String s=rowData.get(j);
-                        String pattern="(\\d+\\.\\d+)(\\(.*)";
+                        System.out.println("解析："+s);
+                        String pattern="(\\d+\\.\\d+)(.*)";
                         Matcher m= Pattern.compile(pattern).matcher(s);
+                        m.find();
+                        System.out.println(m.group(1));
                         score=(int)(Double.parseDouble(m.group(1)));
                     }else {
                         score=0;
                     }
+                    if(studentNum!=null&& studentInfoMapper.getStudentName(studentNum)!=null && currentQuestionNum!=null){
+                        ptaMapper.addPTAScore(studentNum,courseId,currentQuestionType,currentQuestionNum,score);
+                    }
 
-                    ptaMapper.addPTAScore(schoolNum,courseId,currentQuestionType,currentQuestionNum,score);
                 }
             }
         }

@@ -35,13 +35,18 @@ public class PTAController {
             returnMap.put("tokenValid", true);
 
             //验证完毕 干正事
-            String sheet=rawJsonObject.get("Sheet0").toString();
             String courseId=rawJsonObject.get("courseId").toString();
-            JSONArray data = JSONArray.parseArray(sheet);
-            ptaService.savePTAData(data,courseId);
+
+            JSONObject data=JSONObject.parseObject(rawJsonObject.get("data").toString());
+            String sheet=data.get("Sheet0").toString();
+            JSONArray sheetArray = JSONArray.parseArray(sheet);
+            System.out.println(sheetArray);
+            ptaService.savePTAData(sheetArray,courseId);
             returnMap.put("success",true);
         }
         //returnMap.put("data", returnData);
+        System.out.println("\n\n\n返回：");
+        System.out.println(returnMap.toJSONString());
         return returnMap.toJSONString();
     }
 
