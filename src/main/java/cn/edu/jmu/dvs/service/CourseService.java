@@ -14,7 +14,7 @@ public class CourseService {
     CourseMapper courseMapper;
 
     public List<Course> getCourseList() {
-        return courseMapper.getCourseList();
+        return courseMapper.getAll();
     }
 
     public int count(String name) {

@@ -10,7 +10,7 @@ import java.util.List;
 public interface CourseMapper {
 
     @Select("select * from tb_course")
-    List<Course> getCourseList();
+    List<Course> getAll();
 
     @Select("select count(*) from tb_course where name=#{name}")
     int countByName(String name);

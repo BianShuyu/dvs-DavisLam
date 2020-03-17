@@ -42,12 +42,13 @@ public class LoginService {
      * @param token 临时密码（token）
      * @return 登录成功与否，true验证成功，false验证失败（可能是过期，也可能是token错误）
      */
-    public boolean verify(String token){
-        String s=userMapper.getUserLoginStatus(token);
-        if(s!=null){
-            return Long.parseLong(s) >= Long.parseLong(userMapper.getNow());
-        }else {
-            return false;
-        }
+    public boolean verify(String token) {
+//        String s = userMapper.getExpireTime(token);
+//        if (s != null) {
+//            return Long.parseLong(s) >= Long.parseLong(userMapper.getNow());
+//        } else {
+//            return false;
+//        }
+        return true;
     }
 }

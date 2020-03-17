@@ -13,11 +13,35 @@ layui.use(['layer', 'form', 'table'], function () {
         width: $(parent.window).width() - 223,
         cols: [[
             {type: 'checkbox'},
-            {field: 'name', title: '年级', width: '60%'},
+            {
+                field: 'name',
+                title: '年级',
+                width: '60%',
+            },
             {fixed: 'right', align: 'center', toolbar: '#gradeBar'}
         ]]
     };
     table.render(t);
+
+    table.on('row(gradeList)', function(obj) {
+        var data = obj.data;
+        var editIndex = layer.open({
+            title: data.name,
+            type: 2,
+            content: "/grade/info?id=" + data.id,
+            success: function (layero, index) {
+                setTimeout(function () {
+                    layer.tips('点击此处返回会员列表', '.layui-layer-setwin .layui-layer-close', {
+                        tips: 3
+                    });
+                }, 500);
+            }
+        });
+        $(window).resize(function () {
+            layer.full(editIndex);
+        });
+        layer.full(editIndex);
+    });
 
 
     //监听工具条

@@ -26,7 +26,7 @@ public interface UserMapper {
     //insert返回null
 
     @Select("select unix_timestamp(expire_time) from tb_admin where token=#{token}")
-    String getUserLoginStatus(@Param("token") String token);
+    String getExpireTime(@Param("token") String token);
 
     @Select("select timestamp()")
     String getNow();
