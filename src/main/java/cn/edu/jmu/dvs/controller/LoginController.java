@@ -45,10 +45,7 @@ public class LoginController {
         pw.write(m);
         pw.close();
         JSONObject jsonObject=JSONObject.parseObject(m);
-        System.out.println(jsonObject);
-        JSONArray jsonArray=JSONArray.parseArray(jsonObject.getString("网络18"));
-        String a=jsonArray.get(0).toString();
-        System.out.println(a);
+        System.out.println(jsonObject.get("Sheet0"));
         return "index";
     }
 }
