@@ -4,6 +4,7 @@ import cn.edu.jmu.dvs.PageData;
 import cn.edu.jmu.dvs.entity.Grade;
 import cn.edu.jmu.dvs.mapper.CourseMapper;
 import cn.edu.jmu.dvs.mapper.GradeMapper;
+import cn.edu.jmu.dvs.service.CourseService;
 import cn.edu.jmu.dvs.service.GradeService;
 import cn.edu.jmu.dvs.service.LoginService;
 import com.alibaba.fastjson.JSON;
@@ -26,10 +27,7 @@ public class GradeController {
     private GradeService gradeService;
 
     @Autowired
-    CourseMapper courseMapper;
-
-    @Autowired
-    GradeMapper gradeMapper;
+    CourseService courseService;
 
     @Autowired
     LoginService loginService;
@@ -69,9 +67,9 @@ public class GradeController {
             returnMap.put("tokenValid", true);
             JSONObject data = JSONObject.parseObject(rawJsonObject.get("data").toString());
             int gradeId = Integer.parseInt(data.get("gradeId").toString());
-            JSONArray courses = JSONArray.parseArray(JSON.toJSONString(courseMapper.getCourseList(gradeId)));
+            JSONArray courses = JSONArray.parseArray(JSON.toJSONString(courseService.getCourseList(gradeId)));
             returnData.put("courses", courses);
-            JSONArray classes = JSONArray.parseArray(JSON.toJSONString(gradeMapper.get班级(gradeId)));
+            JSONArray classes = JSONArray.parseArray(JSON.toJSONString(gradeService.get班级(gradeId)));
             returnData.put("classes", classes);
         }
 
