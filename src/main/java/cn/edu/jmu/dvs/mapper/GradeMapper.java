@@ -17,4 +17,7 @@ public interface GradeMapper {
 
     @Select("select name from tb_class where grade_id=#{grade_id}")
     List<String> get班级(@Param("grade_id") int gradeId);
+
+    @Select("select grade_id from tb_class where name = #{className}")
+    int getGrade(@Param("className") String className);
 }

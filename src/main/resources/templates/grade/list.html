@@ -76,9 +76,36 @@
             var sheetNames = workbook.SheetNames;
             var worksheet = workbook.Sheets[sheetNames[0]];
 
-            var data = XLSX.utils.sheet_to_json(worksheet);
-            console.log(data);
+            var numSheets = sheetNames.length;
+            var sheets = {};
+            for (var i = 0; i < numSheets; i++) {
+                var sheetName = sheetNames[i];
+                var sheet = workbook.Sheets[sheetName];
+                var sheetData = XLSX.utils.sheet_to_json(sheet, {header: 1});
+                sheets[sheetName] = sheetData;
+            }
 
+            var meta = {};
+            meta["token"] = "123";
+            meta["data"] = sheets;
+            console.log(JSON.stringify(meta));
+            $.ajax({
+                type: "post",
+                url: "/student/upload",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(meta),
+                success: function (res) {
+                    if (res.success) {
+                        parent.layer.msg("数据导入成功!", {time: 1500}, function () {
+                            //刷新父页面
+                            parent.location.reload();
+                        });
+                    } else {
+                        layer.msg(res.message);
+                    }
+                }
+            });
             $.post("/student/upload", data, function (res) {
                 layer.msg("成功插入" + res.count + "条数据", {time: 1000}, function () {
                     table.reload('gradeTable', t);

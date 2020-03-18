@@ -1,6 +1,9 @@
 package cn.edu.jmu.dvs.controller;
 
 import cn.edu.jmu.dvs.PageData;
+import cn.edu.jmu.dvs.entity.Student;
+import cn.edu.jmu.dvs.service.CourseService;
+import cn.edu.jmu.dvs.service.GradeService;
 import cn.edu.jmu.dvs.service.LoginService;
 import cn.edu.jmu.dvs.service.StudentService;
 import com.alibaba.fastjson.JSONArray;
@@ -11,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.ServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,30 +31,35 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
+    @Autowired
+    CourseService courseService;
+
+    @Autowired
+    GradeService gradeService;
+
     @GetMapping("/list")
     public String getStudentList() {
         return "/student/list";
     }
 
     //todo 命名
-    @PostMapping("/putStudentTest")
+    @PostMapping("/upload")
     @ResponseBody
-    public String ptaTest(@RequestBody String raw) {
+    public String upload(@RequestBody String raw) {
 
         JSONObject returnMap = new JSONObject();
         returnMap.put("tokenValid", false);
         JSONObject rawJsonObject = JSONObject.parseObject(raw);
         if (loginService.verify(rawJsonObject.get("token").toString())) {
             returnMap.put("tokenValid", true);
-
             //验证完毕 干正事
-            JSONObject data=JSONObject.parseObject(rawJsonObject.get("data").toString());
-            for(String s:data.keySet()){
-                String sheet=data.get(s).toString();
+            JSONObject data = JSONObject.parseObject(rawJsonObject.get("data").toString());
+            for (String s : data.keySet()) {
+                String sheet = data.get(s).toString();
                 JSONArray sheetArray = JSONArray.parseArray(sheet);
                 System.out.println(sheetArray);
                 studentService.saveStudentData(sheetArray);
-                returnMap.put("success",true);
+                returnMap.put("success", true);
                 break;
             }
         }
@@ -62,20 +72,18 @@ public class StudentController {
 
     @PostMapping("list")
     @ResponseBody
-    public PageData<Map<String, Object>> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                               @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
-        Map<String, Object> mp1 = new HashMap<>(), mp2 = new HashMap<>();
-        List<Map<String, Object>> l = new ArrayList<>();
-        mp1.put("id", 17);
-        mp1.put("studentNum", 1);
-        mp1.put("name", "ZWH");
-        mp1.put("class", "网络1611");
-        mp2.put("id", 31);
-        mp2.put("studentNum", 12);
-        mp2.put("name", "zwh");
-        mp2.put("class", "网络1612");
-        l.add(mp1);
-        l.add(mp2);
+    public PageData<Student> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                  @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                                  ServletRequest request) {
+        Map extra = WebUtils.getParametersStartingWith(request, "s_");
+        List l = new ArrayList<Student>();
+        if (!extra.isEmpty()) {
+            String param = (String)extra.get("key");
+            l.addAll(studentService.getByNameLike(param));
+            List tmp = studentService.getByNumberLike(param);
+            l.removeAll(tmp);
+            l.addAll(tmp);
+        }
         return new PageData<>(l, page, limit);
 
     }
@@ -83,11 +91,11 @@ public class StudentController {
     // TODO: 2020/3/17  根据id取出学生信息
     @RequestMapping("info")
     public String info(@RequestParam(value = "id") int id, ModelMap map) {
-        Map<String, Object> student = new HashMap<>();
-        student.put("name", "ZWH");
-        student.put("num", "201621123008");
-        student.put("class", "网络1611");
+        Student student = studentService.getByID(id);
+
         map.put("student", student);
+        int gradeID = gradeService.getGrade(student.getClazz());
+        map.put("courses", courseService.getCourseList(gradeID));
         return "/student/info";
     }
 }

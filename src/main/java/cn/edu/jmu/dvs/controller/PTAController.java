@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/pta")
 public class PTAController {
 
     @Autowired
@@ -23,7 +24,7 @@ public class PTAController {
     LoginService loginService;
 
     //todo 命名
-    @PostMapping("/ptaTest")
+    @PostMapping("/upload")
     @ResponseBody
     public String ptaTest(@RequestBody String raw, ModelMap map) {
 

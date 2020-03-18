@@ -29,18 +29,26 @@ layui.use(['layer', 'form', 'table'], function () {
 
             var xlf = document.getElementById('xlf');
             function importFile(files) {
+                var loadIndex = layer.load(2, {
+                    shade: [0.3, '#333']
+                });
                 var f = files[0];
                 var fname = f.name;
                 var obj = {};
+                var url = "";
                 obj["token"] = "tokentest";
                 if (fname.startsWith("PTA")) {
                     obj["type"] = "pta";
+                    url = "/pta/upload";
                 } else if (fname.startsWith("超星")) {
                     obj["type"] = "chaoxing";
+                    url = "/chaoxing/upload";
                 } else if (fname.startsWith("期末考试")) {
                     obj["type"] = "final";
+                    url = "/final/upload";
                 } else if (fname.startsWith("雨课堂")) {
                     obj["type"] = "yuketang";
+                    url = "/yuketang/upload";
                 }
 
                 var reader = new FileReader();
@@ -58,15 +66,29 @@ layui.use(['layer', 'form', 'table'], function () {
                     }
                     obj["data"] = sheets;
                     obj["courseId"] = course.id;
+
                     console.log(obj);
-                    // $.ajax({
-                    //     type: 'post',
-                    //     dataType: 'json',
-                    //     contentType: 'application/json',
-                    //     //url:'/test',
-                    //     url: '/ptaTest',
-                    //     data: JSON.stringify(obj)
-                    // });
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        url: url,
+                        data: JSON.stringify(obj),
+                        success: function(res) {
+                            layer.close(loadIndex);
+                            if (res.success) {
+                                parent.layer.msg("数据上传成功!", {time: 1500}, function () {
+                                    //刷新父页面
+                                    parent.location.reload();
+                                });
+                            } else {
+                                parent.layer.msg("数据上传失败!", {time: 1500}, function () {
+                                    //刷新父页面
+                                    parent.location.reload();
+                                });
+                            }
+                        }
+                    });
                 };
 
                 reader.readAsBinaryString(f);

@@ -3,6 +3,7 @@ package cn.edu.jmu.dvs.service;
 
 import cn.edu.jmu.dvs.entity.Course;
 import cn.edu.jmu.dvs.mapper.CourseMapper;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class CourseService {
     @Autowired
     CourseMapper courseMapper;
 
-    public List<Course> getCourseList() {
+    public List<Course> getAll() {
         return courseMapper.getAll();
     }
 
@@ -34,7 +35,9 @@ public class CourseService {
         return count(id) == 0;
     }
 
-    public List<String> getCourseList(int gradeId){
+    public List<Course> getCourseList(int gradeId){
         return courseMapper.getCourseList(gradeId);
     }
+
+
 }

@@ -48,7 +48,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">学号</label>
                     <div class="layui-input-inline">
-                        <input type="text" readonly="readonly" th:placeholder="${student.num}" class="layui-input">
+                        <input type="text" readonly="readonly" th:placeholder="${student.number}" class="layui-input">
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">班级</label>
                     <div class="layui-input-inline">
-                        <input type="text" readonly="readonly" th:placeholder="${student.class}" class="layui-input">
+                        <input type="text" readonly="readonly" th:placeholder="${student.clazz}" class="layui-input">
                     </div>
                 </div>
             </div>
@@ -76,45 +76,32 @@
             <div class="layui-inline">
                 <label class="layui-form-label">课程</label>
                 <div class="layui-input-inline">
-                    <select name="course" lay-verify="required" id="course">
+                    <select name="course" id="course">
                         <option value="">请选择课程</option>
+                        <option th:each="course:${courses}" th:value="${course.id}" th:text="${course.name}">
+                        </option>
                     </select>
                 </div>
             </div>
-            <div class="layui-inline">
-                <div class="layui-input-block">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-                </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">平台</label>
+            <div class="layui-btn-container">
+                <button type="button" class="layui-btn" onclick="pta()">PTA</button>
+                <button type="button" class="layui-btn" onclick="chaoxing()">超星</button>
+                <button type="button" class="layui-btn" onclick="yuketang()">雨课堂</button>
             </div>
         </div>
     </form>
 
-    <div class="layui-collapse" lay-filter="test">
-        <div class="layui-colla-item">
-            <h2 class="layui-colla-title">PTA</h2>
-            <div class="layui-colla-content">
-                PTA
-            </div>
-        </div>
-        <div class="layui-colla-item">
-            <h2 class="layui-colla-title">超星</h2>
-            <div class="layui-colla-content">
-                超星
-            </div>
-        </div>
-        <div class="layui-colla-item">
-            <h2 class="layui-colla-title">雨课堂</h2>
-            <div class="layui-colla-content">
-                雨课堂
-            </div>
-        </div>
-    </div>
+
+
 
 </fieldset>
 
 
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
-<script type="text/javascript" th:src="@{/admin/js/grade/gradeInfo.js}"></script>
+<script type="text/javascript" th:src="@{/admin/js/student/studentInfo.js}"></script>
 
 </body>
 </html>

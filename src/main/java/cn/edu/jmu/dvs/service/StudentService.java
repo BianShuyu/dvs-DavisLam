@@ -1,5 +1,6 @@
 package cn.edu.jmu.dvs.service;
 
+import cn.edu.jmu.dvs.entity.Student;
 import cn.edu.jmu.dvs.mapper.StudentInfoMapper;
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +35,17 @@ public class StudentService {
         }
 
     }
+
+    public Student getByID(int id) {
+        return studentInfoMapper.getByID(id);
+    }
+
+    public List<Student> getByNameLike(String name) {
+        return studentInfoMapper.getByNameLike("%" + name + "%");
+    }
+
+    public List<Student> getByNumberLike(String number) {
+        return studentInfoMapper.getByNumberLike("%" + number + "%");
+    }
+
 }

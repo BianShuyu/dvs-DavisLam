@@ -31,7 +31,7 @@ public class CourseController {
     @ResponseBody
     public PageData<Course> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                  @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
-        return new PageData<>(courseService.getCourseList(), page, limit);
+        return new PageData<>(courseService.getAll(), page, limit);
     }
 
     @GetMapping("add")
