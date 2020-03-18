@@ -149,14 +149,15 @@
                 sheets[sheetName] = sheetData;
             }
             obj["data"] = sheets;
-            obj["courseId"] = 1;
+            obj["courseId"] = 1; //todo
             console.log(obj);
             $.ajax({
                 type: 'post',
                 dataType: 'json',
                 contentType: 'application/json',
                 //url:'/test',
-                url: '/ptaTest',
+                //url: '/ptaTest',
+                url:'/finalExamTest',
                 data: JSON.stringify(obj)
             });
         };

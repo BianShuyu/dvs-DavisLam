@@ -27,5 +27,7 @@ public interface CourseMapper {
     @Select("select * from tb_course where id = (select course_id from tb_teach_course where grade_id = #{gradeId})")
     List<Course> getCourseList(@Param("gradeId") int gradeId);
 
+    @Select("select id from tb_course where id=#{course_id}")
+    String getCourse(@Param("course_id") String courseId);
 
 }

@@ -33,7 +33,6 @@ public class StudentService {
                 studentInfoMapper.addStudentInfo(班级, studentNum, name);
             }
         }
-
     }
 
     public Student getByID(int id) {

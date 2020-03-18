@@ -264,7 +264,7 @@ DROP TABLE IF EXISTS `tb_final_exam`;
 CREATE TABLE `tb_final_exam` (
   `student_id` int(10) unsigned DEFAULT NULL,
   `course_id` int(10) unsigned DEFAULT NULL,
-  `score` int(10) unsigned DEFAULT NULL,
+  `score` int(10) DEFAULT NULL,
   KEY `final_course` (`course_id`),
   KEY `final_student` (`student_id`),
   CONSTRAINT `final_course` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -516,4 +516,8 @@ CREATE TABLE `tb_ykt_ykt_class_condition` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+<<<<<<< HEAD:20200318.sql
 -- Dump completed on 2020-03-18 11:12:13
+=======
+-- Dump completed on 2020-03-18 15:09:29
+>>>>>>> 94ba15de6da34deaa4d721d6b8da411b109e6ad8:20200318.sql
