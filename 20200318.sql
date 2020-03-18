@@ -33,16 +33,6 @@ CREATE TABLE `tb_admin` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_admin`
---
-
-LOCK TABLES `tb_admin` WRITE;
-/*!40000 ALTER TABLE `tb_admin` DISABLE KEYS */;
-INSERT INTO `tb_admin` VALUES (1,'admin','123456','67431344301273925654636028269379790787581832093994438721741754012002240145254756136241866235780387485446220691975089604526645602','2020-03-16 23:29:14');
-/*!40000 ALTER TABLE `tb_admin` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_class`
 --
 
@@ -57,17 +47,8 @@ CREATE TABLE `tb_class` (
   UNIQUE KEY `class_name` (`name`),
   KEY `class_grade` (`grade_id`),
   CONSTRAINT `class_grade` FOREIGN KEY (`grade_id`) REFERENCES `tb_grade` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_class`
---
-
-LOCK TABLES `tb_class` WRITE;
-/*!40000 ALTER TABLE `tb_class` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_class` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_course`
@@ -80,17 +61,8 @@ CREATE TABLE `tb_course` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_course`
---
-
-LOCK TABLES `tb_course` WRITE;
-/*!40000 ALTER TABLE `tb_course` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_course` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_cx_access`
@@ -114,15 +86,6 @@ CREATE TABLE `tb_cx_access` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_cx_access`
---
-
-LOCK TABLES `tb_cx_access` WRITE;
-/*!40000 ALTER TABLE `tb_cx_access` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_cx_access` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_cx_chapter_quiz`
 --
 
@@ -138,15 +101,6 @@ CREATE TABLE `tb_cx_chapter_quiz` (
   CONSTRAINT `cx_cq_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_cx_chapter_quiz`
---
-
-LOCK TABLES `tb_cx_chapter_quiz` WRITE;
-/*!40000 ALTER TABLE `tb_cx_chapter_quiz` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_cx_chapter_quiz` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_cx_discuss`
@@ -169,15 +123,6 @@ CREATE TABLE `tb_cx_discuss` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_cx_discuss`
---
-
-LOCK TABLES `tb_cx_discuss` WRITE;
-/*!40000 ALTER TABLE `tb_cx_discuss` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_cx_discuss` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_cx_exam`
 --
 
@@ -193,15 +138,6 @@ CREATE TABLE `tb_cx_exam` (
   CONSTRAINT `cx_exam_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_cx_exam`
---
-
-LOCK TABLES `tb_cx_exam` WRITE;
-/*!40000 ALTER TABLE `tb_cx_exam` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_cx_exam` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_cx_score_info`
@@ -231,15 +167,6 @@ CREATE TABLE `tb_cx_score_info` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_cx_score_info`
---
-
-LOCK TABLES `tb_cx_score_info` WRITE;
-/*!40000 ALTER TABLE `tb_cx_score_info` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_cx_score_info` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_cx_student_chapter`
 --
 
@@ -255,15 +182,6 @@ CREATE TABLE `tb_cx_student_chapter` (
   CONSTRAINT `cx_sc_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_cx_student_chapter`
---
-
-LOCK TABLES `tb_cx_student_chapter` WRITE;
-/*!40000 ALTER TABLE `tb_cx_student_chapter` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_cx_student_chapter` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_cx_student_exam`
@@ -284,15 +202,6 @@ CREATE TABLE `tb_cx_student_exam` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_cx_student_exam`
---
-
-LOCK TABLES `tb_cx_student_exam` WRITE;
-/*!40000 ALTER TABLE `tb_cx_student_exam` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_cx_student_exam` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_cx_video`
 --
 
@@ -308,15 +217,6 @@ CREATE TABLE `tb_cx_video` (
   CONSTRAINT `cx_video_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_cx_video`
---
-
-LOCK TABLES `tb_cx_video` WRITE;
-/*!40000 ALTER TABLE `tb_cx_video` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_cx_video` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_cx_video_watching`
@@ -338,15 +238,6 @@ CREATE TABLE `tb_cx_video_watching` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_cx_video_watching`
---
-
-LOCK TABLES `tb_cx_video_watching` WRITE;
-/*!40000 ALTER TABLE `tb_cx_video_watching` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_cx_video_watching` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_cx_work`
 --
 
@@ -364,15 +255,6 @@ CREATE TABLE `tb_cx_work` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_cx_work`
---
-
-LOCK TABLES `tb_cx_work` WRITE;
-/*!40000 ALTER TABLE `tb_cx_work` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_cx_work` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_final_exam`
 --
 
@@ -382,22 +264,13 @@ DROP TABLE IF EXISTS `tb_final_exam`;
 CREATE TABLE `tb_final_exam` (
   `student_id` int(10) unsigned DEFAULT NULL,
   `course_id` int(10) unsigned DEFAULT NULL,
-  `score` int(10) unsigned DEFAULT NULL,
+  `score` int(10) DEFAULT NULL,
   KEY `final_course` (`course_id`),
   KEY `final_student` (`student_id`),
   CONSTRAINT `final_course` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `final_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_final_exam`
---
-
-LOCK TABLES `tb_final_exam` WRITE;
-/*!40000 ALTER TABLE `tb_final_exam` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_final_exam` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_grade`
@@ -411,17 +284,8 @@ CREATE TABLE `tb_grade` (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `grade_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_grade`
---
-
-LOCK TABLES `tb_grade` WRITE;
-/*!40000 ALTER TABLE `tb_grade` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_grade` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_pta`
@@ -444,15 +308,6 @@ CREATE TABLE `tb_pta` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_pta`
---
-
-LOCK TABLES `tb_pta` WRITE;
-/*!40000 ALTER TABLE `tb_pta` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_pta` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_student`
 --
 
@@ -467,17 +322,8 @@ CREATE TABLE `tb_student` (
   PRIMARY KEY (`id`),
   KEY `student_class` (`class_id`),
   CONSTRAINT `student_class` FOREIGN KEY (`class_id`) REFERENCES `tb_class` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_student`
---
-
-LOCK TABLES `tb_student` WRITE;
-/*!40000 ALTER TABLE `tb_student` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_student` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_teach_course`
@@ -499,15 +345,6 @@ CREATE TABLE `tb_teach_course` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_teach_course`
---
-
-LOCK TABLES `tb_teach_course` WRITE;
-/*!40000 ALTER TABLE `tb_teach_course` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_teach_course` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_work_finishing`
 --
 
@@ -527,15 +364,6 @@ CREATE TABLE `tb_work_finishing` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_work_finishing`
---
-
-LOCK TABLES `tb_work_finishing` WRITE;
-/*!40000 ALTER TABLE `tb_work_finishing` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_work_finishing` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_ykt_announcement`
 --
 
@@ -551,15 +379,6 @@ CREATE TABLE `tb_ykt_announcement` (
   CONSTRAINT `yktannounce_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_ykt_announcement`
---
-
-LOCK TABLES `tb_ykt_announcement` WRITE;
-/*!40000 ALTER TABLE `tb_ykt_announcement` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_ykt_announcement` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_ykt_push`
@@ -579,15 +398,6 @@ CREATE TABLE `tb_ykt_push` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_ykt_push`
---
-
-LOCK TABLES `tb_ykt_push` WRITE;
-/*!40000 ALTER TABLE `tb_ykt_push` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_ykt_push` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_ykt_push_answer`
 --
 
@@ -604,15 +414,6 @@ CREATE TABLE `tb_ykt_push_answer` (
   CONSTRAINT `ykt_pa_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_ykt_push_answer`
---
-
-LOCK TABLES `tb_ykt_push_answer` WRITE;
-/*!40000 ALTER TABLE `tb_ykt_push_answer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_ykt_push_answer` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_ykt_push_question_type`
@@ -635,15 +436,6 @@ CREATE TABLE `tb_ykt_push_question_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_ykt_push_question_type`
---
-
-LOCK TABLES `tb_ykt_push_question_type` WRITE;
-/*!40000 ALTER TABLE `tb_ykt_push_question_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_ykt_push_question_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_ykt_student_annoucement`
 --
 
@@ -660,15 +452,6 @@ CREATE TABLE `tb_ykt_student_annoucement` (
   CONSTRAINT `ykt_sa_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_ykt_student_annoucement`
---
-
-LOCK TABLES `tb_ykt_student_annoucement` WRITE;
-/*!40000 ALTER TABLE `tb_ykt_student_annoucement` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_ykt_student_annoucement` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tb_ykt_student_push`
@@ -690,15 +473,6 @@ CREATE TABLE `tb_ykt_student_push` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_ykt_student_push`
---
-
-LOCK TABLES `tb_ykt_student_push` WRITE;
-/*!40000 ALTER TABLE `tb_ykt_student_push` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_ykt_student_push` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_ykt_student_ykt_class`
 --
 
@@ -717,15 +491,6 @@ CREATE TABLE `tb_ykt_student_ykt_class` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_ykt_student_ykt_class`
---
-
-LOCK TABLES `tb_ykt_student_ykt_class` WRITE;
-/*!40000 ALTER TABLE `tb_ykt_student_ykt_class` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_ykt_student_ykt_class` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_ykt_ykt_class_condition`
 --
 
@@ -741,15 +506,6 @@ CREATE TABLE `tb_ykt_ykt_class_condition` (
   CONSTRAINT `ykt_class_condition_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_ykt_ykt_class_condition`
---
-
-LOCK TABLES `tb_ykt_ykt_class_condition` WRITE;
-/*!40000 ALTER TABLE `tb_ykt_ykt_class_condition` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_ykt_ykt_class_condition` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -760,4 +516,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-17  1:47:47
+-- Dump completed on 2020-03-18 15:09:29
