@@ -23,7 +23,7 @@ public class FinalExamController {
     //todo 命名
     @PostMapping("/finalExamTest")
     @ResponseBody
-    public String ptaTest(@RequestBody String raw, ModelMap map) {
+    public String finalExamTest(@RequestBody String raw, ModelMap map) {
 
         JSONObject returnMap = new JSONObject();
         returnMap.put("tokenValid", false);

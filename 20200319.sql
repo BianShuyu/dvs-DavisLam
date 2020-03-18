@@ -94,8 +94,8 @@ DROP TABLE IF EXISTS `tb_cx_chapter_quiz`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_cx_chapter_quiz` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
   `tcourse_id` int(10) unsigned DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `cx_cq_course` (`tcourse_id`),
   CONSTRAINT `cx_cq_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -111,13 +111,13 @@ DROP TABLE IF EXISTS `tb_cx_discuss`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_cx_discuss` (
   `student_id` int(10) unsigned DEFAULT NULL,
-  `course_id` int(10) unsigned DEFAULT NULL,
+  `tcourse_id` int(10) unsigned DEFAULT NULL,
   `comments` int(10) unsigned DEFAULT NULL,
   `replies` int(10) unsigned DEFAULT NULL,
   `suggest_score` int(10) DEFAULT NULL,
   KEY `cx_discuss_student` (`student_id`),
-  KEY `cx_discuss_course` (`course_id`),
-  CONSTRAINT `cx_discuss_course` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  KEY `cx_discuss_course` (`tcourse_id`),
+  CONSTRAINT `cx_discuss_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `cx_discuss_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -130,12 +130,13 @@ DROP TABLE IF EXISTS `tb_cx_exam`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_cx_exam` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `student_id` int(10) unsigned DEFAULT NULL,
   `tcourse_id` int(10) unsigned DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `cx_exam_course` (`tcourse_id`),
-  CONSTRAINT `cx_exam_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `score` int(10) unsigned DEFAULT NULL,
+  KEY `cx_se_student` (`student_id`),
+  KEY `cx_se_course` (`tcourse_id`),
+  CONSTRAINT `cx_se_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `cx_se_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -149,15 +150,14 @@ DROP TABLE IF EXISTS `tb_cx_score_info`;
 CREATE TABLE `tb_cx_score_info` (
   `student_id` int(10) unsigned NOT NULL,
   `tcourse_id` int(10) unsigned DEFAULT NULL,
-  `video_score` int(255) unsigned DEFAULT NULL,
-  `video_progress` varchar(255) DEFAULT NULL,
-  `quiz_score` int(10) unsigned DEFAULT NULL,
-  `discuss_score` int(10) unsigned DEFAULT NULL,
-  `work_score` int(10) unsigned DEFAULT NULL,
-  `work_finished` int(10) unsigned DEFAULT NULL,
-  `exam_score` int(10) unsigned DEFAULT NULL,
-  `task_percentage` varchar(255) DEFAULT NULL,
-  `score` int(10) unsigned DEFAULT NULL,
+  `video_score` decimal(5,2) unsigned DEFAULT NULL,
+  `video_progress` int(10) DEFAULT NULL,
+  `quiz_score` decimal(5,2) unsigned DEFAULT NULL,
+  `discuss_score` decimal(5,2) unsigned DEFAULT NULL,
+  `work_score` decimal(5,2) unsigned DEFAULT NULL,
+  `exam_score` decimal(5,2) unsigned DEFAULT NULL,
+  `task_percentage` decimal(6,2) DEFAULT NULL,
+  `score` decimal(5,2) unsigned DEFAULT NULL,
   `level` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`student_id`),
   KEY `cx_si_course` (`tcourse_id`),
@@ -176,28 +176,11 @@ DROP TABLE IF EXISTS `tb_cx_student_chapter`;
 CREATE TABLE `tb_cx_student_chapter` (
   `student_id` int(10) unsigned DEFAULT NULL,
   `chapter_id` int(10) unsigned DEFAULT NULL,
+  `score` int(10) DEFAULT NULL,
   KEY `cx_sc_student` (`student_id`),
   KEY `cx_sc_chapter` (`chapter_id`),
   CONSTRAINT `cx_sc_chapter` FOREIGN KEY (`chapter_id`) REFERENCES `tb_cx_chapter_quiz` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `cx_sc_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tb_cx_student_exam`
---
-
-DROP TABLE IF EXISTS `tb_cx_student_exam`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_cx_student_exam` (
-  `student_id` int(10) unsigned DEFAULT NULL,
-  `exam_id` int(10) unsigned DEFAULT NULL,
-  `score` int(10) unsigned DEFAULT NULL,
-  KEY `cx_se_student` (`student_id`),
-  KEY `cx_se_exam` (`exam_id`),
-  CONSTRAINT `cx_se_exam` FOREIGN KEY (`exam_id`) REFERENCES `tb_cx_exam` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `cx_se_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -215,7 +198,7 @@ CREATE TABLE `tb_cx_video` (
   PRIMARY KEY (`id`),
   KEY `cx_video_course` (`tcourse_id`),
   CONSTRAINT `cx_video_course` FOREIGN KEY (`tcourse_id`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,8 +211,7 @@ DROP TABLE IF EXISTS `tb_cx_video_watching`;
 CREATE TABLE `tb_cx_video_watching` (
   `student_id` int(10) unsigned DEFAULT NULL,
   `video_id` int(10) unsigned DEFAULT NULL,
-  `percentage` int(3) unsigned DEFAULT NULL,
-  `duration` varchar(255) DEFAULT NULL,
+  `percentage` decimal(6,2) unsigned DEFAULT NULL,
   KEY `cx_vw_student` (`student_id`),
   KEY `cx_vw_video` (`video_id`),
   CONSTRAINT `cx_vw_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -251,6 +233,24 @@ CREATE TABLE `tb_cx_work` (
   PRIMARY KEY (`id`),
   KEY `cx_work_course` (`tcourse`),
   CONSTRAINT `cx_work_course` FOREIGN KEY (`tcourse`) REFERENCES `tb_teach_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tb_cx_work_finishing`
+--
+
+DROP TABLE IF EXISTS `tb_cx_work_finishing`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_cx_work_finishing` (
+  `student_id` int(10) unsigned DEFAULT NULL,
+  `work_id` int(10) unsigned DEFAULT NULL,
+  `score` int(11) DEFAULT NULL,
+  KEY `cx_wf_student` (`student_id`),
+  KEY `cx_wf_work` (`work_id`),
+  CONSTRAINT `cx_wf_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `cx_wf_work` FOREIGN KEY (`work_id`) REFERENCES `tb_cx_work` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -341,26 +341,7 @@ CREATE TABLE `tb_teach_course` (
   KEY `tc_grade` (`grade_id`),
   CONSTRAINT `tc_course` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tc_grade` FOREIGN KEY (`grade_id`) REFERENCES `tb_grade` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tb_work_finishing`
---
-
-DROP TABLE IF EXISTS `tb_work_finishing`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_work_finishing` (
-  `student_id` int(10) unsigned DEFAULT NULL,
-  `work_id` int(10) unsigned DEFAULT NULL,
-  `score` int(11) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  KEY `cx_wf_student` (`student_id`),
-  KEY `cx_wf_work` (`work_id`),
-  CONSTRAINT `cx_wf_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `cx_wf_work` FOREIGN KEY (`work_id`) REFERENCES `tb_cx_work` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -516,8 +497,4 @@ CREATE TABLE `tb_ykt_ykt_class_condition` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-<<<<<<< HEAD:20200318.sql
--- Dump completed on 2020-03-18 11:12:13
-=======
--- Dump completed on 2020-03-18 15:09:29
->>>>>>> 94ba15de6da34deaa4d721d6b8da411b109e6ad8:20200318.sql
+-- Dump completed on 2020-03-19  2:24:22
