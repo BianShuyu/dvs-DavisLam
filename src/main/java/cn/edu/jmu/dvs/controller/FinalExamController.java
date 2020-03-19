@@ -9,9 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequestMapping("/finalExam")
 public class FinalExamController {
 
     @Autowired
@@ -20,10 +22,9 @@ public class FinalExamController {
     @Autowired
     LoginService loginService;
 
-    //todo 命名
-    @PostMapping("/finalExamTest")
+    @PostMapping("/upload")
     @ResponseBody
-    public String finalExamTest(@RequestBody String raw, ModelMap map) {
+    public String finalExamTest(@RequestBody String raw) {
 
         JSONObject returnMap = new JSONObject();
         returnMap.put("tokenValid", false);
@@ -48,4 +49,24 @@ public class FinalExamController {
         System.out.println(returnMap.toJSONString());
         return returnMap.toJSONString();
     }
+
+
+    @PostMapping("/summary")
+    @ResponseBody
+    public String summary(@RequestBody String raw) {
+
+        JSONObject returnMap = new JSONObject();
+        returnMap.put("tokenValid", false);
+        JSONObject rawJsonObject = JSONObject.parseObject(raw);
+        if (loginService.verify(rawJsonObject.get("token").toString())) {
+            returnMap.put("tokenValid", true);
+
+            int courseId = Integer.parseInt(rawJsonObject.get("courseId").toString());
+            int gradeId = Integer.parseInt(rawJsonObject.get("gradeId").toString());
+            returnMap.put("data", finalExamService.getSegmentByClass(courseId, gradeId));
+
+        }
+        return returnMap.toJSONString();
+    }
+
 }

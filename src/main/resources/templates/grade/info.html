@@ -40,28 +40,37 @@
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
     <legend>统计信息</legend>
 </fieldset>
+<input type="hidden" th:value="${gradeId}" id="gradeId"/>
 <form class="layui-form" style="width:80%;margin-top: 2%;">
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">课程</label>
             <div class="layui-input-inline">
-                <select name="course" lay-verify="required" id="course">
-                    <option value="">请选择课程</option>"
-                </select>
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">clazz</label>
-            <div class="layui-input-inline">
-                <select name="class" id="class">
-                    <option value="">请选择班级</option>
+                <select name="course" id="course">
+                    <option value="">请选择课程</option>
+                    <option th:each="course:${courses}" th:value="${course.id}" th:text="${course.name}">
                 </select>
             </div>
         </div>
     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">平台</label>
+        <div class="layui-btn-container">
+            <button type="button" class="layui-btn" onclick="final()">期末考试</button>
+            <button type="button" class="layui-btn" onclick="pta()">PTA</button>
+            <button type="button" class="layui-btn" onclick="chaoxing()">超星</button>
+            <button type="button" class="layui-btn" onclick="yuketang()">雨课堂</button>
+        </div>
+    </div>
 </form>
 
+<div id="figContainer" style="padding: 20px;background-color: #F2F2F2;"></div>
+
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/echarts.js}"></script>
+<script type="text/javascript" th:src="@{/js/dataTool.js}"></script>
+<script type="text/javascript" th:src="@{/js/ecStat.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/jquery/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/grade/gradeInfo.js}"></script>
 </body>
 </html>

@@ -1,13 +1,14 @@
 package cn.edu.jmu.dvs.service;
 
+import cn.edu.jmu.dvs.entity.PTAData;
+import cn.edu.jmu.dvs.entity.PTASubtotal;
 import cn.edu.jmu.dvs.mapper.PTAMapper;
 import cn.edu.jmu.dvs.mapper.StudentInfoMapper;
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -104,5 +105,89 @@ public class PTAService {
                 }
             }
         }
+    }
+
+    public Map<String, Object> getSubtotal(int studentId, int courseId) {
+        List<PTASubtotal> source = ptaMapper.getSubtotal(courseId);
+        int size = source.size();
+        List<String> types = new ArrayList<>();
+        Map<String, Integer> cur = new HashMap<>(), max = new HashMap<>(), aver = new HashMap<>();
+
+        for (int i = 0; i < source.size(); i++) {
+            String questionType = source.get(i).getQuestionType();
+            int score = source.get(i).getScore();
+            if (source.get(i).getStudentId() == studentId) {
+                cur.put(questionType, score);
+            }
+            if (!aver.containsKey(questionType)) {
+                aver.put(questionType, 0);
+            }
+            aver.put(questionType, aver.get(questionType) + score);
+            if (!max.containsKey(questionType)) {
+                max.put(questionType, 0);
+            }
+            max.put(questionType, Math.max(max.get(questionType), score));
+        }
+        for (Map.Entry<String, Integer> entry : aver.entrySet()) {
+            aver.put(entry.getKey(), entry.getValue() / size);
+        }
+        Map<String, Object> res = new HashMap<>();
+        res.put("cur", cur);
+        res.put("max", max);
+        res.put("aver", aver);
+        return res;
+    }
+
+    public Map<String, Object> overviewByClass(int courseId, int gradeId) {
+        Map<String, Object> res = new HashMap<>();
+        List<PTAData> data = ptaMapper.overviewByClass(courseId, gradeId);
+        Map<String, Object> classData = new HashMap<>();
+        Map<String, Map<String, ArrayList<Integer>>> typeData = new HashMap<>();
+        ArrayList<Integer> scores = new ArrayList<>();
+        Map<String, Integer> fullScore = new HashMap<>();
+        int preId = -1;
+        String preName = "";
+        int sum = 0;
+        for (int i = 0; i < data.size(); i++) {
+            PTAData item = data.get(i);
+            int studentId = item.getStudentId();
+            String className = item.getName();
+            String questionNum = item.getQuestionNum();
+            int score = item.getScore();
+
+            if (!classData.containsKey(className)) {
+                if (!preName.isEmpty()) classData.put(preName, scores);
+                preName = className;
+                scores = new ArrayList<>();
+            }
+            if (preId != studentId) {
+                if (preId != -1) scores.add(sum);
+                preId = studentId;
+                sum = 0;
+            }
+            sum += score;
+
+            if (!fullScore.containsKey(questionNum)) fullScore.put(questionNum, 0);
+            fullScore.put(questionNum, Math.max(fullScore.get(questionNum), score));
+        }
+        scores.add(sum);
+        classData.put(preName, scores);
+
+
+        for (int i = 0; i < data.size(); i++) {
+            PTAData item = data.get(i);
+            String questionType = item.getQuestionType();
+            String questionNum = item.getQuestionNum();
+            int score = item.getScore();
+
+            if (!typeData.containsKey(questionType)) typeData.put(questionType, new HashMap<>());
+            if (!typeData.get(questionType).containsKey(questionNum)) typeData.get(questionType).put(questionNum, new ArrayList<>(Arrays.asList(0, 0)));
+            int index = score == fullScore.get(questionNum) ? 1 : 0;
+            ArrayList<Integer> tmp = typeData.get(questionType).get(questionNum);
+            tmp.set(index, tmp.get(index) + 1);
+        }
+        res.put("classData", classData);
+        res.put("typeData", typeData);
+        return res;
     }
 }

@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.RequestScope;
@@ -51,7 +52,9 @@ public class GradeController {
     }
 
     @GetMapping("info")
-    public String info() {
+    public String info(@RequestParam(value = "id") int id, ModelMap map) {
+        map.put("courses", courseService.getCourseList(id));
+        map.put("gradeId", id);
         return "/grade/info";
     }
 

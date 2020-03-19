@@ -37,6 +37,12 @@
     </style>
 </head>
 <body class="childrenBody">
+
+
+
+<input type="hidden" th:value="${student.id}" id="studentId"/>
+<input type="hidden" th:value="${student.name}" id="studentName"/>
+
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
     <legend><span th:text="${student.name}"></span></legend>
 </fieldset>
@@ -64,9 +70,11 @@
     </div>
 </fieldset>
 
-<fieldset class="layui-elem-field">
+<fieldset class="layui-elem-field" style="text-align: center">
     <legend>课程总览</legend>
-    <table class="layui-table" id="studentOverview" lay-filter="studentOverview"></table>
+    <div class="layui-inline">
+        <table class="layui-table" id="studentOverview" lay-filter="studentOverview"></table>
+    </div>
 </fieldset>
 
 <fieldset class="layui-elem-field">
@@ -94,14 +102,16 @@
         </div>
     </form>
 
-
-
+    <div id="figContainer" style="padding: 20px;background-color: #F2F2F2;"></div>
 
 </fieldset>
 
 
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/echarts.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/jquery/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/student/studentInfo.js}"></script>
+
 
 </body>
 </html>

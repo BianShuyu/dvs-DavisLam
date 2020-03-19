@@ -45,7 +45,7 @@ layui.use(['layer', 'form', 'table'], function () {
                     url = "/chaoxing/upload";
                 } else if (fname.startsWith("期末考试")) {
                     obj["type"] = "final";
-                    url = "/final/upload";
+                    url = "/finalExam/upload";
                 } else if (fname.startsWith("雨课堂")) {
                     obj["type"] = "yuketang";
                     url = "/yuketang/upload";

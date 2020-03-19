@@ -1,24 +1,19 @@
 package cn.edu.jmu.dvs.controller;
 
 import cn.edu.jmu.dvs.PageData;
+import cn.edu.jmu.dvs.entity.FinalExamData;
 import cn.edu.jmu.dvs.entity.Student;
-import cn.edu.jmu.dvs.service.CourseService;
-import cn.edu.jmu.dvs.service.GradeService;
-import cn.edu.jmu.dvs.service.LoginService;
-import cn.edu.jmu.dvs.service.StudentService;
+import cn.edu.jmu.dvs.service.*;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import javafx.beans.binding.ObjectExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +31,9 @@ public class StudentController {
 
     @Autowired
     GradeService gradeService;
+
+    @Autowired
+    FinalExamService finalExamService;
 
     @GetMapping("/list")
     public String getStudentList() {
@@ -78,7 +76,7 @@ public class StudentController {
         Map extra = WebUtils.getParametersStartingWith(request, "s_");
         List l = new ArrayList<Student>();
         if (!extra.isEmpty()) {
-            String param = (String)extra.get("key");
+            String param = (String) extra.get("key");
             l.addAll(studentService.getByNameLike(param));
             List tmp = studentService.getByNumberLike(param);
             l.removeAll(tmp);
@@ -86,6 +84,15 @@ public class StudentController {
         }
         return new PageData<>(l, page, limit);
 
+    }
+
+
+    @PostMapping("overview")
+    @ResponseBody
+    public PageData<FinalExamData> overview(@RequestParam(value = "page", defaultValue = "1") int page,
+                                            @RequestParam(value = "limit", defaultValue = "10") int limit,
+                                            ServletRequest request) {
+        return new PageData<>(finalExamService.overviewByStudent(Integer.parseInt(request.getParameter("studentId"))), page, limit);
     }
 
     // TODO: 2020/3/17  根据id取出学生信息
