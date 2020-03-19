@@ -90,6 +90,7 @@ public class PTAService {
                     if (currentQuestionNum != null && !rowData.get(j).equals("-")) {
                         String s = rowData.get(j);
                         System.out.println("解析：" + s);
+                        //若干数字.若干数字 任意文字 10.0(10;3ms)
                         String pattern = "(\\d+\\.\\d+)(.*)";
                         Matcher m = Pattern.compile(pattern).matcher(s);
                         m.find();
