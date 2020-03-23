@@ -49,7 +49,10 @@ public class YKTService {
         String row = data.get(0);
         List<String> rowData = JSONArray.parseArray(row, String.class);
         String announcementName = rowData.get(0);
-        yktMapper.addAnnouncement(tcourseId, announcementName);
+        try {
+            yktMapper.addAnnouncement(tcourseId, announcementName);
+        }catch (Exception ignored){}
+
         String announcementId = yktMapper.getAnnouncementId(announcementName);
 
         for (int i = 2; i < data.size(); i++) {
@@ -58,7 +61,9 @@ public class YKTService {
             String studentNum = rowData.get(0);
             String status = rowData.get(2);
             if (studentInfoMapper.getStudentName(studentNum) != null) {
-                yktMapper.addAnnouncementStatus(studentNum, announcementId, status);
+                try {
+                    yktMapper.addAnnouncementStatus(studentNum, announcementId, status);
+                } catch (Exception ignored) { }
             }
         }
     }
@@ -69,7 +74,9 @@ public class YKTService {
         String row = data.get(0);
         List<String> rowData = JSONArray.parseArray(row, String.class);
         String conditionName = rowData.get(0);
-        yktMapper.addCondition(tcourseId, conditionName);
+        try {
+            yktMapper.addCondition(tcourseId, conditionName);
+        } catch (Exception ignored) { }
         String conditionId = yktMapper.getConditionId(conditionName);
 
         for (int i = 4; i < data.size(); i++) {
@@ -79,7 +86,9 @@ public class YKTService {
             int isPresent = 1;
             if (rowData.get(2).equals("未上课")) isPresent = 0;
             if (studentInfoMapper.getStudentName(studentNum) != null) {
-                yktMapper.addConditionStatus(studentNum, conditionId, isPresent);
+                try {
+                    yktMapper.addConditionStatus(studentNum, conditionId, isPresent);
+                }catch (Exception ignored) { }
             }
         }
     }
@@ -90,7 +99,9 @@ public class YKTService {
         String row = data.get(0);
         List<String> rowData = JSONArray.parseArray(row, String.class);
         String pushName = rowData.get(0);
-        yktMapper.addPush(tcourseId, pushName);
+        try {
+            yktMapper.addPush(tcourseId, pushName);
+        }catch (Exception ignored) { }
         String pushId = yktMapper.getPushId(pushName);
 
         //观看信息部分
@@ -114,7 +125,9 @@ public class YKTService {
 
 
             if (studentInfoMapper.getStudentName(studentNum) != null) {
-                yktMapper.addPushReadingInfo(studentNum, pushId, readPages, totalDuration);
+                try {
+                    yktMapper.addPushReadingInfo(studentNum, pushId, readPages, totalDuration);
+                }catch (Exception ignored) { }
             }
         }
 
@@ -142,7 +155,9 @@ public class YKTService {
                 questionName=m.group(1);
                 questionAnswer=m.group(3);
                 questionScore=m.group(5);
-                yktMapper.addPushQuestion(pushId,questionName,questionScore);
+                try {
+                    yktMapper.addPushQuestion(pushId,questionName,questionScore);
+                }catch (Exception ignored) { }
             }
             questionNameList.add(questionName);
             questionAnswerList.add(questionAnswer);
@@ -160,7 +175,9 @@ public class YKTService {
                         if(strAnswerCondition.equals(questionAnswerList.get(j))){
                             answerCondition=1;
                         }
-                        yktMapper.addPushAnswer(studentNum,questionId,answerCondition);
+                        try {
+                            yktMapper.addPushAnswer(studentNum,questionId,answerCondition);
+                        }catch (Exception ignored) { }
                     }
                 }
             }

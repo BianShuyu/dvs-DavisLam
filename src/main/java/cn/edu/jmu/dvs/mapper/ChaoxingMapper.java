@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 @Mapper @Repository
@@ -18,7 +19,7 @@ public interface ChaoxingMapper {
     void addAccessInfo(@Param("tcourse_id") String tcourse_id, @Param("access_date") String access_date,
                        @Param("t0") int t0, @Param("t4") int t4, @Param("t8") int t8,
                        @Param("t12") int t12, @Param("t16") int t16, @Param("t20") int t20
-                       );
+                       )throws DataAccessException;
 
 
     @Insert("insert into tb_cx_discuss values(" +
@@ -27,11 +28,11 @@ public interface ChaoxingMapper {
             ")")
     void addDiscussInfo(@Param("student_num") String studentNum, @Param("tcourse_id") String tcourseId,
                         @Param("comments") String comments, @Param("replies") String replies,
-                        @Param("suggest_score") String suggestScore);
+                        @Param("suggest_score") String suggestScore)throws DataAccessException;
 
 
     @Insert("insert into tb_cx_video values(null,#{tcourse_id},#{name})")
-    void addVideo(@Param("tcourse_id") String tcourseId,@Param("name") String name);
+    void addVideo(@Param("tcourse_id") String tcourseId,@Param("name") String name)throws DataAccessException;
 
     @Select("select id from tb_cx_video where name=#{video_name}")
     String getVideoId(@Param("video_name") String videoName);
@@ -41,7 +42,7 @@ public interface ChaoxingMapper {
             "#{video_id},#{percentage})")
     void addVideoWatchingInfo(@Param("student_num") String studentNum,
                               @Param("video_id") String videoId,
-                              @Param("percentage") String percentage);
+                              @Param("percentage") String percentage)throws DataAccessException;
 
 
     @Insert("insert into tb_cx_score_info values(" +
@@ -54,11 +55,11 @@ public interface ChaoxingMapper {
                       @Param("quiz_score") String quizScore, @Param("discuss_score") String discussScore,
                       @Param("work_score") String workScore, @Param("exam_score") String examScore,
                       @Param("task_percentage") String taskPercentage, @Param("score") String score,
-                      @Param("level") String level);
+                      @Param("level") String level)throws DataAccessException;
 
 
     @Insert("insert into tb_cx_work values(null,#{tcourse_id},#{name})")
-    void addWork(@Param("tcourse_id") String tcourseId,@Param("name") String name);
+    void addWork(@Param("tcourse_id") String tcourseId,@Param("name") String name)throws DataAccessException;
 
     @Select("select id from tb_cx_work where name=#{work_name}")
     String getWorkId(@Param("work_name") String workName);
@@ -68,7 +69,7 @@ public interface ChaoxingMapper {
             "#{work_id},#{score})")
     void addWorkInfo(@Param("student_num") String studentNum,
                      @Param("work_id") String workId,
-                     @Param("score") String score);
+                     @Param("score") String score)throws DataAccessException;
 
 
     @Insert("insert into tb_cx_exam values(" +
@@ -76,11 +77,11 @@ public interface ChaoxingMapper {
             "#{tcourse_id},#{score})")
     void addExamInfo(@Param("student_num") String studentNum,
                      @Param("tcourse_id") String tcourseId,
-                     @Param("score") String score);
+                     @Param("score") String score)throws DataAccessException;
 
 
     @Insert("insert into tb_cx_chapter_quiz values(null,#{tcourse_id},#{name})")
-    void addChapterQuiz(@Param("tcourse_id") String tcourseId,@Param("name") String name);
+    void addChapterQuiz(@Param("tcourse_id") String tcourseId,@Param("name") String name)throws DataAccessException;
 
     @Select("select id from tb_cx_chapter_quiz where name=#{chapter_name}")
     String getChapterQuizId(@Param("chapter_name") String chapterName);
@@ -90,5 +91,5 @@ public interface ChaoxingMapper {
             "#{chapter_id},#{score})")
     void addChapterQuizScore(@Param("student_num") String studentNum,
                      @Param("chapter_id") String chapterId,
-                     @Param("score") String score);
+                     @Param("score") String score)throws DataAccessException;
 }
