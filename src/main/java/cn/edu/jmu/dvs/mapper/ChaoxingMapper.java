@@ -136,5 +136,4 @@ public interface ChaoxingMapper {
             "and grade_id = #{gradeId}) order by access_date ")
     List<ChaoxingAccess> getAccess(@Param("courseId") int courseId,
                                    @Param("gradeId") int gradeId);
-                     @Param("score") String score)throws DataAccessException;
 }
