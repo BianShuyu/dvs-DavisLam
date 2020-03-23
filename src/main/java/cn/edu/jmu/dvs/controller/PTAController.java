@@ -37,7 +37,7 @@ public class PTAController {
             JSONObject data = JSONObject.parseObject(rawJsonObject.get("data").toString());
             String sheet = data.get("Sheet0").toString();
             JSONArray sheetArray = JSONArray.parseArray(sheet);
-            System.out.println(sheetArray);
+            //System.out.println(sheetArray);
             ptaService.savePTAData(sheetArray, courseId);
             returnMap.put("success", true);
         }

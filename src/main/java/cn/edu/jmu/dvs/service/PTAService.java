@@ -6,6 +6,7 @@ import cn.edu.jmu.dvs.mapper.PTAMapper;
 import cn.edu.jmu.dvs.mapper.StudentInfoMapper;
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -39,7 +40,7 @@ public class PTAService {
             String row = data.get(i);
             List<String> rowData = JSONArray.parseArray(row, String.class);
             for (String s : rowData) {
-                System.out.printf("%s,", s);
+                //System.out.printf("%s,", s);
             }
             if (i == 0) {  //获取题目类型列表
                 String currentType = null;
@@ -59,9 +60,9 @@ public class PTAService {
                     }
                 }
                 for (String s : questionType) {
-                    System.out.printf("%s,", s);
+                    //System.out.printf("%s,", s);
                 }
-                System.out.println("\n");
+                //System.out.println("\n");
             } else if (i == 1) {  //获取题目标号
                 boolean isQuestionNum = false;
                 for (int j = 0; j < rowData.size(); j++) {
@@ -89,18 +90,23 @@ public class PTAService {
 
                     if (currentQuestionNum != null && !rowData.get(j).equals("-")) {
                         String s = rowData.get(j);
-                        System.out.println("解析：" + s);
+                        //System.out.println("解析：" + s);
                         //若干数字.若干数字 任意文字 10.0(10;3ms)
                         String pattern = "(\\d+\\.\\d+)(.*)";
                         Matcher m = Pattern.compile(pattern).matcher(s);
                         m.find();
-                        System.out.println(m.group(1));
+                        //System.out.println(m.group(1));
                         score = (int) (Double.parseDouble(m.group(1)));
                     } else {
                         score = 0;
                     }
                     if (studentNum != null && studentInfoMapper.getStudentName(studentNum) != null && currentQuestionNum != null) {
-                        ptaMapper.addPTAScore(studentNum, courseId, currentQuestionType, currentQuestionNum, score);
+                        try {
+                            ptaMapper.addPTAScore(studentNum, courseId, currentQuestionType, currentQuestionNum, score);
+                        }catch (DataAccessException e){
+                            System.out.println("PTA ERROR");
+                        }
+
                     }
 
                 }

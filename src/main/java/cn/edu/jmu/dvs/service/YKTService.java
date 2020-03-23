@@ -119,7 +119,7 @@ public class YKTService {
         }
 
         //题目信息部分
-        row = data.get(1);
+        row = data.get(2);
         rowData = JSONArray.parseArray(row, String.class);
 
         List<String> questionNameList = new ArrayList<>();

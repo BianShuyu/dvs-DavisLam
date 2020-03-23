@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public interface PTAMapper {
                      @Param("course_id") String courseId,
                      @Param("question_type") String questionType,
                      @Param("question_num") String questionNum,
-                     @Param("score") int score);
+                     @Param("score") int score) ;
 
     @Select("select student_id as studentId, question_type as questionType, sum(score) as score "
              + "from tb_pta where course_id = #{courseId} "
