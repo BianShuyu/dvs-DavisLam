@@ -22,7 +22,7 @@ public class PTAController {
     //todo 命名
     @PostMapping("/upload")
     @ResponseBody
-    public String ptaTest(@RequestBody String raw, ModelMap map) {
+    public String upload(@RequestBody String raw, ModelMap map) {
 
         JSONObject returnMap = new JSONObject();
         returnMap.put("tokenValid", false);

@@ -1,10 +1,16 @@
 package cn.edu.jmu.dvs.mapper;
 
+import cn.edu.jmu.dvs.entity.ChaoxingAccess;
+import cn.edu.jmu.dvs.entity.ChaoxingSummary;
+import cn.edu.jmu.dvs.entity.Task;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper @Repository
 public interface ChaoxingMapper {
@@ -91,4 +97,43 @@ public interface ChaoxingMapper {
     void addChapterQuizScore(@Param("student_num") String studentNum,
                      @Param("chapter_id") String chapterId,
                      @Param("score") String score);
+
+
+    @Select("select name, percentage as val from tb_cx_video join tb_cx_video_watching " +
+            "where tb_cx_video.id = tb_cx_video_watching.video_id and tcourse_id = " +
+            "(select id from tb_teach_course where course_id = #{courseId} and " +
+            "grade_id = #{gradeId})")
+    List<Task> getVideoListByCourseAndGrade(@Param("courseId") int courseId,
+                                            @Param("gradeId") int gradeId);
+
+
+    @Select("select name, score as val from tb_cx_work join tb_cx_work_finishing where " +
+            "tb_cx_work.id = tb_cx_work_finishing.work_id and tcourse = (select id " +
+            "from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId})")
+    List<Task> getWorkListByCourseAndGrade(@Param("courseId") int courseId,
+                                           @Param("gradeId") int gradeId);
+
+    @Select("select name, score as val from tb_cx_chapter_quiz join tb_cx_student_chapter " +
+            "where tb_cx_chapter_quiz.id = tb_cx_student_chapter.chapter_id and tcourse_id " +
+            "= (select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId})")
+    List<Task> getChapterListByCourseAndGrade(@Param("courseId") int courseId,
+                                              @Param("gradeId") int gradeId);
+
+
+    @Select("select tb_class.name, tb_cx_exam.score as examScore, " +
+            "level from tb_cx_exam join tb_cx_score_info join tb_student join " +
+            "tb_class where tb_cx_exam.student_id = tb_cx_score_info.student_id and " +
+            "tb_cx_exam.student_id = tb_student.id and tb_student.class_id = tb_class.id " +
+            "and tb_cx_exam.tcourse_id = tb_cx_score_info.tcourse_id and " +
+            "tb_cx_score_info.tcourse_id = (select id from tb_teach_course where " +
+            "course_id = #{courseId} and grade_id = #{gradeId})")
+    List<ChaoxingSummary> getSummaryByCourseAndGrade(@Param("courseId") int courseId,
+                                                     @Param("gradeId") int gradeId);
+
+    @Select("SELECT access_date as date, t00t04 as t0, t04t08 as t4, t08t12 as t8, " +
+            "t12t16 as t12, t16t20 as t16, t20t24 as t20 FROM davislam.tb_cx_access where " +
+            "tcourse_id = (select id from tb_teach_course where course_id = #{courseId} " +
+            "and grade_id = #{gradeId}) order by access_date ")
+    List<ChaoxingAccess> getAccess(@Param("courseId") int courseId,
+                                   @Param("gradeId") int gradeId);
 }

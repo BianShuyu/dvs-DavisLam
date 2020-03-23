@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
 @Controller
+@RequestMapping("/ykt")
 public class YKTController {
     @Autowired
     LoginService loginService;
@@ -20,10 +22,9 @@ public class YKTController {
     @Autowired
     YKTService yktService;
 
-    //todo 命名
-    @PostMapping("/yktTest")
+    @PostMapping("/upload")
     @ResponseBody
-    public String yktTest(@RequestBody String raw) {
+    public String upload(@RequestBody String raw) {
 
         JSONObject returnMap = new JSONObject();
         returnMap.put("tokenValid", false);

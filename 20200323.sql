@@ -211,7 +211,7 @@ DROP TABLE IF EXISTS `tb_cx_video_watching`;
 CREATE TABLE `tb_cx_video_watching` (
   `student_id` int(10) unsigned DEFAULT NULL,
   `video_id` int(10) unsigned DEFAULT NULL,
-  `percentage` decimal(6,2) unsigned DEFAULT NULL,
+  `val` decimal(6,2) unsigned DEFAULT NULL,
   KEY `cx_vw_student` (`student_id`),
   KEY `cx_vw_video` (`video_id`),
   CONSTRAINT `cx_vw_student` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,

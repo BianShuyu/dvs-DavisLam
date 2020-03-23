@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequestMapping("/chaoxing")
 public class ChaoxingController {
 
     @Autowired
@@ -19,10 +21,9 @@ public class ChaoxingController {
     @Autowired
     ChaoxingService chaoxingService;
 
-    //todo 命名
-    @PostMapping("/chaoxingTest")
+    @PostMapping("/upload")
     @ResponseBody
-    public String chaoxingTest(@RequestBody String raw) {
+    public String upload(@RequestBody String raw) {
 
         JSONObject returnMap = new JSONObject();
         returnMap.put("tokenValid", false);
@@ -76,6 +77,27 @@ public class ChaoxingController {
         }
         System.out.println("\n\n\n返回：");
         System.out.println(returnMap.toJSONString());
+        return returnMap.toJSONString();
+    }
+
+
+
+    @PostMapping("/summary")
+    @ResponseBody
+    public String summary(@RequestBody String raw) {
+        JSONObject returnMap = new JSONObject();
+        returnMap.put("tokenValid", false);
+        JSONObject rawJsonObject = JSONObject.parseObject(raw);
+        if (loginService.verify(rawJsonObject.get("token").toString())) {
+            returnMap.put("tokenValid", true);
+            int courseId = Integer.parseInt(rawJsonObject.get("courseId").toString());
+            int gradeId = Integer.parseInt(rawJsonObject.get("gradeId").toString());
+            returnMap.put("video", chaoxingService.videoOverview(courseId, gradeId));
+            returnMap.put("work", chaoxingService.workOverview(courseId, gradeId));
+            returnMap.put("chapter", chaoxingService.chapterOverview(courseId, gradeId));
+            returnMap.put("summary", chaoxingService.summary(courseId, gradeId));
+            returnMap.put("access", chaoxingService.getAccess(courseId, gradeId));
+        }
         return returnMap.toJSONString();
     }
 }

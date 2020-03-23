@@ -1,5 +1,8 @@
 package cn.edu.jmu.dvs.service;
 
+import cn.edu.jmu.dvs.entity.ChaoxingAccess;
+import cn.edu.jmu.dvs.entity.ChaoxingSummary;
+import cn.edu.jmu.dvs.entity.Task;
 import cn.edu.jmu.dvs.mapper.ChaoxingMapper;
 import cn.edu.jmu.dvs.mapper.CourseMapper;
 import cn.edu.jmu.dvs.mapper.StudentInfoMapper;
@@ -7,7 +10,7 @@ import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ChaoxingService {
@@ -177,4 +180,102 @@ public class ChaoxingService {
             }
         }
     }
+
+    public Map<String, ArrayList<Integer>> videoOverview(int courseId, int gradeId) {
+        Map<String, ArrayList<Integer>> res = new HashMap<>();
+        List<Task> videos = chaoxingMapper.getVideoListByCourseAndGrade(courseId, gradeId);
+        for (int i = 0; i < videos.size(); i++) {
+            Task v = videos.get(i);
+            String name = v.getName();
+            double percentage = v.getVal();
+            if (!res.containsKey(name)) res.put(name, new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)));
+            ArrayList<Integer> cur = res.get(name);
+            int index = Math.min(9, (int)(percentage / 10));
+            cur.set(index, cur.get(index) + 1);
+        }
+        return res;
+    }
+
+    private Map<String, ArrayList<Integer>> prepareData(List<Task> list) {
+        Map<String, ArrayList<Integer>> res = new HashMap<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            Task item = list.get(i);
+            String name = item.getName();
+            int score = (int)item.getVal();
+            //sum zeros non_zeros
+            if (!res.containsKey(name)) res.put(name, new ArrayList<>(Arrays.asList(0, 0, 0)));
+            ArrayList<Integer> cur = res.get(name);
+            cur.set(0, cur.get(0) + score);
+            int index = score == 0 ? 1 : 2;
+            cur.set(index, cur.get(index) + 1);
+        }
+        return res;
+    }
+
+    public Map<String, ArrayList<Integer>> workOverview(int courseId, int gradeId) {
+        return prepareData(chaoxingMapper.getWorkListByCourseAndGrade(courseId, gradeId));
+    }
+
+
+    public Map<String, ArrayList<Integer>> chapterOverview(int courseId, int gradeId) {
+        return prepareData(chaoxingMapper.getChapterListByCourseAndGrade(courseId, gradeId));
+    }
+
+    public Map<String, Map<String, Object>> summary(int courseId, int gradeId) {
+        Map<String, Map<String, Object>> res = new HashMap<>();
+        List<ChaoxingSummary> data = chaoxingMapper.getSummaryByCourseAndGrade(courseId, gradeId);
+        for (int i = 0; i < data.size(); i++) {
+            ChaoxingSummary item = data.get(i);
+            String className = item.getName();
+            int examScore = item.getExamScore();
+            String level = item.getLevel();
+
+            if (!res.containsKey(className)) {
+                res.put(className, new HashMap<>());
+                Map<String, Object> classData = res.get(className);
+                classData.put("examScore", new ArrayList<Integer>());
+                classData.put("level", new ArrayList<String>());
+            }
+            Map<String, Object> classData = res.get(className);
+            ((ArrayList<Integer>)classData.get("examScore")).add(examScore);
+            ((ArrayList<String>)classData.get("level")).add(level);
+        }
+        return res;
+    }
+
+    public Map<String, Object> getAccess(int courseId, int gradeId) {
+        Map<String, Object> res = new HashMap<>();
+        List<ChaoxingAccess> accesses = chaoxingMapper.getAccess(courseId, gradeId);
+        ArrayList<String>  dates = new ArrayList<>();
+        ArrayList<Integer> t0    = new ArrayList<>();
+        ArrayList<Integer> t4    = new ArrayList<>();
+        ArrayList<Integer> t8    = new ArrayList<>();
+        ArrayList<Integer> t12   = new ArrayList<>();
+        ArrayList<Integer> t16   = new ArrayList<>();
+        ArrayList<Integer> t20   = new ArrayList<>();
+
+        for (int i = 0; i < accesses.size(); i++) {
+            ChaoxingAccess access = accesses.get(i);
+            dates.add(access.getDate());
+            t0.add(access.getT0());
+            t4.add(access.getT4());
+            t8.add(access.getT8());
+            t12.add(access.getT12());
+            t16.add(access.getT16());
+            t20.add(access.getT20());
+        }
+
+        res.put("dates", dates);
+        res.put("t0", t0);
+        res.put("t4", t4);
+        res.put("t8", t8);
+        res.put("t12",t12);
+        res.put("t16",t16);
+        res.put("t20",t20);
+
+        return res;
+    }
+
+
 }
