@@ -38,9 +38,13 @@ public class ChaoxingService {
             //如果当前授课id不知道就看一下当前学生是否有授课id
             if (studentInfoMapper.getStudentName(studentNum) != null) {//如果是一个合法的学生(排除掉非法学生)
                 if (tcourseId != null) {//如果有授课id了就跟着这个来
-                    chaoxingMapper.addDiscussInfo(studentNum, tcourseId, comments, replies, suggestScore);
+                    try {
+                        chaoxingMapper.addDiscussInfo(studentNum, tcourseId, comments, replies, suggestScore);
+                    }catch (Exception ignored){}
                 } else {//如果没有授课id（即当前学生没有授课id，但合法 所以要加入授课id）
-                    courseMapper.setTeachCourseByCourseIdAndStudentNum(courseId, studentNum);
+                    try {
+                        courseMapper.setTeachCourseByCourseIdAndStudentNum(courseId, studentNum);
+                    }catch (Exception ignored){}
                     tcourseId = courseMapper.getTcourseIdByCourseIdAndStudentNum(courseId, studentNum);
                 }
             }//不是合法的学生不计入统计
@@ -60,7 +64,9 @@ public class ChaoxingService {
             int t12t16 = Integer.parseInt(rowData.get(7));
             int t16t20 = Integer.parseInt(rowData.get(8));
             int t20t24 = Integer.parseInt(rowData.get(9));
-            chaoxingMapper.addAccessInfo(tcourseId, strDate, t00t04, t04t08, t08t12, t12t16, t16t20, t20t24);
+            try {
+                chaoxingMapper.addAccessInfo(tcourseId, strDate, t00t04, t04t08, t08t12, t12t16, t16t20, t20t24);
+            }catch (Exception ignored){}
         }
     }
 
@@ -72,10 +78,14 @@ public class ChaoxingService {
         for (int i = 6; i < videoNameList.size(); i++) {
             if(chaoxingMapper.getVideoId(videoNameList.get(i))!=null){
                 videoNameList.set(i,videoNameList.get(i)+repeat);
-                chaoxingMapper.addVideo(tcourseId,videoNameList.get(i));
+                try {
+                    chaoxingMapper.addVideo(tcourseId,videoNameList.get(i));
+                }catch (Exception ignored){}
                 repeat++;
             }else {
-                chaoxingMapper.addVideo(tcourseId, videoNameList.get(i));
+                try {
+                    chaoxingMapper.addVideo(tcourseId, videoNameList.get(i));
+                }catch (Exception ignored){}
             }
         }
         for (int i = 2; i < data.size(); i++) {
@@ -86,7 +96,9 @@ public class ChaoxingService {
                 for (int j = 6; j < videoNameList.size(); j++) {
                     String videoId = chaoxingMapper.getVideoId(videoNameList.get(j));
                     String percentage = rowData.get(j).substring(0, rowData.get(j).length() - 1);
-                    chaoxingMapper.addVideoWatchingInfo(studentNum, videoId, percentage);
+                    try {
+                        chaoxingMapper.addVideoWatchingInfo(studentNum, videoId, percentage);
+                    }catch (Exception ignored){}
                 }
             }
         }
@@ -109,8 +121,10 @@ public class ChaoxingService {
             String level = rowData.get(20);
 
             if(studentInfoMapper.getStudentName(studentNum)!=null) {
-                chaoxingMapper.addScoreInfo(studentNum,tcourseId,videoScore,videoProgress,quizScore,discussScore,
-                        workScore,examScore,taskPercentage,score,level);
+                try {
+                    chaoxingMapper.addScoreInfo(studentNum,tcourseId,videoScore,videoProgress,quizScore,discussScore,
+                            workScore,examScore,taskPercentage,score,level);
+                }catch (Exception ignored){}
             }
         }
     }
@@ -121,7 +135,9 @@ public class ChaoxingService {
         List<String> workNameList = JSONArray.parseArray(row, String.class);
         for (int i = 6; i < workNameList.size(); i++) {
             if(workNameList.get(i)!=null){
-                chaoxingMapper.addWork(tcourseId,workNameList.get(i));
+                try {
+                    chaoxingMapper.addWork(tcourseId,workNameList.get(i));
+                }catch (Exception ignored){}
             }
         }
         for (int i = 2; i < data.size(); i++) {
@@ -133,7 +149,9 @@ public class ChaoxingService {
                     if(workNameList.get(j)!=null){
                         String workId=chaoxingMapper.getWorkId(workNameList.get(j));
                         String score=rowData.get(j);
-                        chaoxingMapper.addWorkInfo(studentNum,workId,score);
+                        try {
+                            chaoxingMapper.addWorkInfo(studentNum,workId,score);
+                        }catch (Exception ignored){}
                     }
                 }
             }
@@ -150,7 +168,9 @@ public class ChaoxingService {
             String score = (int)Double.parseDouble(rowData.get(11)) +"";
 
             if(studentInfoMapper.getStudentName(studentNum)!=null) {
-                chaoxingMapper.addExamInfo(studentNum,tcourseId,score);
+                try {
+                    chaoxingMapper.addExamInfo(studentNum,tcourseId,score);
+                }catch (Exception ignored){}
             }
         }
     }
@@ -162,7 +182,9 @@ public class ChaoxingService {
         List<String> chapterNameList = JSONArray.parseArray(row, String.class);
         for (int i = 6; i < chapterNameList.size(); i++) {
             if(chapterNameList.get(i)!=null){
-                chaoxingMapper.addChapterQuiz(tcourseId,chapterNameList.get(i));
+                try {
+                    chaoxingMapper.addChapterQuiz(tcourseId,chapterNameList.get(i));
+                }catch (Exception ignored){}
             }
         }
         for (int i = 2; i < data.size(); i++) {
@@ -174,7 +196,9 @@ public class ChaoxingService {
                     if(chapterNameList.get(j)!=null){
                         String workId=chaoxingMapper.getChapterQuizId(chapterNameList.get(j));
                         String score=rowData.get(j);
-                        chaoxingMapper.addChapterQuizScore(studentNum,workId,score);
+                        try {
+                            chaoxingMapper.addChapterQuizScore(studentNum,workId,score);
+                        }catch (Exception ignored){}
                     }
                 }
             }

@@ -39,9 +39,6 @@ public class PTAService {
         for (int i = 0; i < data.size(); i++) {
             String row = data.get(i);
             List<String> rowData = JSONArray.parseArray(row, String.class);
-            for (String s : rowData) {
-                //System.out.printf("%s,", s);
-            }
             if (i == 0) {  //获取题目类型列表
                 String currentType = null;
                 for (int j = 0; j < rowData.size(); j++) {
@@ -59,10 +56,7 @@ public class PTAService {
                         questionType.add(currentType);
                     }
                 }
-                for (String s : questionType) {
-                    //System.out.printf("%s,", s);
-                }
-                //System.out.println("\n");
+                System.out.println("题目列表获取完成");
             } else if (i == 1) {  //获取题目标号
                 boolean isQuestionNum = false;
                 for (int j = 0; j < rowData.size(); j++) {
@@ -76,6 +70,7 @@ public class PTAService {
                     }
                 }
             } else if (i != 2) {
+                if(i%20==0) System.out.println("导入"+i+"/"+data.size());
                 String studentNum = rowData.get(1);
                 String currentQuestionType = null;
                 String currentQuestionNum = null;
@@ -100,14 +95,14 @@ public class PTAService {
                     } else {
                         score = 0;
                     }
-                    if (studentNum != null && studentInfoMapper.getStudentName(studentNum) != null && currentQuestionNum != null) {
+                    //if (studentNum != null && studentInfoMapper.getStudentName(studentNum) != null && currentQuestionNum != null) {
                         try {
                             ptaMapper.addPTAScore(studentNum, courseId, currentQuestionType, currentQuestionNum, score);
                         }catch (DataAccessException e){
-                            System.out.println("PTA ERROR");
+                            //System.out.println("PTA ERROR");
                         }
 
-                    }
+                    //}
 
                 }
             }
