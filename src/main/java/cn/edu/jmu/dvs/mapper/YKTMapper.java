@@ -125,7 +125,8 @@ public interface YKTMapper {
             "tcourse_id=(select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId}) " +
             "group by tb_student.id")
     List<Task> getPushStudentCorrectRatio(@Param("courseId") int courseId,
-                               @Param("gradeId") int gradeId);
+                                          @Param("gradeId") int gradeId);
+
     //每个push的得分率
     @Select("select push_name name, " +
             "round(sum(tb_ykt_push_answer.answer_condition) / count(tb_ykt_push_answer.answer_condition) ,2) * 100 as val " +
@@ -135,7 +136,7 @@ public interface YKTMapper {
             "tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId}) " +
             "group by tb_ykt_push.id")
     List<Task> getPushCorrectRatio(@Param("courseId") int courseId,
-                               @Param("gradeId") int gradeId);
+                                   @Param("gradeId") int gradeId);
 
     //观看率
     @Select("select push_name name, " +
@@ -155,8 +156,10 @@ public interface YKTMapper {
             "tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId}) " +
             "group by tb_ykt_push.id")
     List<Task> getPushDurationRatio(@Param("courseId") int courseId,
-                                   @Param("gradeId") int gradeId);
+                                    @Param("gradeId") int gradeId);
 
 
-    List<Task> getR
+
+    List<Task> getRightRatioByStudent(@Param("courseId") int courseId,
+                                      @Param("studentId") int studentId);
 }
