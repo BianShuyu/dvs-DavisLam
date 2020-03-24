@@ -85,7 +85,7 @@ public interface YKTMapper {
 
 
     @Select("select class_condition as name, " +
-            "round(sum(is_present) / count(is_present) ,2) * 100 as val " +
+            "round(sum(is_present) / count(is_present), 2) * 100 as val " +
             "from tb_ykt_student_ykt_class join tb_ykt_ykt_class_condition " +
             "where tb_ykt_student_ykt_class.ykt_class_id = tb_ykt_ykt_class_condition.id " +
             "and tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId}) " +
@@ -95,8 +95,8 @@ public interface YKTMapper {
 
     //学生到课率
     @Select("select tb_student.name name, " +
-            "round(sum(is_present) / count(is_present) ,2) * 100 as val" +
-            "from tb_student join tb_ykt_student_ykt_class join tb_ykt_ykt_class_condition" +
+            "round(sum(is_present) / count(is_present) ,2) * 100 as val " +
+            "from tb_student join tb_ykt_student_ykt_class join tb_ykt_ykt_class_condition " +
             "where tb_student.id=tb_ykt_student_ykt_class.student_id and " +
             "tb_ykt_ykt_class_condition.id=tb_ykt_student_ykt_class.ykt_class_id and " +//内连接完毕
             "tcourse_id=(select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId}) " +
@@ -104,13 +104,13 @@ public interface YKTMapper {
     List<Task> getStudentPresentRatio(@Param("courseId") int courseId,
                                       @Param("gradeId") int gradeId);
 
-    @Select("select tb_class.name, tb_student.name, sum(answer_condition * score) " +
+    @Select("select tb_class.name, sum(answer_condition * score) as val " +
             "from tb_ykt_push_answer join tb_ykt_push_question join tb_student join tb_class " +
             "where push_question_id = tb_ykt_push_question.id and " +
             "tb_ykt_push_answer.student_id = tb_student.id and " +
             "tb_student.class_id = tb_class.id and " +
-            "push_id in (select id from tb_ykt_push where tcourse_id = " +
-            "   (select id from tb_teach_course where course_id = 2 and grade_id = 5))" +
+            "push_id in (select id from tb_ykt_push where tcourse_id = (select " +
+            "id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId})) " +
             "group by tb_student.id")
     List<Task> getScore(@Param("courseId") int courseId,
                         @Param("gradeId") int gradeId);
@@ -139,27 +139,63 @@ public interface YKTMapper {
                                    @Param("gradeId") int gradeId);
 
     //观看率
-    @Select("select push_name name, " +
-            "round(sum(read_pages) / count(read_pages)*max(read_pages) ,2) * 100 as val " +
+    @Select("select push_name as name, round(sum(read_pages) / (count(read_pages)" +
+            "* max(read_pages)), 2) * 100 as val " +
             "from tb_ykt_push join tb_ykt_student_push " +
-            "where tb_ykt_push.id=tb_ykt_student_push.push_id and " +//内连接完毕
+            "where tb_ykt_push.id = tb_ykt_student_push.push_id and " +
             "tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId}) " +
-            "group by tb_ykt_push.id")
+            "group by push_id;")
     List<Task> getPushReadingRatio(@Param("courseId") int courseId,
                                    @Param("gradeId") int gradeId);
 
     //观看平均时长
-    @Select("select push_name name, " +
-            "round(sum(total_duration_sec) / count(total_duration_sec)/60,2) as val " +
+    @Select("select push_name as name, round(avg(total_duration_sec) / 60, 2) as val " +
             "from tb_ykt_push join tb_ykt_student_push " +
-            "where tb_ykt_push.id=tb_ykt_student_push.push_id and " +//内连接完毕
-            "tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId}) " +
-            "group by tb_ykt_push.id")
-    List<Task> getPushDurationRatio(@Param("courseId") int courseId,
-                                    @Param("gradeId") int gradeId);
+            "where tb_ykt_push.id = tb_ykt_student_push.push_id and " +
+            "tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId})" +
+            "group by push_id")
+    List<Task> getPushDuration(@Param("courseId") int courseId, @Param("gradeId") int gradeId);
 
 
-
+    @Select("select push_name as name, round(sum(answer_condition) / count(answer_condition), 2) * 100 as val " +
+            "from tb_ykt_push_answer join tb_ykt_push_question join tb_ykt_push " +
+            "where tb_ykt_push_answer.push_question_id = tb_ykt_push_question.id " +
+            "and tb_ykt_push_question.push_id = tb_ykt_push.id " +
+            "and student_id = #{studentId} " +
+            "and tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and " +
+            "grade_id = (select grade_id from tb_class where id = (select class_id from " +
+            "tb_student where id = #{studentId}))) group by push_id;")
     List<Task> getRightRatioByStudent(@Param("courseId") int courseId,
                                       @Param("studentId") int studentId);
+
+    @Select("select announcement_name from tb_ykt_announcement join tb_ykt_student_annoucement " +
+            "where tb_ykt_announcement.id = tb_ykt_student_annoucement.announcement_id " +
+            "and student_id = #{studentId} " +
+            "and tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and " +
+            "grade_id = (select grade_id from tb_class where id = (select class_id from tb_student where id = #{studentId})))" +
+            "and status = \"未读\"")
+    List<String> getUnreadAnnouncementByStudent(@Param("courseId") int courseId,
+                                                @Param("studentId") int studentId);
+
+
+    @Select("select class_condition from tb_ykt_ykt_class_condition join tb_ykt_student_ykt_class " +
+            "where tb_ykt_ykt_class_condition.id = tb_ykt_student_ykt_class.ykt_class_id " +
+            "and student_id = #{studentId} " +
+            "and tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and " +
+            "grade_id = (select grade_id from tb_class where id = (select class_id from tb_student where id = #{studentId}))) " +
+            "and is_present = 0")
+    List<String> getMissingClassByStudent(@Param("courseId") int courseId,
+                                          @Param("studentId") int studentId);
+
+    @Select("select sum(answer_condition * score) as val " +
+            "from tb_ykt_push_answer join tb_ykt_push_question join tb_student join tb_class " +
+            "where push_question_id = tb_ykt_push_question.id and " +
+            "tb_ykt_push_answer.student_id = tb_student.id and " +
+            "tb_student.class_id = tb_class.id and " +
+            "push_id in (select id from tb_ykt_push where tcourse_id = " +
+            "(select id from tb_teach_course where course_id = #{courseId} and grade_id = " +
+            "(select grade_id from tb_class where id = (select class_id from tb_student where id = #{studentId})))) " +
+            "and student_id = #{studentId};")
+    int getScoreByStudent(@Param("courseId") int courseId,
+                          @Param("studentId") int studentId);
 }

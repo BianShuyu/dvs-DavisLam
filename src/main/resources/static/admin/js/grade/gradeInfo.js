@@ -103,6 +103,129 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
         chart.setOption(option);
     }
 
+    function linePlot() {
+        var nData = (arguments.length - 2) / 2;
+        var figId = arguments[arguments.length - 1];
+        var keys = [];
+        for (var key in arguments[0]) {
+            keys.push(key);
+        }
+        var legend = [];
+        for (var i = nData; i < nData * 2; i++) {
+            legend.push(arguments[i]);
+        }
+        var seriesData = [];
+
+
+        for (var i = 0; i < nData; i++) {
+            var cur = {};
+            cur.name = legend[i];
+            cur.type = "line";
+            var curData = [];
+            for (var key in arguments[i]) {
+                curData.push(arguments[i][key]);
+            }
+            cur.data = curData;
+            cur.markPoint = {
+                data: [
+                    {type: 'max'},
+                    {type: 'min'}
+                ]
+            };
+            cur.markLine = {
+                data: [
+                    {type: 'average', name: '平均值'},
+                ]
+            };
+            seriesData.push(cur);
+        }
+        var unit = arguments[arguments.length - 2];
+        var chart = echarts.init(document.getElementById(figId));
+        chart.setOption({
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: legend
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: keys
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: function(value) {
+                        return value + " " + unit;
+                    }
+                }
+            },
+            dataZoom: {   // 这个dataZoom组件，默认控制x轴。
+                type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                start: 30,      // 左边在 10% 的位置。
+                end: 50         // 右边在 60% 的位置。
+            },
+            series: seriesData
+        });
+
+
+    }
+
+    function histPlot(data, figId) {
+        var bins = ecStat.histogram(data).data.slice(1);
+        var halfWidth = (bins[1][0] - bins[0][0]) / 2;
+        var option = {
+            toolbox: {
+                // y: 'bottom',
+                feature: {
+                    magicType: {
+                        type: ['stack', 'tiled']
+                    },
+                    dataView: {},
+                    saveAsImage: {
+                        pixelRatio: 2
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function (params) {
+                    return (params.value[0] - halfWidth) +
+                        "-" + (params.value[0] + halfWidth) +
+                        " 人数：" + params.value[1];
+                }
+            },
+            xAxis: {
+                type: "value",
+                scale: true,
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {
+                type: "value",
+            },
+            series: [{
+                name: "height",
+                type: "bar",
+                barWidth: "99.3%",
+                label: {
+                    normal: {
+                        show: true,
+                        position: "insideTop",
+                        formatter: function (params) {
+                            return params.value[1];
+                        }
+                    }
+                },
+                data: bins
+            }],
+            animationEasing: 'elasticOut',
+        };
+        var chart = echarts.init(document.getElementById(figId));
+        chart.setOption(option);
+    }
+
     $(document).on('click', '#final', function () {
         $("#figContainer").empty();
         $("#figContainer").append(twoFig("甜甜圈", "堆叠条形图", "fig1", "fig2"));
@@ -269,57 +392,7 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
                     total = total.concat(classData[key]);
                 }
                 classes.sort();
-                var bins = ecStat.histogram(total).data.slice(1);
-                var halfWidth = (bins[1][0] - bins[0][0]) / 2;
-                var option = {
-                    toolbox: {
-                        // y: 'bottom',
-                        feature: {
-                            magicType: {
-                                type: ['stack', 'tiled']
-                            },
-                            dataView: {},
-                            saveAsImage: {
-                                pixelRatio: 2
-                            }
-                        }
-                    },
-                    tooltip: {
-                        formatter: function (params) {
-                            return (params.value[0] - halfWidth) +
-                                "-" + (params.value[0] + halfWidth) +
-                                " 人数：" + params.value[1];
-                        }
-                    },
-                    xAxis: {
-                        type: "value",
-                        scale: true,
-                        splitLine: {
-                            show: false
-                        }
-                    },
-                    yAxis: {
-                        type: "value",
-                    },
-                    series: [{
-                        name: "height",
-                        type: "bar",
-                        barWidth: "99.3%",
-                        label: {
-                            normal: {
-                                show: true,
-                                position: "insideTop",
-                                formatter: function (params) {
-                                    return params.value[1];
-                                }
-                            }
-                        },
-                        data: bins
-                    }],
-                    animationEasing: 'elasticOut',
-                };
-                var chart = echarts.init(document.getElementById("fig1"));
-                chart.setOption(option);
+                histPlot(total, "fig1");
 
                 var boxData = [];
                 for (var i = 0; i < classes.length; i++) {
@@ -662,6 +735,7 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
                             }
                         }
                     }
+
                     var seriesData = [];
                     var times = [];
 
@@ -846,7 +920,6 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
         });
     });
 
-
     $(document).on('click', '#yuketang', function () {
         $("#figContainer").empty();
 
@@ -862,6 +935,90 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
             data: JSON.stringify(obj),
             success: function (result) {
                 console.log(result);
+                $("#figContainer").append(twoFig("课堂情况", "推送情况", "fig1", "fig2"));
+                linePlot(result.presentRatio, "到课率", "%", "fig1");
+                linePlot(
+                    result.pushCorrectRatio,
+                    result.pushReadingRatio,
+                    "正确率", "阅读率", "%", "fig2");
+                $("#figContainer").append(twoFig("推送阅读时长", "公告阅读情况", "fig3", "fig4"));
+                linePlot(result.pushDuration, "阅读时长", "分钟", "fig3");
+                linePlot(result.readingRatio, "阅读率", "%", "fig4");
+
+                $("#figContainer").append(twoFig("学生正答率统计", "各班平均得分", "fig5", "fig6"));
+
+                var total = [];
+                var disqualify = [];
+                for (var key in result.pushStudentCorrectRatio) {
+                    var val = result.pushStudentCorrectRatio[key];
+                    if (val === 100) val--;
+                    total.push(val);
+                }
+                histPlot(total, "fig5");
+
+                var classNames = [];
+                var scores = [];
+                for (var key in result.score) {
+                    classNames.push(key);
+                    scores.push(result.score[key]);
+                }
+                var chart = echarts.init(document.getElementById("fig6"));
+                chart.setOption({
+                    tooltip: {},
+                    xAxis: {
+                        type: 'category',
+                        data: classNames
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: scores,
+                        type: 'bar',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(220, 220, 220, 0.8)'
+                        }
+                    }]
+                });
+
+                var disqualify = [];
+                for (var key in result.studentPresentRatio) {
+                    var val = result.studentPresentRatio[key];
+                    if (val < 67) {
+                        disqualify.push([key, val]);
+                    }
+                }
+                console.log(disqualify);
+
+                $("#figContainer").append(
+                    "<fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 20px;\">\n" +
+                    "  <legend>取消考试资格名单</legend>\n" +
+                    "</fieldset>");
+                var tableHtml =
+                    "<table class=\"layui-table\">\n" +
+                    "  <colgroup>\n" +
+                    "    <col>\n" +
+                    "    <col>\n" +
+                    "  </colgroup>\n" +
+                    "    <thead>\n" +
+                    "      <tr>\n" +
+                    "        <th>姓名</th>\n" +
+                    "        <th>到课率(%)</th>\n" +
+                    "      </tr>\n" +
+                    "    </thead>\n" +
+                    "    <tbody>\n";
+                for (var i = 0; i < disqualify.length; i++) {
+                    tableHtml +=
+                        "<tr>\n" +
+                        "  <td>" + disqualify[i][0] + "</td>\n" +
+                        "  <td>" + disqualify[i][1] + "</td>\n" +
+                        "</tr>"
+                }
+                tableHtml += "</tbody>\n</table>";
+                $("#figContainer").append(tableHtml);
+
+
             }
         });
     });

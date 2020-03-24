@@ -33,35 +33,33 @@ public class YKTController {
             returnMap.put("tokenValid", true);
 
             //验证完毕 干正事
-            String courseId=rawJsonObject.get("courseId").toString();
+            String courseId = rawJsonObject.get("courseId").toString();
 
-            JSONObject data=JSONObject.parseObject(rawJsonObject.get("data").toString());
-            String tcourseId=null;
+            JSONObject data = JSONObject.parseObject(rawJsonObject.get("data").toString());
+            String tcourseId = null;
 
-            for(Map.Entry<String, Object> sheetEntry:data.entrySet()){
-                String sheetName=sheetEntry.getKey();
-                String sheet=sheetEntry.getValue().toString();
-                JSONArray sheetArray=JSONArray.parseArray(sheet);
+            for (Map.Entry<String, Object> sheetEntry : data.entrySet()) {
+                String sheetName = sheetEntry.getKey();
+                String sheet = sheetEntry.getValue().toString();
+                JSONArray sheetArray = JSONArray.parseArray(sheet);
 
                 System.out.println("解析：" + sheetName);
-                if(tcourseId==null){
-                    tcourseId=yktService.getTcourseId(sheetArray,courseId);
+                if (tcourseId == null) {
+                    tcourseId = yktService.getTcourseId(sheetArray, courseId);
                 }
-                if(sheetName.contains("公告")){
+                if (sheetName.contains("公告")) {
                     System.out.println("公告");
-                    yktService.saveAnnouncementInfo(sheetArray,tcourseId);
-                }
-                else if(sheetName.contains("课件推送")){
+                    yktService.saveAnnouncementInfo(sheetArray, tcourseId);
+                } else if (sheetName.contains("课件推送")) {
                     System.out.println("课件推送");
-                    yktService.savePushInfo(sheetArray,tcourseId);
-                }
-                else if(sheetName.contains("课堂情况")){
+                    yktService.savePushInfo(sheetArray, tcourseId);
+                } else if (sheetName.contains("课堂情况")) {
                     System.out.println("课堂情况");
-                    yktService.saveCondition(sheetArray,tcourseId);
+                    yktService.saveCondition(sheetArray, tcourseId);
                 }
             }
 
-            returnMap.put("success",true);
+            returnMap.put("success", true);
         }
         System.out.println("\n\n\n返回：");
         System.out.println(returnMap.toJSONString());
@@ -78,7 +76,9 @@ public class YKTController {
             returnMap.put("tokenValid", true);
             int courseId = Integer.parseInt(rawJsonObject.get("courseId").toString());
             int gradeId = Integer.parseInt(rawJsonObject.get("gradeId").toString());
-            String[] types = {"readingRatio"};
+            String[] types = {"readingRatio", "presentRatio", "studentPresentRatio",
+                    "score", "pushStudentCorrectRatio", "pushCorrectRatio",
+                    "pushReadingRatio", "pushDuration"};
             for (String type : types) {
                 returnMap.put(type, yktService.get(courseId, gradeId, type));
             }

@@ -196,6 +196,13 @@ public class YKTService {
 
 
         functionMap.put("readingRatio", yktMapper::getReadingRatio);
+        functionMap.put("presentRatio", yktMapper::getPresentRatio);
+        functionMap.put("studentPresentRatio", yktMapper::getStudentPresentRatio);
+        functionMap.put("score", yktMapper::getScore);
+        functionMap.put("pushStudentCorrectRatio", yktMapper::getPushStudentCorrectRatio);
+        functionMap.put("pushCorrectRatio", yktMapper::getPushCorrectRatio);
+        functionMap.put("pushReadingRatio", yktMapper::getPushReadingRatio);
+        functionMap.put("pushDuration", yktMapper::getPushDuration);
         //todo
         List<Task> tasks = functionMap.get(type).apply(courseId, gradeId);
         Map<String, Double> res = new HashMap<>();

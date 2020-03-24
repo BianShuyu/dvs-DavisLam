@@ -168,13 +168,21 @@ public interface ChaoxingMapper {
                                                 @Param("studentId") int studentId);
 
 
-    @Select("select video_score as videoScore, quiz_score as quizScore, discuss_score as discussScore, " +
-            "work_score as workScore, exam_score as examScore, score, level from tb_cx_score_info " +
+    @Select("select video_score as videoScore, quiz_score as quizScore, " +
+            "discuss_score as discussScore, work_score as workScore, exam_score " +
+            "as examScore, score, level from tb_cx_score_info " +
             "where student_id = #{studentId} " +
-            "and tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and " +
-            "grade_id = (select grade_id from tb_class where id = (select class_id from " +
-            "tb_student where id = #{studentId})));")
+            "and tcourse_id = (select id from tb_teach_course where course_id " +
+            "= #{courseId} and grade_id = (select grade_id from tb_class where id = (select " +
+            "class_id from tb_student where id = #{studentId})))")
     ChaoxingDetail getDetailByCourseAndStudent(@Param("courseId") int courseId,
                                                @Param("studentId") int studentId);
+
+    @Select("select score from tb_cx_score_info where student_id = #{studentId} " +
+            "and tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and " +
+            "grade_id = (select grade_id from tb_class where id = (select class_id " +
+            "from tb_student where id = #{studentId})));")
+    double getScoreByStudent(@Param("courseId") int courseId,
+                             @Param("studentId") int studentId);
 
 }

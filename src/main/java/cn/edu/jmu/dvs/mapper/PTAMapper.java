@@ -40,4 +40,8 @@ public interface PTAMapper {
             "tb_pta.student_id = tb_student.id order by name, studentId, questionType, questionNum")
     List<PTAData> overviewByClass(@Param("courseId") int courseId, @Param("gradeId") int gradeId);
 
+
+    @Select("select sum(score) from tb_pta where student_id = #{studentId} and course_id = #{courseId}")
+    int getScoreByStudent(@Param("courseId") int courseId, @Param("studentId") int studentId);
+
 }
