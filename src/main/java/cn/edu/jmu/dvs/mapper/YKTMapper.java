@@ -156,4 +156,7 @@ public interface YKTMapper {
             "group by tb_ykt_push.id")
     List<Task> getPushDurationRatio(@Param("courseId") int courseId,
                                    @Param("gradeId") int gradeId);
+
+
+    List<Task> getR
 }

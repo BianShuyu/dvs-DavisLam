@@ -1,6 +1,7 @@
 package cn.edu.jmu.dvs.mapper;
 
 import cn.edu.jmu.dvs.entity.ChaoxingAccess;
+import cn.edu.jmu.dvs.entity.ChaoxingDetail;
 import cn.edu.jmu.dvs.entity.ChaoxingSummary;
 import cn.edu.jmu.dvs.entity.Task;
 import org.apache.ibatis.annotations.Insert;
@@ -135,4 +136,45 @@ public interface ChaoxingMapper {
             "and grade_id = #{gradeId}) order by access_date ")
     List<ChaoxingAccess> getAccess(@Param("courseId") int courseId,
                                    @Param("gradeId") int gradeId);
+
+
+    @Select("select name, score as val from tb_cx_work join tb_cx_work_finishing " +
+            "where tb_cx_work.id = tb_cx_work_finishing.work_id " +
+            "and student_id = #{studentId} " +
+            "and tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and " +
+            "grade_id = (select grade_id from tb_class where id = (select class_id from " +
+            "tb_student where id = #{studentId})))")
+    List<Task> getWorkListByCourseAndStudent(@Param("courseId") int courseId,
+                                             @Param("studentId") int studentId);
+
+
+    @Select("select name, percentage as val from tb_cx_video join tb_cx_video_watching " +
+            "where tb_cx_video.id = tb_cx_video_watching.video_id " +
+            "and student_id = #{studentId} " +
+            "and tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and " +
+            "grade_id = (select grade_id from tb_class where id = (select class_id from " +
+            "tb_student where id = #{studentId})))")
+    List<Task> getVideoListByCourseAndStudent(@Param("courseId") int courseId,
+                                              @Param("studentId") int studentId);
+
+
+    @Select("select name, score as val from tb_cx_chapter_quiz join tb_cx_student_chapter " +
+            "where tb_cx_chapter_quiz.id = tb_cx_student_chapter.chapter_id " +
+            "and student_id = #{studentId} " +
+            "and tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and " +
+            "grade_id = (select grade_id from tb_class where id = (select class_id from " +
+            "tb_student where id = #{studentId})))")
+    List<Task> getChapterListByCourseAndStudent(@Param("courseId") int courseId,
+                                                @Param("studentId") int studentId);
+
+
+    @Select("select video_score as videoScore, quiz_score as quizScore, discuss_score as discussScore, " +
+            "work_score as workScore, exam_score as examScore, score, level from tb_cx_score_info " +
+            "where student_id = #{studentId} " +
+            "and tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and " +
+            "grade_id = (select grade_id from tb_class where id = (select class_id from " +
+            "tb_student where id = #{studentId})));")
+    ChaoxingDetail getDetailByCourseAndStudent(@Param("courseId") int courseId,
+                                               @Param("studentId") int studentId);
+
 }
