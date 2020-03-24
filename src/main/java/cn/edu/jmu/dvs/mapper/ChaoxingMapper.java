@@ -107,7 +107,7 @@ public interface ChaoxingMapper {
 
 
     @Select("select name, score as val from tb_cx_work join tb_cx_work_finishing where " +
-            "tb_cx_work.id = tb_cx_work_finishing.work_id and tcourse = (select id " +
+            "tb_cx_work.id = tb_cx_work_finishing.work_id and tcourse_id = (select id " +
             "from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId})")
     List<Task> getWorkListByCourseAndGrade(@Param("courseId") int courseId,
                                            @Param("gradeId") int gradeId);
