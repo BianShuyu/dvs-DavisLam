@@ -1,6 +1,5 @@
 package cn.edu.jmu.dvs.controller;
 
-import cn.edu.jmu.dvs.mapper.YKTMapper;
 import cn.edu.jmu.dvs.service.LoginService;
 import cn.edu.jmu.dvs.service.YKTService;
 import com.alibaba.fastjson.JSONArray;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
-import java.util.function.Function;
 
 @Controller
 @RequestMapping("/ykt")

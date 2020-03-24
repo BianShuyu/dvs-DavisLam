@@ -48,7 +48,7 @@ layui.use(['layer', 'form', 'table'], function () {
                     url = "/finalExam/upload";
                 } else if (fname.startsWith("雨课堂")) {
                     obj["type"] = "yuketang";
-                    url = "/yuketang/upload";
+                    url = "/ykt/upload";
                 }
 
                 var reader = new FileReader();
@@ -66,7 +66,7 @@ layui.use(['layer', 'form', 'table'], function () {
                     }
                     obj["data"] = sheets;
                     obj["courseId"] = course.id;
-
+                    console.log(url);
                     console.log(obj);
                     $.ajax({
                         type: 'post',
