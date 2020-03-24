@@ -1,5 +1,6 @@
 package cn.edu.jmu.dvs.controller;
 
+import cn.edu.jmu.dvs.mapper.YKTMapper;
 import cn.edu.jmu.dvs.service.LoginService;
 import cn.edu.jmu.dvs.service.YKTService;
 import com.alibaba.fastjson.JSONArray;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
+import java.util.function.Function;
 
 @Controller
 @RequestMapping("/ykt")
@@ -68,6 +70,23 @@ public class YKTController {
         return returnMap.toJSONString();
     }
 
+    @PostMapping("/summary")
+    @ResponseBody
+    public String summary(@RequestBody String raw) {
+        JSONObject returnMap = new JSONObject();
+        returnMap.put("tokenValid", false);
+        JSONObject rawJsonObject = JSONObject.parseObject(raw);
+        if (loginService.verify(rawJsonObject.get("token").toString())) {
+            returnMap.put("tokenValid", true);
+            int courseId = Integer.parseInt(rawJsonObject.get("courseId").toString());
+            int gradeId = Integer.parseInt(rawJsonObject.get("gradeId").toString());
+            String[] types = {"readingRatio"};
+            for (String type : types) {
+                returnMap.put(type, yktService.get(courseId, gradeId, type));
+            }
 
+        }
+        return returnMap.toJSONString();
+    }
 
 }

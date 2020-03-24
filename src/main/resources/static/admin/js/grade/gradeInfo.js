@@ -848,7 +848,22 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
 
 
     $(document).on('click', '#yuketang', function () {
+        $("#figContainer").empty();
 
+        var obj = {};
+        obj["token"] = "123";
+        obj["courseId"] = document.getElementById("course").value;
+        obj["gradeId"] = $("#gradeId").val();
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: "/ykt/summary",
+            data: JSON.stringify(obj),
+            success: function (result) {
+                console.log(result);
+            }
+        });
     });
 });
 

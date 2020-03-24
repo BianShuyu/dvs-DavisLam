@@ -1,5 +1,6 @@
 package cn.edu.jmu.dvs.service;
 
+import cn.edu.jmu.dvs.entity.Task;
 import cn.edu.jmu.dvs.mapper.CourseMapper;
 import cn.edu.jmu.dvs.mapper.StudentInfoMapper;
 import cn.edu.jmu.dvs.mapper.YKTMapper;
@@ -8,7 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -182,5 +187,22 @@ public class YKTService {
                 }
             }
         }
+    }
+
+
+    public Map<String, Double> get(int courseId, int gradeId, String type) {
+
+        Map<String, BiFunction<Integer, Integer, List<Task>>> functionMap = new HashMap<>();
+
+
+        functionMap.put("readingRatio", yktMapper::getReadingRatio);
+
+        List<Task> tasks = functionMap.get(type).apply(courseId, gradeId);
+        Map<String, Double> res = new HashMap<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            res.put(task.getName(), task.getVal());
+        }
+        return res;
     }
 }
