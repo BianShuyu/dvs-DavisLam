@@ -4,10 +4,11 @@ layui.use(['layer', 'form', 'table'], function () {
         form = layui.form,
         table = layui.table,
         t;                  //表格数据变量
-
+    console.log(layui.data('local'));
     t = {
         elem: '#gradeTable',
         url: '/grade/list',
+        where: layui.data('local'),
         method: 'post',
         page: true,
         width: $(parent.window).width() - 223,
@@ -23,7 +24,7 @@ layui.use(['layer', 'form', 'table'], function () {
     };
     table.render(t);
 
-    table.on('row(gradeList)', function(obj) {
+    table.on('row(gradeList)', function (obj) {
         var data = obj.data;
         var editIndex = layer.open({
             title: data.name,

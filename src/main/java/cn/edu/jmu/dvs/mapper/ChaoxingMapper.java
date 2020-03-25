@@ -183,7 +183,7 @@ public interface ChaoxingMapper {
             "grade_id = (select grade_id from tb_class where id = (select class_id " +
             "from tb_student where id = #{studentId})));")
     double getScoreByCourseAndStudent(@Param("courseId") int courseId,
-                             @Param("studentId") int studentId);
+                                      @Param("studentId") int studentId);
 
     @Select("select student_id as name, score as val from tb_cx_score_info  where student_id " +
             "in (select id from tb_student where class_id in " +

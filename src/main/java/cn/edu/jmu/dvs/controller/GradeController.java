@@ -60,8 +60,12 @@ public class GradeController {
     @PostMapping("list")
     @ResponseBody
     public PageData<Grade> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
-        return new PageData<>(gradeService.getAll(), page, limit);
+                                @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                                @RequestParam(value = "token") String token) {
+        if (loginService.verify(token)) {
+            return new PageData<>(gradeService.getAll(), page, limit);
+        }
+        return null;
     }
 
     @GetMapping("info")

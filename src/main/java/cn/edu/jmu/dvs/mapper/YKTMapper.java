@@ -197,7 +197,7 @@ public interface YKTMapper {
             "(select grade_id from tb_class where id = (select class_id from tb_student where id = #{studentId})))) " +
             "and student_id = #{studentId};")
     int getScoreByCourseAndStudent(@Param("courseId") int courseId,
-                          @Param("studentId") int studentId);
+                                   @Param("studentId") int studentId);
 
 
     @Select("select sum(score) from tb_ykt_push_question where " +

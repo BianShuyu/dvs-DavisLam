@@ -33,14 +33,14 @@ public class FinalExamController {
             returnMap.put("tokenValid", true);
 
             //验证完毕 干正事
-            String courseId=rawJsonObject.get("courseId").toString();
-            JSONObject data=JSONObject.parseObject(rawJsonObject.get("data").toString());
-            for(String s:data.keySet()){
-                String sheet=data.get(s).toString();
+            String courseId = rawJsonObject.get("courseId").toString();
+            JSONObject data = JSONObject.parseObject(rawJsonObject.get("data").toString());
+            for (String s : data.keySet()) {
+                String sheet = data.get(s).toString();
                 JSONArray sheetArray = JSONArray.parseArray(sheet);
                 System.out.println(sheetArray);
-                finalExamService.saveFinalExamData(sheetArray,courseId);
-                returnMap.put("success",true);
+                finalExamService.saveFinalExamData(sheetArray, courseId);
+                returnMap.put("success", true);
                 break;
             }
         }

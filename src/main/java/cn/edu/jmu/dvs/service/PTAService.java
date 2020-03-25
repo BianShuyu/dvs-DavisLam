@@ -71,7 +71,7 @@ public class PTAService {
                     }
                 }
             } else if (i != 2) {
-                if(i%20==0) System.out.println("导入"+i+"/"+data.size());
+                if (i % 20 == 0) System.out.println("导入" + i + "/" + data.size());
                 String studentNum = rowData.get(1);
                 String currentQuestionType = null;
                 String currentQuestionNum = null;
@@ -97,11 +97,11 @@ public class PTAService {
                         score = 0;
                     }
                     //if (studentNum != null && studentInfoMapper.getStudentName(studentNum) != null && currentQuestionNum != null) {
-                        try {
-                            ptaMapper.addPTAScore(studentNum, courseId, currentQuestionType, currentQuestionNum, score);
-                        }catch (DataAccessException e){
-                            //System.out.println("PTA ERROR");
-                        }
+                    try {
+                        ptaMapper.addPTAScore(studentNum, courseId, currentQuestionType, currentQuestionNum, score);
+                    } catch (DataAccessException e) {
+                        //System.out.println("PTA ERROR");
+                    }
 
                     //}
 
@@ -184,7 +184,8 @@ public class PTAService {
             int score = item.getScore();
 
             if (!typeData.containsKey(questionType)) typeData.put(questionType, new HashMap<>());
-            if (!typeData.get(questionType).containsKey(questionNum)) typeData.get(questionType).put(questionNum, new ArrayList<>(Arrays.asList(0, 0)));
+            if (!typeData.get(questionType).containsKey(questionNum))
+                typeData.get(questionType).put(questionNum, new ArrayList<>(Arrays.asList(0, 0)));
             int index = score == fullScore.get(questionNum) ? 1 : 0;
             ArrayList<Integer> tmp = typeData.get(questionType).get(questionNum);
             tmp.set(index, tmp.get(index) + 1);

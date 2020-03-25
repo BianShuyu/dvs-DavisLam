@@ -49,7 +49,6 @@ public class StudentController {
         return "/student/list";
     }
 
-    //todo 命名
     @PostMapping("/upload")
     @ResponseBody
     public String upload(@RequestBody String raw) {
@@ -81,7 +80,9 @@ public class StudentController {
     @ResponseBody
     public PageData<Student> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                   @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                                  @RequestParam(value = "token") String token,
                                   ServletRequest request) {
+        if (!loginService.verify(token)) return null;
         Map extra = WebUtils.getParametersStartingWith(request, "s_");
         List l = new ArrayList<Student>();
         if (!extra.isEmpty()) {
@@ -100,13 +101,18 @@ public class StudentController {
     @ResponseBody
     public PageData<FinalExamData> overview(@RequestParam(value = "page", defaultValue = "1") int page,
                                             @RequestParam(value = "limit", defaultValue = "10") int limit,
+                                            @RequestParam(value = "token") String token,
                                             ServletRequest request) {
+        if (!loginService.verify(token)) return null;
         return new PageData<>(finalExamService.overviewByStudent(Integer.parseInt(request.getParameter("studentId"))), page, limit);
     }
 
     // TODO: 2020/3/17  根据id取出学生信息
     @RequestMapping("info")
-    public String info(@RequestParam(value = "id") int id, ModelMap map) {
+    public String info(@RequestParam(value = "id") int id,
+                       @RequestParam(value = "token") String token,
+                       ModelMap map) {
+        if (!loginService.verify(token)) return null;
         Student student = studentService.getByID(id);
 
         map.put("student", student);

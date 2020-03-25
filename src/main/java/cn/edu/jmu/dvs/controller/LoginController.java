@@ -26,8 +26,8 @@ public class LoginController {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         HashMap<String, Object> map = new HashMap<>();
-        String token = loginService.login(username,password);
-        if (token!=null) {
+        String token = loginService.login(username, password);
+        if (token != null) {
             map.put("success", true);
             map.put("token", token);
             map.put("url", "index");
@@ -41,10 +41,10 @@ public class LoginController {
     @PostMapping("/test")
     @ResponseBody
     public String test(@RequestBody String m) throws FileNotFoundException {
-        PrintWriter pw=new PrintWriter(new FileOutputStream(new File("testjson.txt")));
+        PrintWriter pw = new PrintWriter(new FileOutputStream(new File("testjson.txt")));
         pw.write(m);
         pw.close();
-        JSONObject jsonObject=JSONObject.parseObject(m);
+        JSONObject jsonObject = JSONObject.parseObject(m);
         System.out.println(jsonObject.get("Sheet0"));
         return "index";
     }

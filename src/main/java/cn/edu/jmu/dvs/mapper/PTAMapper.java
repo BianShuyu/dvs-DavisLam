@@ -26,11 +26,11 @@ public interface PTAMapper {
                      @Param("course_id") String courseId,
                      @Param("question_type") String questionType,
                      @Param("question_num") String questionNum,
-                     @Param("score") int score) ;
+                     @Param("score") int score);
 
     @Select("select student_id as studentId, question_type as questionType, sum(score) as score "
-             + "from tb_pta where course_id = #{courseId} "
-             + "group by student_id, question_type")
+            + "from tb_pta where course_id = #{courseId} "
+            + "group by student_id, question_type")
     List<PTASubtotal> getSubtotal(@Param("courseId") int courseId);
 
 

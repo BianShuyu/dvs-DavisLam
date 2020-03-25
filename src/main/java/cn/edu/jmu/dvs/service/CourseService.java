@@ -25,6 +25,7 @@ public class CourseService {
     public int count(int id) {
         return courseMapper.countByID(id);
     }
+
     public boolean save(String name) {
         courseMapper.save(name);
         return count(name) > 0;
@@ -35,7 +36,7 @@ public class CourseService {
         return count(id) == 0;
     }
 
-    public List<Course> getCourseList(int gradeId){
+    public List<Course> getCourseList(int gradeId) {
         return courseMapper.getCourseList(gradeId);
     }
 

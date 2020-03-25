@@ -28,6 +28,7 @@ layui.use(['layer', 'form', 'table'], function () {
         if (obj.event === 'upFile') {
 
             var xlf = document.getElementById('xlf');
+
             function importFile(files) {
                 var loadIndex = layer.load(2, {
                     shade: [0.3, '#333']
@@ -36,7 +37,7 @@ layui.use(['layer', 'form', 'table'], function () {
                 var fname = f.name;
                 var obj = {};
                 var url = "";
-                obj["token"] = "tokentest";
+                obj["token"] = layui.data('local').token;
                 if (fname.startsWith("PTA")) {
                     obj["type"] = "pta";
                     url = "/pta/upload";
@@ -74,7 +75,7 @@ layui.use(['layer', 'form', 'table'], function () {
                         contentType: 'application/json',
                         url: url,
                         data: JSON.stringify(obj),
-                        success: function(res) {
+                        success: function (res) {
                             layer.close(loadIndex);
                             if (res.success) {
                                 parent.layer.msg("数据上传成功!", {time: 1500}, function () {
@@ -97,6 +98,7 @@ layui.use(['layer', 'form', 'table'], function () {
             function handleFile(e) {
                 importFile(e.target.files);
             }
+
             if (first) {
                 xlf.addEventListener('change', handleFile, false);
                 first = false;

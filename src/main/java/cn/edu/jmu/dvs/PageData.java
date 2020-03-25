@@ -13,7 +13,7 @@ public class PageData<T> {
     public PageData(List<T> source, int page, int limit) {
         ArrayList<T> data = new ArrayList<>();
         int start = (page - 1) * limit;
-        int end  = Math.min(page * limit, source.size());
+        int end = Math.min(page * limit, source.size());
         for (int i = start; i < end; i++) {
             data.add(source.get(i));
         }

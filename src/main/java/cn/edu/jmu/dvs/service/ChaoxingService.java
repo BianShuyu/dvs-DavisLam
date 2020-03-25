@@ -43,11 +43,13 @@ public class ChaoxingService {
                 if (tcourseId != null) {//如果有授课id了就跟着这个来
                     try {
                         chaoxingMapper.addDiscussInfo(studentNum, tcourseId, comments, replies, suggestScore);
-                    }catch (Exception ignored){}
+                    } catch (Exception ignored) {
+                    }
                 } else {//如果没有授课id（即当前学生没有授课id，但合法 所以要加入授课id）
                     try {
                         courseMapper.setTeachCourseByCourseIdAndStudentNum(courseId, studentNum);
-                    }catch (Exception ignored){}
+                    } catch (Exception ignored) {
+                    }
                     tcourseId = courseMapper.getTcourseIdByCourseIdAndStudentNum(courseId, studentNum);
                 }
             }//不是合法的学生不计入统计
@@ -69,39 +71,43 @@ public class ChaoxingService {
             int t20t24 = Integer.parseInt(rowData.get(9));
             try {
                 chaoxingMapper.addAccessInfo(tcourseId, strDate, t00t04, t04t08, t08t12, t12t16, t16t20, t20t24);
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
     }
 
     public void saveVideoInfo(JSONArray jsonData, String tcourseId) {
-        int repeat=2;
+        int repeat = 2;
         List<String> data = JSONArray.parseArray(jsonData.toJSONString(), String.class);
         String row = data.get(0);
         List<String> videoNameList = JSONArray.parseArray(row, String.class);
         for (int i = 6; i < videoNameList.size(); i++) {
-            if(chaoxingMapper.getVideoId(videoNameList.get(i))!=null){
-                videoNameList.set(i,videoNameList.get(i)+repeat);
-                try {
-                    chaoxingMapper.addVideo(tcourseId,videoNameList.get(i));
-                }catch (Exception ignored){}
-                repeat++;
-            }else {
+            if (chaoxingMapper.getVideoId(videoNameList.get(i)) != null) {
+                videoNameList.set(i, videoNameList.get(i) + repeat);
                 try {
                     chaoxingMapper.addVideo(tcourseId, videoNameList.get(i));
-                }catch (Exception ignored){}
+                } catch (Exception ignored) {
+                }
+                repeat++;
+            } else {
+                try {
+                    chaoxingMapper.addVideo(tcourseId, videoNameList.get(i));
+                } catch (Exception ignored) {
+                }
             }
         }
         for (int i = 2; i < data.size(); i++) {
             row = data.get(i);
             List<String> rowData = JSONArray.parseArray(row, String.class);
             String studentNum = rowData.get(1);
-            if(studentInfoMapper.getStudentName(studentNum)!=null) {
+            if (studentInfoMapper.getStudentName(studentNum) != null) {
                 for (int j = 6; j < videoNameList.size(); j++) {
                     String videoId = chaoxingMapper.getVideoId(videoNameList.get(j));
                     String percentage = rowData.get(j).substring(0, rowData.get(j).length() - 1);
                     try {
                         chaoxingMapper.addVideoWatchingInfo(studentNum, videoId, percentage);
-                    }catch (Exception ignored){}
+                    } catch (Exception ignored) {
+                    }
                 }
             }
         }
@@ -112,22 +118,23 @@ public class ChaoxingService {
         for (int i = 1; i < data.size(); i++) {
             String row = data.get(i);
             List<String> rowData = JSONArray.parseArray(row, String.class);
-            String studentNum=rowData.get(4);
+            String studentNum = rowData.get(4);
             String videoScore = rowData.get(11);
-            String videoProgress = rowData.get(12).substring(0,rowData.get(12).length()-4);
+            String videoProgress = rowData.get(12).substring(0, rowData.get(12).length() - 4);
             String quizScore = rowData.get(13);
             String discussScore = rowData.get(15);
             String workScore = rowData.get(16);
             String examScore = rowData.get(17);
-            String taskPercentage = rowData.get(18).substring(0,rowData.get(18).length()-1);
+            String taskPercentage = rowData.get(18).substring(0, rowData.get(18).length() - 1);
             String score = rowData.get(19);
             String level = rowData.get(20);
 
-            if(studentInfoMapper.getStudentName(studentNum)!=null) {
+            if (studentInfoMapper.getStudentName(studentNum) != null) {
                 try {
-                    chaoxingMapper.addScoreInfo(studentNum,tcourseId,videoScore,videoProgress,quizScore,discussScore,
-                            workScore,examScore,taskPercentage,score,level);
-                }catch (Exception ignored){}
+                    chaoxingMapper.addScoreInfo(studentNum, tcourseId, videoScore, videoProgress, quizScore, discussScore,
+                            workScore, examScore, taskPercentage, score, level);
+                } catch (Exception ignored) {
+                }
             }
         }
     }
@@ -137,24 +144,26 @@ public class ChaoxingService {
         String row = data.get(0);
         List<String> workNameList = JSONArray.parseArray(row, String.class);
         for (int i = 6; i < workNameList.size(); i++) {
-            if(workNameList.get(i)!=null){
+            if (workNameList.get(i) != null) {
                 try {
-                    chaoxingMapper.addWork(tcourseId,workNameList.get(i));
-                }catch (Exception ignored){}
+                    chaoxingMapper.addWork(tcourseId, workNameList.get(i));
+                } catch (Exception ignored) {
+                }
             }
         }
         for (int i = 2; i < data.size(); i++) {
             row = data.get(i);
             List<String> rowData = JSONArray.parseArray(row, String.class);
             String studentNum = rowData.get(0);
-            if(studentInfoMapper.getStudentName(studentNum)!=null) {
+            if (studentInfoMapper.getStudentName(studentNum) != null) {
                 for (int j = 6; j < workNameList.size(); j++) {
-                    if(workNameList.get(j)!=null){
-                        String workId=chaoxingMapper.getWorkId(workNameList.get(j));
-                        String score=rowData.get(j);
+                    if (workNameList.get(j) != null) {
+                        String workId = chaoxingMapper.getWorkId(workNameList.get(j));
+                        String score = rowData.get(j);
                         try {
-                            chaoxingMapper.addWorkInfo(studentNum,workId,score);
-                        }catch (Exception ignored){}
+                            chaoxingMapper.addWorkInfo(studentNum, workId, score);
+                        } catch (Exception ignored) {
+                        }
                     }
                 }
             }
@@ -167,13 +176,14 @@ public class ChaoxingService {
         for (int i = 2; i < data.size(); i++) {
             String row = data.get(i);
             List<String> rowData = JSONArray.parseArray(row, String.class);
-            String studentNum=rowData.get(3);
-            String score = (int)Double.parseDouble(rowData.get(11)) +"";
+            String studentNum = rowData.get(3);
+            String score = (int) Double.parseDouble(rowData.get(11)) + "";
 
-            if(studentInfoMapper.getStudentName(studentNum)!=null) {
+            if (studentInfoMapper.getStudentName(studentNum) != null) {
                 try {
-                    chaoxingMapper.addExamInfo(studentNum,tcourseId,score);
-                }catch (Exception ignored){}
+                    chaoxingMapper.addExamInfo(studentNum, tcourseId, score);
+                } catch (Exception ignored) {
+                }
             }
         }
     }
@@ -184,24 +194,26 @@ public class ChaoxingService {
         String row = data.get(0);
         List<String> chapterNameList = JSONArray.parseArray(row, String.class);
         for (int i = 6; i < chapterNameList.size(); i++) {
-            if(chapterNameList.get(i)!=null){
+            if (chapterNameList.get(i) != null) {
                 try {
-                    chaoxingMapper.addChapterQuiz(tcourseId,chapterNameList.get(i));
-                }catch (Exception ignored){}
+                    chaoxingMapper.addChapterQuiz(tcourseId, chapterNameList.get(i));
+                } catch (Exception ignored) {
+                }
             }
         }
         for (int i = 2; i < data.size(); i++) {
             row = data.get(i);
             List<String> rowData = JSONArray.parseArray(row, String.class);
             String studentNum = rowData.get(0);
-            if(studentInfoMapper.getStudentName(studentNum)!=null) {
+            if (studentInfoMapper.getStudentName(studentNum) != null) {
                 for (int j = 6; j < chapterNameList.size(); j++) {
-                    if(chapterNameList.get(j)!=null){
-                        String workId=chaoxingMapper.getChapterQuizId(chapterNameList.get(j));
-                        String score=rowData.get(j);
+                    if (chapterNameList.get(j) != null) {
+                        String workId = chaoxingMapper.getChapterQuizId(chapterNameList.get(j));
+                        String score = rowData.get(j);
                         try {
-                            chaoxingMapper.addChapterQuizScore(studentNum,workId,score);
-                        }catch (Exception ignored){}
+                            chaoxingMapper.addChapterQuizScore(studentNum, workId, score);
+                        } catch (Exception ignored) {
+                        }
                     }
                 }
             }
@@ -217,7 +229,7 @@ public class ChaoxingService {
             double percentage = v.getVal();
             if (!res.containsKey(name)) res.put(name, new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)));
             ArrayList<Integer> cur = res.get(name);
-            int index = Math.min(9, (int)(percentage / 10));
+            int index = Math.min(9, (int) (percentage / 10));
             cur.set(index, cur.get(index) + 1);
         }
         return res;
@@ -229,7 +241,7 @@ public class ChaoxingService {
         for (int i = 0; i < list.size(); i++) {
             Task item = list.get(i);
             String name = item.getName();
-            int score = (int)item.getVal();
+            int score = (int) item.getVal();
             //sum zeros non_zeros
             if (!res.containsKey(name)) res.put(name, new ArrayList<>(Arrays.asList(0, 0, 0)));
             ArrayList<Integer> cur = res.get(name);
@@ -265,8 +277,8 @@ public class ChaoxingService {
                 classData.put("level", new ArrayList<String>());
             }
             Map<String, Object> classData = res.get(className);
-            ((ArrayList<Integer>)classData.get("examScore")).add(examScore);
-            ((ArrayList<String>)classData.get("level")).add(level);
+            ((ArrayList<Integer>) classData.get("examScore")).add(examScore);
+            ((ArrayList<String>) classData.get("level")).add(level);
         }
         return res;
     }
@@ -274,13 +286,13 @@ public class ChaoxingService {
     public Map<String, Object> getAccess(int courseId, int gradeId) {
         Map<String, Object> res = new HashMap<>();
         List<ChaoxingAccess> accesses = chaoxingMapper.getAccess(courseId, gradeId);
-        ArrayList<String>  dates = new ArrayList<>();
-        ArrayList<Integer> t0    = new ArrayList<>();
-        ArrayList<Integer> t4    = new ArrayList<>();
-        ArrayList<Integer> t8    = new ArrayList<>();
-        ArrayList<Integer> t12   = new ArrayList<>();
-        ArrayList<Integer> t16   = new ArrayList<>();
-        ArrayList<Integer> t20   = new ArrayList<>();
+        ArrayList<String> dates = new ArrayList<>();
+        ArrayList<Integer> t0 = new ArrayList<>();
+        ArrayList<Integer> t4 = new ArrayList<>();
+        ArrayList<Integer> t8 = new ArrayList<>();
+        ArrayList<Integer> t12 = new ArrayList<>();
+        ArrayList<Integer> t16 = new ArrayList<>();
+        ArrayList<Integer> t20 = new ArrayList<>();
 
         for (int i = 0; i < accesses.size(); i++) {
             ChaoxingAccess access = accesses.get(i);
@@ -297,14 +309,12 @@ public class ChaoxingService {
         res.put("t0", t0);
         res.put("t4", t4);
         res.put("t8", t8);
-        res.put("t12",t12);
-        res.put("t16",t16);
-        res.put("t20",t20);
+        res.put("t12", t12);
+        res.put("t16", t16);
+        res.put("t20", t20);
 
         return res;
     }
-
-
 
 
     public Map<String, Double> get(int courseId, int studentId, String type) {
@@ -336,8 +346,6 @@ public class ChaoxingService {
     public List<Task> getScoresByCourseAndGrade(int courseId, int gradeId) {
         return chaoxingMapper.getScoresByCourseAndGrade(courseId, gradeId);
     }
-
-
 
 
 }

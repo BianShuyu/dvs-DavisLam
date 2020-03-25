@@ -28,6 +28,6 @@ public interface UserMapper {
     @Select("select unix_timestamp(expire_time) from tb_admin where token=#{token}")
     String getExpireTime(@Param("token") String token);
 
-    @Select("select timestamp()")
+    @Select("select unix_timestamp()")
     String getNow();
 }

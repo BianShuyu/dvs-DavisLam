@@ -88,7 +88,7 @@ public class CourseController {
         Map<String, Object> res = new HashMap<>();
         int count = 0;
         for (Course course : courses) {
-            if ((boolean)delete(course.getId()).get("success")) {
+            if ((boolean) delete(course.getId()).get("success")) {
                 count++;
             }
         }

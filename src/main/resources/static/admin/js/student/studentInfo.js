@@ -12,6 +12,7 @@ layui.use(['element', 'layer', 'form', 'table'], function () {
         method: 'post',
         page: true,
         where: {
+            "token": layui.data("local").token,
             studentId: $("#studentId").val()
         },
         width: $(parent.window).width() / 2,
@@ -33,7 +34,7 @@ layui.use(['element', 'layer', 'form', 'table'], function () {
         $("#figContainer").append(oneFig("PTA各题型得分", "fig"));
 
         var obj = {};
-        obj["token"] = "123";
+        obj["token"] = layui.data('local').token;
         obj["courseId"] = courseId;
         obj["studentId"] = studentId;
         console.log(obj);
@@ -89,7 +90,7 @@ layui.use(['element', 'layer', 'form', 'table'], function () {
         $("#figContainer").empty();
 
         var obj = {};
-        obj["token"] = "123";
+        obj["token"] = layui.data('local').token;
         obj["courseId"] = courseId;
         obj["studentId"] = studentId;
         console.log(obj);
@@ -106,7 +107,7 @@ layui.use(['element', 'layer', 'form', 'table'], function () {
                 var detail = res.detail;
                 var tableData = [
                     [detail.discussScore, detail.videoScore, detail.workScore,
-                     detail.quizScore, detail.examScore, detail.score, detail.level]
+                        detail.quizScore, detail.examScore, detail.score, detail.level]
                 ];
 
                 staticTable("成绩组成", "#figContainer", head, tableData);
@@ -126,7 +127,7 @@ layui.use(['element', 'layer', 'form', 'table'], function () {
         $("#figContainer").empty();
 
         var obj = {};
-        obj["token"] = "123";
+        obj["token"] = layui.data('local').token;
         obj["courseId"] = courseId;
         obj["studentId"] = studentId;
         console.log(obj);
@@ -170,7 +171,7 @@ layui.use(['element', 'layer', 'form', 'table'], function () {
         $("#figContainer").empty();
 
         var obj = {};
-        obj["token"] = "123";
+        obj["token"] = layui.data('local').token;
         obj["courseId"] = courseId;
         obj["studentId"] = studentId;
         console.log(obj);
@@ -190,10 +191,10 @@ layui.use(['element', 'layer', 'form', 'table'], function () {
                     radar: [
                         {
                             indicator: [
-                                { text: '期末考试', max: 100 },
-                                { text: 'PTA', max: 100 },
-                                { text: '超星', max: 100 },
-                                { text: '雨课堂', max: 100 },
+                                {text: '期末考试', max: 100},
+                                {text: 'PTA', max: 100},
+                                {text: '超星', max: 100},
+                                {text: '雨课堂', max: 100},
                             ],
                             startAngle: 90,
                             splitNumber: 4,
@@ -233,7 +234,7 @@ layui.use(['element', 'layer', 'form', 'table'], function () {
                                     value: [res.final, res.pta, res.chaoxing, res.yuketang],
                                     label: {
                                         show: true,
-                                        formatter: function(params) {
+                                        formatter: function (params) {
                                             return Math.floor(params.value);
                                         }
                                     }

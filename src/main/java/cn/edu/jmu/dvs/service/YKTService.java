@@ -56,7 +56,8 @@ public class YKTService {
         String announcementName = rowData.get(0);
         try {
             yktMapper.addAnnouncement(tcourseId, announcementName);
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         String announcementId = yktMapper.getAnnouncementId(announcementName);
 
@@ -68,7 +69,8 @@ public class YKTService {
             if (studentInfoMapper.getStudentName(studentNum) != null) {
                 try {
                     yktMapper.addAnnouncementStatus(studentNum, announcementId, status);
-                } catch (Exception ignored) { }
+                } catch (Exception ignored) {
+                }
             }
         }
     }
@@ -81,7 +83,8 @@ public class YKTService {
         String conditionName = rowData.get(0);
         try {
             yktMapper.addCondition(tcourseId, conditionName);
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
         String conditionId = yktMapper.getConditionId(conditionName);
 
         for (int i = 4; i < data.size(); i++) {
@@ -93,7 +96,8 @@ public class YKTService {
             if (studentInfoMapper.getStudentName(studentNum) != null) {
                 try {
                     yktMapper.addConditionStatus(studentNum, conditionId, isPresent);
-                }catch (Exception ignored) { }
+                } catch (Exception ignored) {
+                }
             }
         }
     }
@@ -106,7 +110,8 @@ public class YKTService {
         String pushName = rowData.get(0);
         try {
             yktMapper.addPush(tcourseId, pushName);
-        }catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
         String pushId = yktMapper.getPushId(pushName);
 
         //观看信息部分
@@ -116,23 +121,24 @@ public class YKTService {
             String studentNum = rowData.get(0);
             int readPages = Integer.parseInt(rowData.get(2));
             String strTotalDuration = rowData.get(4);
-            long totalDuration=0;
-            if(readPages!=0){
+            long totalDuration = 0;
+            if (readPages != 0) {
                 //h时m分s秒
                 String pattern = "(.*)(时)(.*)(分)(.*)(秒)";
                 Matcher m = Pattern.compile(pattern).matcher(strTotalDuration);
                 m.find();
-                int hour=Integer.parseInt(m.group(1));
-                int min=Integer.parseInt(m.group(3));
-                int sec=Integer.parseInt(m.group(5));
-                totalDuration=hour*60*60+min*60+sec;
+                int hour = Integer.parseInt(m.group(1));
+                int min = Integer.parseInt(m.group(3));
+                int sec = Integer.parseInt(m.group(5));
+                totalDuration = hour * 60 * 60 + min * 60 + sec;
             }
 
 
             if (studentInfoMapper.getStudentName(studentNum) != null) {
                 try {
                     yktMapper.addPushReadingInfo(studentNum, pushId, readPages, totalDuration);
-                }catch (Exception ignored) { }
+                } catch (Exception ignored) {
+                }
             }
         }
 
@@ -149,20 +155,21 @@ public class YKTService {
         //先提交题目
         for (int i = 7; i < rowData.size(); i++) {
             String question = rowData.get(i);
-            String questionName=null;
-            String questionAnswer=null;
-            String questionScore=null;
+            String questionName = null;
+            String questionAnswer = null;
+            String questionScore = null;
             if (!question.contains("主观题") && !question.contains("投票题")) {//仅考虑选择题
                 //题号1 空格 答案3 空格 分值5 分  第1题 AD 3.0分
                 String pattern = "(.*)( )(.*)( )(.*)分";
                 Matcher m = Pattern.compile(pattern).matcher(question);
                 m.find();
-                questionName=m.group(1);
-                questionAnswer=m.group(3);
-                questionScore=m.group(5);
+                questionName = m.group(1);
+                questionAnswer = m.group(3);
+                questionScore = m.group(5);
                 try {
-                    yktMapper.addPushQuestion(pushId,questionName,questionScore);
-                }catch (Exception ignored) { }
+                    yktMapper.addPushQuestion(pushId, questionName, questionScore);
+                } catch (Exception ignored) {
+                }
             }
             questionNameList.add(questionName);
             questionAnswerList.add(questionAnswer);
@@ -174,15 +181,16 @@ public class YKTService {
             if (studentInfoMapper.getStudentName(studentNum) != null) {
                 for (int j = 7; j < questionNameList.size(); j++) {
                     if (questionNameList.get(j) != null) {
-                        String questionId = yktMapper.getPushQuestionId(pushId,questionNameList.get(j));
+                        String questionId = yktMapper.getPushQuestionId(pushId, questionNameList.get(j));
                         String strAnswerCondition = rowData.get(j);
-                        int answerCondition=0;
-                        if(strAnswerCondition.equals(questionAnswerList.get(j))){
-                            answerCondition=1;
+                        int answerCondition = 0;
+                        if (strAnswerCondition.equals(questionAnswerList.get(j))) {
+                            answerCondition = 1;
                         }
                         try {
-                            yktMapper.addPushAnswer(studentNum,questionId,answerCondition);
-                        }catch (Exception ignored) { }
+                            yktMapper.addPushAnswer(studentNum, questionId, answerCondition);
+                        } catch (Exception ignored) {
+                        }
                     }
                 }
             }

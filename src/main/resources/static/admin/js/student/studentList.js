@@ -8,6 +8,7 @@ layui.use(['layer', 'form', 'table'], function () {
     t = {
         elem: '#studentTable',
         url: '/student/list',
+        where: layui.data('local'),
         method: 'post',
         page: true,
         width: $(parent.window).width() - 223,
@@ -37,7 +38,7 @@ layui.use(['layer', 'form', 'table'], function () {
             var editIndex = layer.open({
                 title: "学生信息",
                 type: 2,
-                content: "/student/info?id=" + data.id,
+                content: "/student/info?id=" + data.id + "&token=" + layui.data('local').token,
                 success: function (layero, index) {
                     setTimeout(function () {
                         layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {

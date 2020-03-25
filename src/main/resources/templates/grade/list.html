@@ -16,6 +16,7 @@
     .upload {
         position: relative;
     }
+
     .change {
         position: absolute;
         overflow: hidden;
@@ -65,6 +66,7 @@
 
 <script>
     console.log(XLSX);
+
     function importFile(files) {
         var f = files[0];
         var $ = layui.jquery;
@@ -86,7 +88,7 @@
             }
 
             var meta = {};
-            meta["token"] = "123";
+            meta["token"] = layui.data('local').token;
             meta["data"] = sheets;
             console.log(JSON.stringify(meta));
             $.ajax({

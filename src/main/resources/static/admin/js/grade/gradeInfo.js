@@ -135,7 +135,7 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
         $("#figContainer").append(oneFig("箱型图", "fig3"));
 
         var obj = {};
-        obj["token"] = "123";
+        obj["token"] = layui.data('local').token;
         obj["courseId"] = document.getElementById("course").value;
         obj["gradeId"] = $("#gradeId").val();
         $.ajax({
@@ -272,7 +272,7 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
     $(document).on('click', '#pta', function () {
         $("#figContainer").empty();
         var obj = {};
-        obj["token"] = "123";
+        obj["token"] = layui.data('local').token;
         obj["courseId"] = document.getElementById("course").value;
         obj["gradeId"] = $("#gradeId").val();
         $.ajax({
@@ -409,7 +409,7 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
     $(document).on('click', '#chaoxing', function () {
         $("#figContainer").empty();
         var obj = {};
-        obj["token"] = "123";
+        obj["token"] = layui.data('local').token;
         obj["courseId"] = document.getElementById("course").value;
         obj["gradeId"] = $("#gradeId").val();
         $.ajax({
@@ -827,7 +827,7 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
         $("#figContainer").empty();
 
         var obj = {};
-        obj["token"] = "123";
+        obj["token"] = layui.data('local').token;
         obj["courseId"] = document.getElementById("course").value;
         obj["gradeId"] = $("#gradeId").val();
         $.ajax({
@@ -903,7 +903,7 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
         $("#figContainer").empty();
 
         var obj = {};
-        obj["token"] = "123";
+        obj["token"] = layui.data('local').token;
         obj["courseId"] = document.getElementById("course").value;
         obj["gradeId"] = $("#gradeId").val();
         $.ajax({
@@ -943,13 +943,12 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
                     });
 
                     var reg = ecStat.regression('polynomial', data, 2);
-                    reg.points.sort(function(a, b) {
+                    reg.points.sort(function (a, b) {
                         return a[0] - b[0];
                     });
 
                     return {
-                        tooltip: {
-                        },
+                        tooltip: {},
                         xAxis: {
                             name: curXAxis,
                         },
@@ -992,9 +991,9 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
                     };
                 }
 
-                var gui = new dat.GUI({ autoPlace: false });
+                var gui = new dat.GUI({autoPlace: false});
 
-                var guiText = function() {
+                var guiText = function () {
                     this.xAxis = fieldNames[0];
                     this.yAxis = fieldNames[1];
                 };

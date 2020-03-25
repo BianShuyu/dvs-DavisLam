@@ -51,7 +51,7 @@ function linePlot() {
         yAxis: {
             type: 'value',
             axisLabel: {
-                formatter: function(value) {
+                formatter: function (value) {
                     return value + " " + unit;
                 }
             }
