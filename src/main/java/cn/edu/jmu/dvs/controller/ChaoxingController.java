@@ -100,4 +100,27 @@ public class ChaoxingController {
         }
         return returnMap.toJSONString();
     }
+
+
+    @PostMapping("/studentInfo")
+    @ResponseBody
+    public String student(@RequestBody String raw) {
+        JSONObject returnMap = new JSONObject();
+        returnMap.put("tokenValid", false);
+        JSONObject rawJsonObject = JSONObject.parseObject(raw);
+        if (loginService.verify(rawJsonObject.get("token").toString())) {
+            returnMap.put("tokenValid", true);
+            int courseId = Integer.parseInt(rawJsonObject.get("courseId").toString());
+            int studentId = Integer.parseInt(rawJsonObject.get("studentId").toString());
+
+            String[] types = {"work", "video", "chapter"};
+            for (String type : types) {
+                returnMap.put(type, chaoxingService.get(courseId, studentId, type));
+            }
+            returnMap.put("detail", chaoxingService.getDetailByCourseAndStudent(courseId, studentId));
+        }
+        return returnMap.toJSONString();
+    }
+
+
 }

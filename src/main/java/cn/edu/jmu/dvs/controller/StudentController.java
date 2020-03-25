@@ -35,6 +35,15 @@ public class StudentController {
     @Autowired
     FinalExamService finalExamService;
 
+    @Autowired
+    PTAService ptaService;
+
+    @Autowired
+    ChaoxingService chaoxingService;
+
+    @Autowired
+    YKTService yktService;
+
     @GetMapping("/list")
     public String getStudentList() {
         return "/student/list";
@@ -104,5 +113,23 @@ public class StudentController {
         int gradeID = gradeService.getGrade(student.getClazz());
         map.put("courses", courseService.getCourseList(gradeID));
         return "/student/info";
+    }
+
+    @PostMapping("/lidar")
+    @ResponseBody
+    public String lidar(@RequestBody String raw) {
+        JSONObject returnMap = new JSONObject();
+        returnMap.put("tokenValid", false);
+        JSONObject rawJsonObject = JSONObject.parseObject(raw);
+        if (loginService.verify(rawJsonObject.get("token").toString())) {
+            returnMap.put("tokenValid", true);
+            int courseId = Integer.parseInt(rawJsonObject.get("courseId").toString());
+            int studentId = Integer.parseInt(rawJsonObject.get("studentId").toString());
+            returnMap.put("final", finalExamService.getScoreByCourseAndStudent(courseId, studentId));
+            returnMap.put("pta", ptaService.getScoreByCourseAndStudent(courseId, studentId));
+            returnMap.put("chaoxing", chaoxingService.getScoreByCourseAndStudent(courseId, studentId));
+            returnMap.put("yuketang", yktService.getScoreByCourseAndStudent(courseId, studentId));
+        }
+        return returnMap.toJSONString();
     }
 }

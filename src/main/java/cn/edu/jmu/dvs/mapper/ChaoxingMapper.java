@@ -182,7 +182,15 @@ public interface ChaoxingMapper {
             "and tcourse_id = (select id from tb_teach_course where course_id = #{courseId} and " +
             "grade_id = (select grade_id from tb_class where id = (select class_id " +
             "from tb_student where id = #{studentId})));")
-    double getScoreByStudent(@Param("courseId") int courseId,
+    double getScoreByCourseAndStudent(@Param("courseId") int courseId,
                              @Param("studentId") int studentId);
+
+    @Select("select student_id as name, score as val from tb_cx_score_info  where student_id " +
+            "in (select id from tb_student where class_id in " +
+            "(select id from tb_class where grade_id = #{gradeId})) " +
+            " and tcourse_id = " +
+            "(select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId});")
+    List<Task> getScoresByCourseAndGrade(@Param("courseId") int courseId,
+                                         @Param("gradeId") int gradeId);
 
 }

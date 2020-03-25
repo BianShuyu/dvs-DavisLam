@@ -196,6 +196,29 @@ public interface YKTMapper {
             "(select id from tb_teach_course where course_id = #{courseId} and grade_id = " +
             "(select grade_id from tb_class where id = (select class_id from tb_student where id = #{studentId})))) " +
             "and student_id = #{studentId};")
-    int getScoreByStudent(@Param("courseId") int courseId,
+    int getScoreByCourseAndStudent(@Param("courseId") int courseId,
                           @Param("studentId") int studentId);
+
+
+    @Select("select sum(score) from tb_ykt_push_question where " +
+            "push_id in (select id from tb_ykt_push where tcourse_id = " +
+            "(select id from tb_teach_course where course_id = #{courseId} and grade_id = " +
+            "(select grade_id from tb_class where id = (select class_id from tb_student where id = #{studentId}))))")
+    int getFullScoreByStudent(@Param("courseId") int courseId,
+                              @Param("studentId") int studentId);
+
+    @Select("select sum(score) from tb_ykt_push_question where " +
+            "push_id in (select id from tb_ykt_push where tcourse_id = " +
+            "(select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId}))")
+    int getFullScoreByCourseAndGrade(@Param("courseId") int courseId,
+                                     @Param("gradeId") int gradeId);
+
+    @Select("select student_id as name, sum(answer_condition * score) as val " +
+            "from tb_ykt_push_answer join tb_ykt_push_question " +
+            "where push_question_id = tb_ykt_push_question.id and " +
+            "student_id in (select id from tb_student where class_id in (select id from tb_class where grade_id = #{gradeId})) " +
+            "and push_id in (select id from tb_ykt_push where tcourse_id = " +
+            "(select id from tb_teach_course where course_id = #{courseId} and grade_id = #{gradeId})) group by student_id;")
+    List<Task> getScoresByCourseAndGrade(@Param("courseId") int courseId,
+                                         @Param("gradeId") int gradeId);
 }

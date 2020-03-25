@@ -2,6 +2,7 @@ package cn.edu.jmu.dvs.mapper;
 
 import cn.edu.jmu.dvs.entity.PTAData;
 import cn.edu.jmu.dvs.entity.PTASubtotal;
+import cn.edu.jmu.dvs.entity.Task;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -42,6 +43,24 @@ public interface PTAMapper {
 
 
     @Select("select sum(score) from tb_pta where student_id = #{studentId} and course_id = #{courseId}")
-    int getScoreByStudent(@Param("courseId") int courseId, @Param("studentId") int studentId);
+    int getScoreByCourseAndStudent(@Param("courseId") int courseId, @Param("studentId") int studentId);
+
+    @Select("select sum(score) from (select max(score) as score from tb_pta where course_id = #{courseId} " +
+            "group by question_num) as t;")
+    int getFullScore(@Param("courseId") int courseId);
+
+
+    @Select("select sum(score) from (select max(score) as score from tb_pta where course_id = #{courseId} " +
+            "and student_id " +
+            "in (select id from tb_student where class_id in (select id from tb_class where grade_id = #{gradeId})) " +
+            "group by question_num) as t")
+    int getFullScoreByCourseAndGrade(@Param("courseId") int courseId, @Param("gradeId") int gradeId);
+
+
+    @Select("select student_id as name, sum(score) as val from tb_pta where student_id " +
+            "in (select id from tb_student where class_id in (select id from tb_class where grade_id = #{gradeId})) " +
+            "and course_id = #{courseId} group by student_id;")
+    List<Task> getScoresByCourseAndGrade(@Param("courseId") int courseId,
+                                         @Param("gradeId") int gradeId);
 
 }

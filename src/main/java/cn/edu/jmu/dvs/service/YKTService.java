@@ -212,4 +212,40 @@ public class YKTService {
         }
         return res;
     }
+
+    public Map<String, Double> getRightRatioByStudent(int courseId, int studentId) {
+        List<Task> tasks = yktMapper.getRightRatioByStudent(courseId, studentId);
+        Map<String, Double> res = new HashMap<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            res.put(task.getName(), task.getVal());
+        }
+        return res;
+    }
+
+    public List<String> getUnreadAnnouncementByStudent(int courseId, int studentId) {
+        return yktMapper.getUnreadAnnouncementByStudent(courseId, studentId);
+    }
+
+
+    public List<String> getMissingClassByStudent(int courseId, int studentId) {
+        return yktMapper.getMissingClassByStudent(courseId, studentId);
+    }
+
+    public double getScoreByCourseAndStudent(int courseId, int studentId) {
+        return yktMapper.getScoreByCourseAndStudent(courseId, studentId) * 100.0 / yktMapper.getFullScoreByStudent(courseId, studentId);
+    }
+
+    public List<Task> getScoresByCourseAndGrade(int courseId, int gradeId) {
+        List<Task> res = yktMapper.getScoresByCourseAndGrade(courseId, gradeId);
+        int fullScore = yktMapper.getFullScoreByCourseAndGrade(courseId, gradeId);
+
+        for (int i = 0; i < res.size(); i++) {
+            Task task = res.get(i);
+            task.setVal(task.getVal() * 100.0 / fullScore);
+        }
+        return res;
+    }
+
+
 }

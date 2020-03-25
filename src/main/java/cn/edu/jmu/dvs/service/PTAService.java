@@ -2,6 +2,7 @@ package cn.edu.jmu.dvs.service;
 
 import cn.edu.jmu.dvs.entity.PTAData;
 import cn.edu.jmu.dvs.entity.PTASubtotal;
+import cn.edu.jmu.dvs.entity.Task;
 import cn.edu.jmu.dvs.mapper.PTAMapper;
 import cn.edu.jmu.dvs.mapper.StudentInfoMapper;
 import com.alibaba.fastjson.JSONArray;
@@ -190,6 +191,21 @@ public class PTAService {
         }
         res.put("classData", classData);
         res.put("typeData", typeData);
+        return res;
+    }
+
+    public double getScoreByCourseAndStudent(int courseId, int studentId) {
+        return ptaMapper.getScoreByCourseAndStudent(courseId, studentId) * 100.0 / ptaMapper.getFullScore(courseId);
+    }
+
+    public List<Task> getScoresByCourseAndGrade(int courseId, int gradeId) {
+        List<Task> res = ptaMapper.getScoresByCourseAndGrade(courseId, gradeId);
+        int fullScore = ptaMapper.getFullScoreByCourseAndGrade(courseId, gradeId);
+
+        for (int i = 0; i < res.size(); i++) {
+            Task task = res.get(i);
+            task.setVal(task.getVal() * 100.0 / fullScore);
+        }
         return res;
     }
 }

@@ -47,7 +47,7 @@ public class PTAController {
         return returnMap.toJSONString();
     }
 
-    @PostMapping("/subtotal")
+    @PostMapping("/studentInfo")
     @ResponseBody
     public String subtotal(@RequestBody String raw) {
         JSONObject returnMap = new JSONObject();

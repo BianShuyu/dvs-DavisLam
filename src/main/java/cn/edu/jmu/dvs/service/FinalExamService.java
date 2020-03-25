@@ -1,6 +1,7 @@
 package cn.edu.jmu.dvs.service;
 
 import cn.edu.jmu.dvs.entity.FinalExamData;
+import cn.edu.jmu.dvs.entity.Task;
 import cn.edu.jmu.dvs.mapper.CourseMapper;
 import cn.edu.jmu.dvs.mapper.FinalExamMapper;
 import cn.edu.jmu.dvs.mapper.StudentInfoMapper;
@@ -91,5 +92,16 @@ public class FinalExamService {
         res.put("boxData", boxData);
         return res;
     }
+
+
+    public int getScoreByCourseAndStudent(int courseId, int studentId) {
+        return finalExamMapper.getScoreByCourseAndStudent(courseId, studentId);
+    }
+
+    public List<Task> getScoresByCourseAndGrade(int courseId, int gradeId) {
+        return finalExamMapper.getScoresByCourseAndGrade(courseId, gradeId);
+    }
+
+
 
 }

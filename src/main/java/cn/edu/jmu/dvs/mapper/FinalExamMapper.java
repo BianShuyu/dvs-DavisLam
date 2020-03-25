@@ -1,6 +1,7 @@
 package cn.edu.jmu.dvs.mapper;
 
 import cn.edu.jmu.dvs.entity.FinalExamData;
+import cn.edu.jmu.dvs.entity.Task;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -41,4 +42,14 @@ public interface FinalExamMapper {
             "tb_class.grade_id = #{gradeId} and tb_student.class_id = tb_class.id " +
             "and tb_final_exam.student_id = tb_student.id order by tb_class.name")
     List<FinalExamData> overviewByClass(@Param("courseId") int courseId, @Param("gradeId") int gradeId);
+
+    @Select("select score from tb_final_exam where student_id = #{studentId} and course_id  = #{courseId};")
+    int getScoreByCourseAndStudent(@Param("courseId") int courseId, @Param("studentId") int studentId);
+
+
+    @Select("select student_id as name, score as val from tb_final_exam where student_id " +
+            "in (select id from tb_student where class_id in " +
+            "(select id from tb_class where grade_id = #{gradeId})) " +
+            " and course_id = #{courseId};")
+    List<Task> getScoresByCourseAndGrade(@Param("courseId") int courseId, @Param("gradeId") int gradeId);
 }

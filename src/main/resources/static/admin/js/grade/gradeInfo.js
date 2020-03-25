@@ -13,34 +13,6 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
         step: 10 //步长
     });
 
-    function twoFig(title1, title2, id1, id2) {
-        return "<div class=\"layui-row layui-col-space15\">\n" +
-            "        <div class=\"layui-col-md6\">\n" +
-            "            <div class=\"layui-card\">\n" +
-            "                <div class=\"layui-card-header\">" + title1 + "</div>\n" +
-            "                <div class=\"layui-card-body\"><div id=\"" + id1 + "\" style=\"width: 100%; height: 500px;\"></div></div>\n" +
-            "            </div>\n" +
-            "        </div>\n" +
-            "        <div class=\"layui-col-md6\">\n" +
-            "            <div class=\"layui-card\">\n" +
-            "                <div class=\"layui-card-header\">" + title2 + "</div>\n" +
-            "                <div class=\"layui-card-body\"><div id=\"" + id2 + "\" style=\"width: 100%; height: 500px;\"></div></div>\n" +
-            "            </div>\n" +
-            "        </div>\n" +
-            "    </div>"
-    }
-
-    function oneFig(title, id) {
-        return "<div class=\"layui-row layui-col-space15\">\n" +
-            "        <div class=\"layui-col-md6\">\n" +
-            "            <div class=\"layui-card\">\n" +
-            "                <div class=\"layui-card-header\">" + title + "</div>\n" +
-            "                <div class=\"layui-card-body\"><div id=\"" + id + "\" style=\"width: 100%; height: 500px;\"></div></div>\n" +
-            "            </div>\n" +
-            "        </div>\n" +
-            "    </div>"
-    }
-
     function boxplot(data, xaxis, yaxis, figid) {
         data = echarts.dataTool.prepareBoxplotData(data);
         var option = {
@@ -101,75 +73,6 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
         };
         var chart = echarts.init(document.getElementById(figid));
         chart.setOption(option);
-    }
-
-    function linePlot() {
-        var nData = (arguments.length - 2) / 2;
-        var figId = arguments[arguments.length - 1];
-        var keys = [];
-        for (var key in arguments[0]) {
-            keys.push(key);
-        }
-        var legend = [];
-        for (var i = nData; i < nData * 2; i++) {
-            legend.push(arguments[i]);
-        }
-        var seriesData = [];
-
-
-        for (var i = 0; i < nData; i++) {
-            var cur = {};
-            cur.name = legend[i];
-            cur.type = "line";
-            var curData = [];
-            for (var key in arguments[i]) {
-                curData.push(arguments[i][key]);
-            }
-            cur.data = curData;
-            cur.markPoint = {
-                data: [
-                    {type: 'max'},
-                    {type: 'min'}
-                ]
-            };
-            cur.markLine = {
-                data: [
-                    {type: 'average', name: '平均值'},
-                ]
-            };
-            seriesData.push(cur);
-        }
-        var unit = arguments[arguments.length - 2];
-        var chart = echarts.init(document.getElementById(figId));
-        chart.setOption({
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data: legend
-            },
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: keys
-            },
-            yAxis: {
-                type: 'value',
-                axisLabel: {
-                    formatter: function(value) {
-                        return value + " " + unit;
-                    }
-                }
-            },
-            dataZoom: {   // 这个dataZoom组件，默认控制x轴。
-                type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
-                start: 30,      // 左边在 10% 的位置。
-                end: 50         // 右边在 60% 的位置。
-            },
-            series: seriesData
-        });
-
-
     }
 
     function histPlot(data, figId) {
@@ -990,37 +893,129 @@ layui.use(['element', 'layer', 'form', 'slider'], function () {
                     }
                 }
                 console.log(disqualify);
-
-                $("#figContainer").append(
-                    "<fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 20px;\">\n" +
-                    "  <legend>取消考试资格名单</legend>\n" +
-                    "</fieldset>");
-                var tableHtml =
-                    "<table class=\"layui-table\">\n" +
-                    "  <colgroup>\n" +
-                    "    <col>\n" +
-                    "    <col>\n" +
-                    "  </colgroup>\n" +
-                    "    <thead>\n" +
-                    "      <tr>\n" +
-                    "        <th>姓名</th>\n" +
-                    "        <th>到课率(%)</th>\n" +
-                    "      </tr>\n" +
-                    "    </thead>\n" +
-                    "    <tbody>\n";
-                for (var i = 0; i < disqualify.length; i++) {
-                    tableHtml +=
-                        "<tr>\n" +
-                        "  <td>" + disqualify[i][0] + "</td>\n" +
-                        "  <td>" + disqualify[i][1] + "</td>\n" +
-                        "</tr>"
-                }
-                tableHtml += "</tbody>\n</table>";
-                $("#figContainer").append(tableHtml);
-
-
+                staticTable("取消考试资格名单", "#figContainer", ["姓名", "到课率(%)"], disqualify);
             }
         });
     });
+
+
+    $(document).on('click', '#match', function () {
+        $("#figContainer").empty();
+
+        var obj = {};
+        obj["token"] = "123";
+        obj["courseId"] = document.getElementById("course").value;
+        obj["gradeId"] = $("#gradeId").val();
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: "/grade/match",
+            data: JSON.stringify(obj),
+            success: function (result) {
+                console.log(result);
+                $("#figContainer").append(oneFig("匹配度分析", "fig1"));
+                var fig1 = document.getElementById("fig1");
+                var chart = echarts.init(fig1);
+
+                var schema = [
+                    {name: '期末考试', index: 0},
+                    {name: 'PTA', index: 1},
+                    {name: '超星', index: 2},
+                    {name: '雨课堂', index: 3},
+                ];
+                var fieldIndices = schema.reduce(function (obj, item) {
+                    obj[item.name] = item.index;
+                    return obj;
+                }, {});
+
+                var fieldNames = schema.map(function (item) {
+                    return item.name;
+                });
+                var curXAxis = fieldNames[0];
+                var curYAxis = fieldNames[1];
+
+                chart.setOption(getOption(result.data, curXAxis, curYAxis));
+
+                function getOption(origin, curXAxis, curYAxis) {
+                    var data = origin.map(function (item) {
+                        return [item[fieldIndices[curXAxis]], item[fieldIndices[curYAxis]]];
+                    });
+
+                    var reg = ecStat.regression('polynomial', data, 2);
+                    reg.points.sort(function(a, b) {
+                        return a[0] - b[0];
+                    });
+
+                    return {
+                        tooltip: {
+                        },
+                        xAxis: {
+                            name: curXAxis,
+                        },
+                        yAxis: {
+                            name: curYAxis,
+                        },
+                        series: [
+                            {
+                                zlevel: 1,
+                                type: 'scatter',
+                                data: data,
+                                animationThreshold: 5000,
+                                progressiveThreshold: 5000
+                            },
+                            {
+                                name: 'line',
+                                type: 'line',
+                                smooth: true,
+                                showSymbol: false,
+                                data: reg.points,
+                                markPoint: {
+                                    itemStyle: {
+                                        color: 'transparent'
+                                    },
+                                    label: {
+                                        show: true,
+                                        position: 'left',
+                                        formatter: reg.expression,
+                                        color: '#333',
+                                        fontSize: 14
+                                    },
+                                    data: [{
+                                        coord: reg.points[reg.points.length - 1]
+                                    }]
+                                }
+                            }
+                        ],
+                        animationEasingUpdate: 'cubicInOut',
+                        animationDurationUpdate: 2000
+                    };
+                }
+
+                var gui = new dat.GUI({ autoPlace: false });
+
+                var guiText = function() {
+                    this.xAxis = fieldNames[0];
+                    this.yAxis = fieldNames[1];
+                };
+                var text = new guiText();
+                var xAxisController = gui.add(text, "xAxis", fieldNames);
+                var yAxisController = gui.add(text, "yAxis", fieldNames);
+                fig1.appendChild(gui.domElement);
+
+
+                xAxisController.onChange(function (value) {
+                    curXAxis = value;
+                    chart.setOption(getOption(result.data, curXAxis, curYAxis));
+                });
+
+                yAxisController.onChange(function (value) {
+                    curYAxis = value;
+                    chart.setOption(getOption(result.data, curXAxis, curYAxis));
+                });
+            }
+        });
+    });
+
 });
 

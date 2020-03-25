@@ -1,16 +1,19 @@
 package cn.edu.jmu.dvs.service;
 
 import cn.edu.jmu.dvs.entity.ChaoxingAccess;
+import cn.edu.jmu.dvs.entity.ChaoxingDetail;
 import cn.edu.jmu.dvs.entity.ChaoxingSummary;
 import cn.edu.jmu.dvs.entity.Task;
 import cn.edu.jmu.dvs.mapper.ChaoxingMapper;
 import cn.edu.jmu.dvs.mapper.CourseMapper;
 import cn.edu.jmu.dvs.mapper.StudentInfoMapper;
 import com.alibaba.fastjson.JSONArray;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 @Service
 public class ChaoxingService {
@@ -300,6 +303,41 @@ public class ChaoxingService {
 
         return res;
     }
+
+
+
+
+    public Map<String, Double> get(int courseId, int studentId, String type) {
+
+        Map<String, BiFunction<Integer, Integer, List<Task>>> functionMap = new HashMap<>();
+
+
+        functionMap.put("work", chaoxingMapper::getWorkListByCourseAndStudent);
+        functionMap.put("video", chaoxingMapper::getVideoListByCourseAndStudent);
+        functionMap.put("chapter", chaoxingMapper::getChapterListByCourseAndStudent);
+
+        List<Task> tasks = functionMap.get(type).apply(courseId, studentId);
+        Map<String, Double> res = new HashMap<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            res.put(task.getName(), task.getVal());
+        }
+        return res;
+    }
+
+    public ChaoxingDetail getDetailByCourseAndStudent(int courseId, int studentId) {
+        return chaoxingMapper.getDetailByCourseAndStudent(courseId, studentId);
+    }
+
+    public double getScoreByCourseAndStudent(int courseId, int studentId) {
+        return chaoxingMapper.getScoreByCourseAndStudent(courseId, studentId);
+    }
+
+    public List<Task> getScoresByCourseAndGrade(int courseId, int gradeId) {
+        return chaoxingMapper.getScoresByCourseAndGrade(courseId, gradeId);
+    }
+
+
 
 
 }
