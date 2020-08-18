@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,9 +42,9 @@ public class CourseController {
 
     @PostMapping("add")
     @ResponseBody
-    public Map<String, Object> add(@RequestBody String s) {
-        JSONObject jsonObject = JSONObject.parseObject(s);
-        String name = jsonObject.getString("courseName");
+    public Map<String, Object> add(HttpServletRequest request) {
+        //String username = request.getParameter("username");
+        String name = request.getParameter("courseName");
         Map<String, Object> res = new HashMap<>();
         if (StringUtils.isEmpty(name)) {
             res.put("success", false);
